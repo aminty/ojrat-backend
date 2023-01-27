@@ -29,4 +29,7 @@ public class Customer extends User{
     @OneToMany(mappedBy = "customer")
     private List<Order> orders;
 
+    @OneToMany
+    private List<Message> messages;
+
 }

@@ -1,29 +1,31 @@
 package com.amin.ojrat.entity;
 
-import com.amin.ojrat.enumeration.Role;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.List;
+import java.time.LocalTime;
 
 @Entity
-@Table(name = "admin_table")
+@Table(name = "message_table")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Admin extends User{
+
+public class Message extends BaseEntity<Long> {
+
+    private String text;
+
+    private boolean isRead;
 
 
+    @CreationTimestamp
+    private LocalTime localTime;
 
-    private Role role ;
-
-    @OneToMany
-    private List<Message> messages;
 
 }

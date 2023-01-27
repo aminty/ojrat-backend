@@ -29,4 +29,7 @@ public class ServiceProvider extends User {
 
     @OneToOne
     private Wallet wallet;
+
+    @OneToMany
+    private List<Message> messages;
 }
