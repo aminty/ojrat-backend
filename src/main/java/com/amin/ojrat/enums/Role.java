@@ -1,4 +1,4 @@
-package com.amin.ojrat.enumeration;
+package com.amin.ojrat.enums;
 
 public enum Role {
     Admin,

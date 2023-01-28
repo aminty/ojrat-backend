@@ -1,11 +1,10 @@
 package com.amin.ojrat.entity;
 
+import com.amin.ojrat.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalTime;
@@ -16,16 +15,16 @@ import java.time.LocalTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 
 public class Message extends BaseEntity<Long> {
 
-    private String text;
+    String text;
 
-    private boolean isRead;
-
+    boolean isRead;
 
     @CreationTimestamp
-    private LocalTime localTime;
+    LocalTime localTime;
 
 
 }

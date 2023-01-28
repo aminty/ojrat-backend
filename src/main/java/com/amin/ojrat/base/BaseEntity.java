@@ -1,13 +1,11 @@
-package com.amin.ojrat.entity;
+package com.amin.ojrat.base;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 
@@ -16,9 +14,11 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(makeFinal = false,level = AccessLevel.PRIVATE)
+
 public class BaseEntity<T extends Serializable> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private T Id;
+     T Id;
 }

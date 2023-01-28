@@ -1,12 +1,10 @@
 package com.amin.ojrat.entity;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
+import com.amin.ojrat.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "wallet_table")
@@ -14,13 +12,15 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(makeFinal = false,level = AccessLevel.PRIVATE)
+
 public class Wallet extends BaseEntity<Long> {
 
-    private String cardNumber;
+     String cardNumber;
 
-    private String cvv2;
+     String cvv2;
 
-    private double credit;
+     double credit;
 
-    private String pin;
+     String pin;
 }

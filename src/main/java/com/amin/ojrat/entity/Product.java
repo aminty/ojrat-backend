@@ -1,11 +1,10 @@
 package com.amin.ojrat.entity;
 
+import com.amin.ojrat.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "product_table")
@@ -13,17 +12,24 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends BaseEntity<Long>{
+@FieldDefaults(makeFinal = false,level = AccessLevel.PRIVATE)
+public class Product extends BaseEntity<Long> {
 
-    private String productName;
+     String productName;
 
-    private String description;
+     String description;
 
-    private double price;
+     double price;
 
-    private double discount;
+     double profitPercent;
 
-    private boolean isExist;
+     double profit;
+
+     double discount;
+
+     boolean isExist;
+
+
 
 
 

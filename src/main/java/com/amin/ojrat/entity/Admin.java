@@ -1,13 +1,11 @@
 package com.amin.ojrat.entity;
 
-import com.amin.ojrat.enumeration.Role;
+import com.amin.ojrat.enums.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
@@ -17,13 +15,15 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(makeFinal = false,level = AccessLevel.PRIVATE)
+
 public class Admin extends User{
 
 
 
-    private Role role ;
+     Role role ;
 
     @OneToMany
-    private List<Message> messages;
+     List<Message> messages;
 
 }

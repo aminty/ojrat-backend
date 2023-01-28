@@ -1,14 +1,12 @@
 package com.amin.ojrat.entity;
 
-import com.amin.ojrat.enumeration.Role;
+import com.amin.ojrat.enums.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
@@ -18,18 +16,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "customer_table")
+@FieldDefaults(makeFinal = false,level = AccessLevel.PRIVATE)
+
 public class Customer extends User{
 
-    private Role role ;
-
+     Role role ;
 
     @OneToOne
-    private Wallet wallet;
+     Wallet wallet;
 
     @OneToMany(mappedBy = "customer")
-    private List<Order> orders;
+     List<Order> orders;
 
     @OneToMany
-    private List<Message> messages;
+     List<Message> messages;
 
 }

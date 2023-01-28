@@ -1,10 +1,9 @@
 package com.amin.ojrat.entity;
 
+import com.amin.ojrat.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Getter
@@ -13,19 +12,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "user_table")
+@FieldDefaults(makeFinal = false,level = AccessLevel.PRIVATE)
+
 public class User extends BaseEntity<Long> {
 
-    private  String firstName;
+      String firstName;
 
-    private String lastName;
+     String lastName;
 
-    private String email;
+     String email;
 
-    private String password;
+     String password;
 
-    private String nationalCode;
+     String nationalCode;
 
-    private String address;
+     String address;
 
 
 }

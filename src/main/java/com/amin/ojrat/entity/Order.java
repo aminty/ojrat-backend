@@ -1,12 +1,11 @@
 package com.amin.ojrat.entity;
 
-import com.amin.ojrat.enumeration.OrderStatus;
-import com.amin.ojrat.enumeration.PaymentType;
+import com.amin.ojrat.base.BaseEntity;
+import com.amin.ojrat.enums.OrderStatus;
+import com.amin.ojrat.enums.PaymentType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
@@ -16,32 +15,27 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
+
 public class Order extends BaseEntity<Long> {
-    private String description;
-
-
-    @ManyToOne
-    private ServiceProvider serviceProvider;
+    String description;
 
     @ManyToOne
-    private Customer customer;
+    ServiceProvider serviceProvider;
+
+    @ManyToOne
+    Customer customer;
 
 
     @OneToMany
-    private List<Service> services;
+    List<Service> services;
 
     @OneToMany
-    private List<Product> products;
+    List<Product> products;
 
-    private OrderStatus status;
+    OrderStatus status;
 
-    private PaymentType paymentType;
-
-
-
-
-
-
+    PaymentType paymentType;
 
 
 }
