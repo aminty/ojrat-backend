@@ -11,14 +11,14 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 
 @Entity
-@Table(name = "service_provider_table")
+@Table(name = "expert_table")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 
-public class ServiceProvider extends User {
+public class Expert extends User {
 
 
     Role role;

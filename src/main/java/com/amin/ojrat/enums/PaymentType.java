@@ -2,7 +2,7 @@ package com.amin.ojrat.enums;
 
 public enum PaymentType {
 
-    EPay,
-    Cash
+    E_PAY,
+    CASH
 
 }

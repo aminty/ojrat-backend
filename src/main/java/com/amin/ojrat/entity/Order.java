@@ -21,7 +21,7 @@ public class Order extends BaseEntity<Long> {
     String description;
 
     @ManyToOne
-    ServiceProvider serviceProvider;
+    Expert expert;
 
     @ManyToOne
     Customer customer;
