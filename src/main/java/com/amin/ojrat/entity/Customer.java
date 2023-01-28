@@ -22,8 +22,6 @@ public class Customer extends User{
 
      Role role ;
 
-    @OneToOne
-     Wallet wallet;
 
     @OneToMany(mappedBy = "customer")
      List<Order> orders;

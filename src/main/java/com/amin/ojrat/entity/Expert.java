@@ -23,11 +23,10 @@ public class Expert extends User {
 
     Role role;
 
-    @OneToMany(mappedBy = "serviceProvider")
+    @OneToMany(mappedBy = "expert")
     List<Order> orders;
 
-    @OneToOne
-    Wallet wallet;
+
 
     @OneToMany
     List<Message> messages;
