@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -16,7 +19,7 @@ import lombok.experimental.FieldDefaults;
 
 public class User extends BaseEntity<Long> {
 
-      String firstName;
+     String firstName;
 
      String lastName;
 
@@ -27,6 +30,12 @@ public class User extends BaseEntity<Long> {
      String nationalCode;
 
      String address;
+
+     @OneToMany(mappedBy = "sender",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+     List<Message> sentMessages=new ArrayList<>();
+
+     @OneToMany(mappedBy = "receiver",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+     List<Message> receivedMessages=new ArrayList<>();
 
 
 }

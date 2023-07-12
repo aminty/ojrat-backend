@@ -1,9 +1,7 @@
 package com.amin.ojrat.entity;
 
 import com.amin.ojrat.enums.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,10 +18,9 @@ import java.util.List;
 public class Admin extends User{
 
 
-
-     Role role ;
-
-    @OneToMany
-     List<Message> messages;
+     @ElementCollection(fetch = FetchType.EAGER)
+     @CollectionTable(name = "admin_role", joinColumns = @JoinColumn(name = "admin_id"))
+     @Column(name = "role")
+     List<String> roles;
 
 }

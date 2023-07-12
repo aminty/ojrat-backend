@@ -23,10 +23,6 @@ public class Order extends BaseEntity<Long> {
     @ManyToOne
     Expert expert;
 
-    @ManyToOne
-    Customer customer;
-
-
     @OneToMany
     List<Service> services;
 

@@ -1,7 +1,9 @@
 package com.amin.ojrat.enums;
 
 public enum Role {
-    ADMIN,
-    CUSTOMER,
-    EXPERT
+    SUPER_ADMIN,
+    EXPERT,
+    BRANCH_ADMIN,
+
+
 }

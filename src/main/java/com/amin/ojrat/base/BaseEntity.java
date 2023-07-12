@@ -19,6 +19,6 @@ import java.io.Serializable;
 public class BaseEntity<T extends Serializable> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
      T Id;
 }
