@@ -25,7 +25,7 @@ public interface AdminService {
 
     void deleteMessage(Long userId);
 
-    boolean authenticateAndSave(Admin admin);
+
 
 
 

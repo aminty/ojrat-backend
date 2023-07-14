@@ -48,8 +48,5 @@ public class AdminServiceImpl implements AdminService {
         //TODO
     }
 
-    @Override
-    public boolean authenticateAndSave(Admin admin) {
-        return false;
-    }
+
 }
