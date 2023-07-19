@@ -1,5 +1,6 @@
 package com.amin.ojrat.service;
 
+import com.amin.ojrat.dto.entity.admin.AdminParam;
 import com.amin.ojrat.entity.Admin;
 import com.amin.ojrat.entity.Expert;
 import org.springframework.stereotype.Service;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface AdminService {
 
-    void saveAdmin(Admin admin);
+    void saveAdmin(AdminParam param);
 
     Admin findById(Long adminId);
 

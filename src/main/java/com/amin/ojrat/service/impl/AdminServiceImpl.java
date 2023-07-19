@@ -1,20 +1,31 @@
 package com.amin.ojrat.service.impl;
 
+import com.amin.ojrat.dto.entity.admin.AdminParam;
+import com.amin.ojrat.dto.mapper.AdminMapper;
 import com.amin.ojrat.entity.Admin;
 import com.amin.ojrat.repository.AdminRepository;
 import com.amin.ojrat.service.AdminService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 @Service
-@AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
-    AdminRepository adminRepository;
+    private final AdminRepository adminRepository;
+    private final AdminMapper adminMapper;
+
+    @Autowired
+    public AdminServiceImpl(AdminRepository adminRepository, AdminMapper adminMapper) {
+        this.adminRepository = adminRepository;
+        this.adminMapper = adminMapper;
+    }
 
     @Override
-    public void saveAdmin(Admin admin) {
+    public void saveAdmin(AdminParam param) {
         //TODO
+        Admin admin = adminMapper.adminParamToAdmin(param);
+        adminRepository.save(admin);
+
     }
 
     @Override

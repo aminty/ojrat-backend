@@ -1,11 +1,9 @@
 package com.amin.ojrat.controller;
 
 
-import com.amin.ojrat.dto.payamak.send.SendSmsParam;
 import com.amin.ojrat.dto.payamak.send.SendSmsResult;
 import com.amin.ojrat.dto.payamak.validation.ValidationParam;
 import com.amin.ojrat.service.CodeValidationService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +14,17 @@ import java.util.List;
 @RequestMapping("/validator")
 public class CodeValidatorController {
 
+    private final CodeValidationService codeValidationService;
+
     @Autowired
-    private  CodeValidationService codeValidationService;
+    public CodeValidatorController(CodeValidationService codeValidationService) {
+        this.codeValidationService = codeValidationService;
+    }
 
     @GetMapping("/validatePhone/{phoneNumber}")
     public ResponseEntity<SendSmsResult> validatePhone(@PathVariable String phoneNumber) {
         SendSmsResult sendSmsResult = codeValidationService.sendCodeWithApi(phoneNumber);
+        //sendSmsResult.setStatus("پیام ارسال شد.");
         return ResponseEntity.ok(sendSmsResult);
     }
 

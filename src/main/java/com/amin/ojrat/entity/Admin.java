@@ -13,14 +13,15 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(makeFinal = false,level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 
-public class Admin extends User{
+public class Admin extends User {
 
 
-     @ElementCollection(fetch = FetchType.EAGER)
-     @CollectionTable(name = "admin_role", joinColumns = @JoinColumn(name = "admin_id"))
-     @Column(name = "role")
-     List<String> roles;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "admin_role", joinColumns = @JoinColumn(name = "admin_id"))
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    List<Role> roles;
 
 }
