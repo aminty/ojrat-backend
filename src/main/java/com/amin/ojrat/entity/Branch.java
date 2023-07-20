@@ -8,8 +8,8 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@Entity
 @Table(name = "branch_table")
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor

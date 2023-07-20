@@ -4,7 +4,7 @@ import com.amin.ojrat.dto.entity.admin.AdminParam;
 import com.amin.ojrat.dto.mapper.AdminMapper;
 import com.amin.ojrat.exception.AdminCreationException;
 import com.amin.ojrat.service.AdminService;
-import io.swagger.v3.oas.annotations.Operation;
+//import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class AdminController {
         this.adminMapper = adminMapper;
     }
 
-    @Operation(summary = "create new admin")
+    //@Operation(summary = "create new admin")
     public ResponseEntity<String> createNewAdmin(@RequestBody AdminParam param) throws AdminCreationException  {
 
         if (param==null)
