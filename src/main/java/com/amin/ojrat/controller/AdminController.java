@@ -4,12 +4,12 @@ import com.amin.ojrat.dto.entity.admin.AdminParam;
 import com.amin.ojrat.dto.mapper.AdminMapper;
 import com.amin.ojrat.exception.AdminCreationException;
 import com.amin.ojrat.service.AdminService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/management")

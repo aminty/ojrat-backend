@@ -1,12 +1,12 @@
 package com.amin.ojrat.dto.entity.user;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 
 @Getter
 @Setter
@@ -20,7 +20,7 @@ public class UserParam {
 
 
     //@Schema(defaultValue = "lastName")
-    @NotNull(message = "lastName should not be blank!")
+    @NotBlank(message = "lastName should not be blank!")
     String lastName;
 
 
