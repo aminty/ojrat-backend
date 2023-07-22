@@ -1,17 +1,15 @@
 package com.amin.ojrat.exception;
 
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
-import org.springframework.web.ErrorResponse;
-
 import java.util.List;
 
 public class DefaultResponse  {
 
+    private final int code;
     private final String message;
     private final List<String> errors;
 
-    public DefaultResponse(String message, List<String> errors) {
+    public DefaultResponse(int code, String message, List<String> errors) {
+        this.code = code;
         this.message = message;
         this.errors = errors;
     }
@@ -22,5 +20,9 @@ public class DefaultResponse  {
 
     public List<String> getErrors() {
         return errors;
+    }
+
+    public int getCode() {
+        return code;
     }
 }

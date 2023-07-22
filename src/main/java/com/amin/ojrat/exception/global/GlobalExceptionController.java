@@ -2,18 +2,16 @@ package com.amin.ojrat.exception.global;
 
 import com.amin.ojrat.exception.AdminCreationException;
 import com.amin.ojrat.exception.DefaultResponse;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import com.amin.ojrat.exception.UserExistsException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +32,21 @@ public class GlobalExceptionController {
             errorMessages.add(fieldError.getDefaultMessage());
         }
 
-        DefaultResponse errorResponse = new DefaultResponse("Validation failed", errorMessages);
+        DefaultResponse errorResponse = new DefaultResponse(-1, "Param Validation failed", errorMessages);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(AdminCreationException.class)
-    public ResponseEntity<String> handleUserCreationException(AdminCreationException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<DefaultResponse> handleUserCreationException(AdminCreationException ex) {
+        DefaultResponse errorResponse = new DefaultResponse(-2, ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserExistsException.class)
+    public ResponseEntity<DefaultResponse> userExistsByParams(UserExistsException ex){
+        DefaultResponse errorResponse = new DefaultResponse(-3, ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.CONFLICT);
+
     }
 }
 

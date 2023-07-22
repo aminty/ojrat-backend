@@ -24,4 +24,7 @@ public class Admin extends User {
     @Enumerated(EnumType.STRING)
     List<Role> roles;
 
+    @OneToOne(mappedBy = "admin",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
+    Branch branch;
+
 }

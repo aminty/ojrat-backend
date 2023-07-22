@@ -16,17 +16,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = false,level = AccessLevel.PRIVATE)
 public class Product extends BaseEntity<Long> {
 
+     String brandName;
+
      String productName;
 
      String description;
 
      double price;
-
-     double profitPercent;
-
-     double profit;
-
-     double discount;
 
      boolean isExist;
 

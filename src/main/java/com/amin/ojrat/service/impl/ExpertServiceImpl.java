@@ -2,10 +2,9 @@ package com.amin.ojrat.service.impl;
 
 import com.amin.ojrat.entity.Expert;
 import com.amin.ojrat.entity.Product;
-import com.amin.ojrat.repository.ExpertRepository;
+import com.amin.ojrat.repository.IExpertRepository;
 import com.amin.ojrat.service.ExpertService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 public class ExpertServiceImpl implements ExpertService {
 
-    ExpertRepository expertRepository;
+    IExpertRepository IExpertRepository;
 
     public void saveExpert(Expert expert){
-        expertRepository.save(expert);
+        IExpertRepository.save(expert);
     }
 
     @Override
@@ -32,6 +31,6 @@ public class ExpertServiceImpl implements ExpertService {
 
 
     public Expert findExpert(Long id){
-        return  expertRepository.findById(id).get();
+        return  IExpertRepository.findById(id).get();
     }
 }

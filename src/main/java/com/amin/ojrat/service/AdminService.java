@@ -26,6 +26,9 @@ public interface AdminService {
 
     void deleteMessage(Long userId);
 
+    boolean isExistsAdminByValue(AdminParam param);
+
+
 
 
 

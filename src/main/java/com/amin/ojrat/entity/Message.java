@@ -32,5 +32,5 @@ public class Message extends BaseEntity<Long> {
 
 
     @CreationTimestamp
-    LocalTime localTime;
+    LocalTime sentAt;
 }

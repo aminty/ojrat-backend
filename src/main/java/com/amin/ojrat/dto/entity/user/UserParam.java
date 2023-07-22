@@ -43,4 +43,7 @@ public class UserParam {
     @NotBlank(message = "address should not be blank!")
     String address;
 
+    @NotBlank(message = "phoneNumber should not be blank!")
+    String phoneNumber;
+
 }
