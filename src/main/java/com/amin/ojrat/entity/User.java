@@ -36,6 +36,4 @@ public class User extends BaseEntity<Long> {
 
      @OneToMany(mappedBy = "receiver",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
      List<Message> receivedMessages=new ArrayList<>();
-
-
 }

@@ -4,11 +4,12 @@ import com.amin.ojrat.dto.entity.admin.AdminParam;
 import com.amin.ojrat.dto.mapper.AdminMapper;
 import com.amin.ojrat.exception.AdminCreationException;
 import com.amin.ojrat.service.AdminService;
-//import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/management")
@@ -24,13 +25,15 @@ public class AdminController {
     }
 
     //@Operation(summary = "create new admin")
-    public ResponseEntity<String> createNewAdmin(@RequestBody AdminParam param) throws AdminCreationException  {
+    @PostMapping("/create-admin")
+    public ResponseEntity<String> createNewAdmin(@Valid @RequestBody AdminParam param) throws AdminCreationException  {
 
         if (param==null)
                 throw new AdminCreationException("server receive null object!");
         adminService.saveAdmin(param);
 
         return new ResponseEntity<>("Admin created successfully.", HttpStatus.CREATED);
+
     }
 
 
