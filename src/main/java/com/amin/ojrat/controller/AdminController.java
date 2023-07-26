@@ -1,11 +1,10 @@
 package com.amin.ojrat.controller;
-
 import com.amin.ojrat.dto.entity.admin.AdminParam;
-import com.amin.ojrat.dto.entity.product.ProductParam;
-import com.amin.ojrat.dto.mapper.AdminMapper;
+import com.amin.ojrat.dto.mapper.IAdminMapper;
 import com.amin.ojrat.exception.AdminCreationException;
 import com.amin.ojrat.exception.UserExistsException;
 import com.amin.ojrat.service.AdminService;
+import com.amin.ojrat.service.ServiceRegistry;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,23 +16,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/management")
 public class AdminController {
 
-    private final AdminService adminService;
-    private final AdminMapper adminMapper;
+   // private final AdminService adminService;
+    private final ServiceRegistry serviceRegistry;
+
 
     @Autowired
-    public AdminController(AdminService adminService, AdminMapper adminMapper) {
-        this.adminService = adminService;
-        this.adminMapper = adminMapper;
+    public AdminController(ServiceRegistry serviceRegistry) {
+        this.serviceRegistry = serviceRegistry;
     }
 
     //@Operation(summary = "create new admin")
     @PostMapping("/create-admin")
-    public ResponseEntity<String> createNewAdminWithValidation(@Valid @RequestBody AdminParam param) throws AdminCreationException, UserExistsException {
-
+    public ResponseEntity<String> createNewAdminWithValidation(@Valid @RequestBody AdminParam param) throws Exception  {
         if (param==null)
                 throw new AdminCreationException("server receive null object!");
-        if (!adminService.isExistsAdminByValue(param)) {
-            adminService.saveAdmin(param);
+        if (!serviceRegistry.getAdminService().isExistsAdminByValue(param)) {
+            serviceRegistry.getAdminService().saveAdmin(param);
 
             return new ResponseEntity<>("Admin created successfully.", HttpStatus.CREATED);
         }
@@ -41,10 +39,5 @@ public class AdminController {
             throw new UserExistsException("one of this params is taken by another user!");
         }
     }
-
-//    public ResponseEntity<String> createNewProduct(@Valid @RequestBody ProductParam param ){
-//
-//    }
-
 
 }

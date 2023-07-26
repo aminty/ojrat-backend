@@ -4,7 +4,7 @@ import com.amin.ojrat.dto.entity.admin.AdminParam;
 import com.amin.ojrat.entity.Admin;
 
 
-public interface AdminMapper {
+public interface IAdminMapper {
 
     AdminParam adminToAdminParam(Admin admin);
 

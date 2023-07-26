@@ -1,12 +1,12 @@
-package com.amin.ojrat.dto.mapper;
+package com.amin.ojrat.dto.mapper.impl;
 
 import com.amin.ojrat.dto.entity.admin.AdminParam;
+import com.amin.ojrat.dto.mapper.IAdminMapper;
 import com.amin.ojrat.entity.Admin;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AdminMapperImpl  implements AdminMapper{
+public class AdminMapperImpl  implements IAdminMapper {
     @Override
     public  AdminParam adminToAdminParam(Admin admin) {
         AdminParam param=new AdminParam();

@@ -15,7 +15,6 @@ public interface CodeValidationService {
 
     String getCodeBaseOnPhoneFromCache(String code);
 
-
     String codeGenerator();
 
     SendSmsResult sendCodeWithApi(String phoneNumber);

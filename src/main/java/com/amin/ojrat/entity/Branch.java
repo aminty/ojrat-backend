@@ -33,13 +33,16 @@ public class Branch extends BaseEntity<Long> {
     @ManyToMany(mappedBy = "branches")
     List<Expert> experts ;
 
-    @OneToMany(mappedBy = "branch")
+    @OneToMany(mappedBy = "branch",cascade = {CascadeType.ALL})
     List<Product> products;
 
     boolean status;
 
     @CreationTimestamp
     LocalTime createdAt;
+
+    @CreationTimestamp
+    LocalTime updatedAt;
 
 
 }

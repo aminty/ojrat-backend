@@ -1,8 +1,7 @@
 package com.amin.ojrat.exception.global;
 
-import com.amin.ojrat.exception.AdminCreationException;
-import com.amin.ojrat.exception.DefaultResponse;
-import com.amin.ojrat.exception.UserExistsException;
+import com.amin.ojrat.exception.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -38,15 +37,34 @@ public class GlobalExceptionController {
 
     @ExceptionHandler(AdminCreationException.class)
     public ResponseEntity<DefaultResponse> handleUserCreationException(AdminCreationException ex) {
-        DefaultResponse errorResponse = new DefaultResponse(-2, ex.getMessage(),new ArrayList<>());
+        DefaultResponse errorResponse = new DefaultResponse(-2, ex.getMessage(), new ArrayList<>());
         return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UserExistsException.class)
-    public ResponseEntity<DefaultResponse> userExistsByParams(UserExistsException ex){
-        DefaultResponse errorResponse = new DefaultResponse(-3, ex.getMessage(),new ArrayList<>());
+    public ResponseEntity<DefaultResponse> userExistsByParams(UserExistsException ex) {
+        DefaultResponse errorResponse = new DefaultResponse(-3, ex.getMessage(), new ArrayList<>());
         return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.CONFLICT);
 
+    }
+
+
+    @ExceptionHandler(NotFullyRegistredException.class)
+    public ResponseEntity<DefaultResponse> completeRegistration(NotFullyRegistredException ex) {
+        DefaultResponse errorResponse = new DefaultResponse(-4, ex.getMessage(), new ArrayList<>());
+        return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<DefaultResponse> entityNotFoundException(EntityNotFoundException ex) {
+        DefaultResponse errorResponse = new DefaultResponse(-5, ex.getMessage(), new ArrayList<>());
+        return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MissingIdParameter.class)
+    public ResponseEntity<DefaultResponse> missingIdParameterException(MissingIdParameter ex) {
+        DefaultResponse errorResponse = new DefaultResponse(-6, ex.getMessage(), new ArrayList<>());
+        return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
 
