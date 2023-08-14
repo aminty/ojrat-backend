@@ -2,9 +2,6 @@ package com.amin.ojrat.entity;
 
 import com.amin.ojrat.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalTime;
@@ -12,37 +9,143 @@ import java.util.List;
 
 @Table(name = "branch_table")
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class Branch extends BaseEntity<Long> {
 
-    String name;
+    private String name;
 
-    String location;
+    private String location;
 
-    String phone;
+    private String phone;
 
-    String description;
+    private String description;
 
     @OneToOne
-    Admin admin;
+    private Admin admin;
 
     @ManyToMany(mappedBy = "branches")
-    List<Expert> experts ;
+    private List<Expert> experts ;
 
     @OneToMany(mappedBy = "branch",cascade = {CascadeType.ALL})
-    List<Product> products;
+    private List<Product> products;
 
-    boolean status;
+    @OneToMany(mappedBy = "branch")
+    private List<ExpertBranchRequest> requests;
+
+    private boolean status;
 
     @CreationTimestamp
-    LocalTime createdAt;
+    private LocalTime createdAt;
 
     @CreationTimestamp
-    LocalTime updatedAt;
+    private LocalTime updatedAt;
 
+    public Branch() {
+    }
 
+    public Branch(Long id, String name, String location,
+                  String phone, String description,
+                  Admin admin, List<Expert> experts,
+                  List<Product> products, List<ExpertBranchRequest> requests,
+                  boolean status, LocalTime createdAt, LocalTime updatedAt) {
+        super(id);
+        this.name = name;
+        this.location = location;
+        this.phone = phone;
+        this.description = description;
+        this.admin = admin;
+        this.experts = experts;
+        this.products = products;
+        this.requests = requests;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
+
+    public List<Expert> getExperts() {
+        return experts;
+    }
+
+    public void setExperts(List<Expert> experts) {
+        this.experts = experts;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public List<ExpertBranchRequest> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<ExpertBranchRequest> requests) {
+        this.requests = requests;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public LocalTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

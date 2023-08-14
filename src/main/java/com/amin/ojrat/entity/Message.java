@@ -10,27 +10,75 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "message_table")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
+
 public class Message extends BaseEntity<Long> {
 
 
-    String text;
+    private String text;
 
-    boolean isRead;
+   private boolean isRead;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
-    User sender;
+    private User sender;
 
     @ManyToOne
     @JoinColumn(name = "receiver_id")
-    User receiver;
+    private User receiver;
 
 
     @CreationTimestamp
-    LocalTime sentAt;
+    private LocalTime sentAt;
+
+    public Message() {
+    }
+
+    public Message(Long id, String text, boolean isRead, User sender, User receiver, LocalTime sentAt) {
+        super(id);
+        this.text = text;
+        this.isRead = isRead;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.sentAt = sentAt;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
+    public LocalTime getSentAt() {
+        return sentAt;
+    }
+
+    public void setSentAt(LocalTime sentAt) {
+        this.sentAt = sentAt;
+    }
 }

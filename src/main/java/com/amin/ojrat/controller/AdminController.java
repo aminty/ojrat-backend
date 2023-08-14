@@ -1,9 +1,8 @@
 package com.amin.ojrat.controller;
-import com.amin.ojrat.dto.entity.admin.AdminParam;
-import com.amin.ojrat.dto.mapper.IAdminMapper;
+import com.amin.ojrat.dto.entity.admin.AdminCreationDto;
+import com.amin.ojrat.dto.entity.admin.AdminDto;
 import com.amin.ojrat.exception.AdminCreationException;
 import com.amin.ojrat.exception.UserExistsException;
-import com.amin.ojrat.service.AdminService;
 import com.amin.ojrat.service.ServiceRegistry;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/management")
 public class AdminController {
 
-   // private final AdminService adminService;
     private final ServiceRegistry serviceRegistry;
 
 
@@ -25,19 +23,16 @@ public class AdminController {
         this.serviceRegistry = serviceRegistry;
     }
 
-    //@Operation(summary = "create new admin")
     @PostMapping("/create-admin")
-    public ResponseEntity<String> createNewAdminWithValidation(@Valid @RequestBody AdminParam param) throws Exception  {
+    public ResponseEntity<String> createNewAdminWithValidation(@Valid @RequestBody AdminCreationDto param) throws Exception  {
         if (param==null)
                 throw new AdminCreationException("server receive null object!");
         if (!serviceRegistry.getAdminService().isExistsAdminByValue(param)) {
             serviceRegistry.getAdminService().saveAdmin(param);
-
             return new ResponseEntity<>("Admin created successfully.", HttpStatus.CREATED);
         }
         else {
             throw new UserExistsException("one of this params is taken by another user!");
         }
     }
-
 }

@@ -1,17 +1,17 @@
 package com.amin.ojrat.service.impl;
 
-import com.amin.ojrat.dto.entity.product.ProductParam;
-import com.amin.ojrat.dto.mapper.IProductMapper;
+import com.amin.ojrat.dto.entity.branch.BranchInfoModificationDto;
+import com.amin.ojrat.dto.entity.product.ProductCreationDto;
+import com.amin.ojrat.dto.entity.product.ProductModificationDto;
+import com.amin.ojrat.dto.mapper.ProductMapper;
 import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Product;
 import com.amin.ojrat.exception.MissingIdParameter;
 import com.amin.ojrat.exception.NotFullyRegistredException;
 import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.BranchService;
-import jakarta.persistence.EntityNotFoundException;
-import org.bouncycastle.i18n.MissingEntryException;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.endpoint.invoke.MissingParametersException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,25 +20,25 @@ import java.util.Optional;
 public class BranchServiceImpl implements BranchService {
 
     private final DaoRepositories daoRepositories;
-    private final IProductMapper productMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
-    public BranchServiceImpl(DaoRepositories daoRepositories, IProductMapper productMapper) {
+    public BranchServiceImpl(DaoRepositories daoRepositories, ProductMapper productMapper) {
         this.daoRepositories = daoRepositories;
         this.productMapper = productMapper;
     }
 
     @Override
-    public void saveProductToBranch( ProductParam param) throws NotFullyRegistredException {
-        Optional<Branch> findBranchById = daoRepositories.getBranchRepository().findById(param.getBranch().getId());
-        Product product = productMapper.productParamToProduct(param);
+    public void saveProductToBranch(ProductCreationDto param) throws NotFullyRegistredException {
+        Optional<Branch> findBranchById = daoRepositories.getBranchRepository().findById(param.getBranchId());
+        Product product = productMapper.productDtoToProduct(param);
 
         if (findBranchById.isPresent()) {
             Branch branch = findBranchById.get();
             branch.getProducts().add(product);
             product.setBranch(branch);
             if (isBranchFullyRegistered(branch))
-               daoRepositories.getBranchRepository().save(branch);
+                daoRepositories.getBranchRepository().save(branch);
             else throw new NotFullyRegistredException("your store is not complete registered.");
         } else {
             throw new EntityNotFoundException("Branch not found.");
@@ -48,39 +48,68 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public boolean isBranchFullyRegistered(Branch branch) {
-        if (branch.getDescription()==null
-                || branch.getLocation()==null
-                || branch.getName()==null
-                || branch.getPhone()==null)
+        if (branch.getDescription() == null
+                || branch.getLocation() == null
+                || branch.getName() == null
+                || branch.getPhone() == null)
             return false;
         else
             return true;
     }
 
     @Override
-    public void editProduct(ProductParam param) throws Exception {
-        if (param.getId()!=null) {
+    public void editBranchEditInfo(BranchInfoModificationDto param) {
+        Optional<Branch> foundBranch=daoRepositories.getBranchRepository().findById(param.getId());
+        if (foundBranch.isPresent()) {
+            Branch existBranch= foundBranch.get();
+            existBranch.setDescription(param.getDescription());
+            existBranch.setName(param.getName());
+            existBranch.setLocation(param.getLocation());
+            existBranch.setPhone(param.getPhone());
+            daoRepositories.getBranchRepository().save(existBranch);
+        }else {
+            throw new EntityNotFoundException("branch not found.");
+        }
+    }
+
+    @Override
+    public void editProduct(ProductModificationDto param) throws Exception {
+        if (param.getId() != null) {
             Optional<Product> foundProduct = daoRepositories.getProductRepository().findById(param.getId());
-            if (foundProduct.isPresent()){
-                Product product = productMapper.productParamToProduct(param);
-                daoRepositories.getProductRepository().save(product);
-            }else{
+            if (foundProduct.isPresent()) {
+                Product productWithIncomingChange = productMapper.productDtoToProduct(param);
+                Product existProduct = foundProduct.get();
+
+                daoRepositories.getProductRepository().save(applyNewChange(productWithIncomingChange, existProduct));
+            } else {
                 throw new EntityNotFoundException("Product not found.");
             }
-        }else{
+        } else {
             throw new MissingIdParameter("id parameter is null");
         }
     }
 
     @Override
+    public Product applyNewChange(Product productWithIncomingChange, Product existProduct) {
+
+        existProduct.setBrandName(productWithIncomingChange.getBrandName());
+        existProduct.setProductName(productWithIncomingChange.getProductName());
+        existProduct.setDescription(productWithIncomingChange.getDescription());
+        existProduct.setPrice(productWithIncomingChange.getPrice());
+        existProduct.setDiscount(productWithIncomingChange.getDiscount());
+        existProduct.setExist(productWithIncomingChange.isExist());
+        return existProduct;
+    }
+
+    @Override
     public void removeProduct(Long id) throws Exception {
-        if (id!=null) {
+        if (id != null) {
             if (daoRepositories.getProductRepository().findById(id).isPresent())
-                    daoRepositories.getProductRepository().deleteById(id);
+                daoRepositories.getProductRepository().deleteById(id);
             else throw new EntityNotFoundException("product not found");
-        }else{
+        } else {
             throw new MissingIdParameter("id parameter is null");
-            }
         }
+    }
 
 }

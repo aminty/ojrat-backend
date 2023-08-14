@@ -1,15 +1,14 @@
 package com.amin.ojrat.service;
 
-import com.amin.ojrat.dto.entity.admin.AdminParam;
+import com.amin.ojrat.dto.entity.admin.AdminCreationDto;
+import com.amin.ojrat.dto.entity.admin.AdminDto;
 import com.amin.ojrat.entity.Admin;
-import com.amin.ojrat.entity.Expert;
-import com.amin.ojrat.exception.DuringSaveException;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface AdminService {
 
-    void saveAdmin(AdminParam param) throws Exception;
+    void saveAdmin(AdminCreationDto param) throws Exception;
 
     Admin findById(Long adminId);
 
@@ -27,7 +26,7 @@ public interface AdminService {
 
     void deleteMessage(Long userId);
 
-    boolean isExistsAdminByValue(AdminParam param);
+    boolean isExistsAdminByValue(AdminCreationDto param);
 
 
 

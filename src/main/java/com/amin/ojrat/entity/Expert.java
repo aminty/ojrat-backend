@@ -5,20 +5,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
 @Table(name = "expert_table")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
+
 
 public class Expert extends User {
-
-    Role role;
-
 
     @ManyToMany
     @JoinTable(
@@ -26,14 +20,37 @@ public class Expert extends User {
             joinColumns = @JoinColumn(name = "expert_id"),
             inverseJoinColumns = @JoinColumn(name = "branch_id")
     )
-    List<Branch> branches;
-
-
+    private List<Branch> branches;
 
     @OneToMany(mappedBy = "expert")
-    List<Order> orders;
+     private List<ExpertBranchRequest> branchRequests;
 
+    public Expert() {
+    }
 
+    public Expert(Long id, String firstName, String lastName,
+                  String email, String password, String nationalCode,
+                  String address, String phoneNumber, List<Message> sentMessages,
+                  List<Message> receivedMessages, LocalTime createdAt, List<Branch> branches, List<ExpertBranchRequest> branchRequests) {
+        super(id, firstName, lastName, email, password, nationalCode,
+                address, phoneNumber, sentMessages, receivedMessages, createdAt);
+        this.branches = branches;
+        this.branchRequests = branchRequests;
+    }
 
+    public List<Branch> getBranches() {
+        return branches;
+    }
 
+    public void setBranches(List<Branch> branches) {
+        this.branches = branches;
+    }
+
+    public List<ExpertBranchRequest> getBranchRequests() {
+        return branchRequests;
+    }
+
+    public void setBranchRequests(List<ExpertBranchRequest> branchRequests) {
+        this.branchRequests = branchRequests;
+    }
 }

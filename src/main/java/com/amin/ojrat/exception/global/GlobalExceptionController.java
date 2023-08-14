@@ -1,7 +1,7 @@
 package com.amin.ojrat.exception.global;
 
 import com.amin.ojrat.exception.*;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,6 @@ public class GlobalExceptionController {
         BindingResult bindingResult = ex.getBindingResult();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
-        // Collect validation error messages
         List<String> errorMessages = new ArrayList<>();
         for (FieldError fieldError : fieldErrors) {
             errorMessages.add(fieldError.getDefaultMessage());
@@ -43,7 +42,11 @@ public class GlobalExceptionController {
 
     @ExceptionHandler(UserExistsException.class)
     public ResponseEntity<DefaultResponse> userExistsByParams(UserExistsException ex) {
-        DefaultResponse errorResponse = new DefaultResponse(-3, ex.getMessage(), new ArrayList<>());
+        List<String> errorMessages = new ArrayList<>();
+        errorMessages.add("phoneNumber");
+        errorMessages.add("nationalCode");
+        errorMessages.add("email");
+        DefaultResponse errorResponse = new DefaultResponse(-3, ex.getMessage(), errorMessages);
         return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.CONFLICT);
 
     }

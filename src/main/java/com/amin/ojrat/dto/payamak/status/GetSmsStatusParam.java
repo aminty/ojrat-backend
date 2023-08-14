@@ -5,12 +5,23 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@NoArgsConstructor
+
 public class GetSmsStatusParam {
 
-     List<Long> recIds;
+     private List<Long> recIds;
+
+     public GetSmsStatusParam() {
+     }
+
+     public GetSmsStatusParam(List<Long> recIds) {
+          this.recIds = recIds;
+     }
+
+     public List<Long> getRecIds() {
+          return recIds;
+     }
+
+     public void setRecIds(List<Long> recIds) {
+          this.recIds = recIds;
+     }
 }

@@ -4,10 +4,9 @@ import com.amin.ojrat.entity.Admin;
 import com.amin.ojrat.entity.User;
 import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.UserService;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.*;
+
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

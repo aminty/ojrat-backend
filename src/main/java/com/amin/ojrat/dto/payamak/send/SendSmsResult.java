@@ -3,15 +3,34 @@ package com.amin.ojrat.dto.payamak.send;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@NoArgsConstructor
-@ToString
+
 public class SendSmsResult {
 
-    String reqId;
+    private String reqId;
 
-    String status;
+    private String status;
+
+    public SendSmsResult() {
+    }
+
+    public SendSmsResult(String reqId, String status) {
+        this.reqId = reqId;
+        this.status = status;
+    }
+
+    public String getReqId() {
+        return reqId;
+    }
+
+    public void setReqId(String reqId) {
+        this.reqId = reqId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
