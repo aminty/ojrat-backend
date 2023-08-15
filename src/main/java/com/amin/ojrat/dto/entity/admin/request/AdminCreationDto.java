@@ -1,4 +1,4 @@
-package com.amin.ojrat.dto.entity.admin;
+package com.amin.ojrat.dto.entity.admin.request;
 
 import com.amin.ojrat.dto.entity.user.UserCreationDto;
 import com.amin.ojrat.enums.Role;

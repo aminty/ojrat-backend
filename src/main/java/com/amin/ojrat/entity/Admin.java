@@ -1,8 +1,7 @@
 package com.amin.ojrat.entity;
 
 import com.amin.ojrat.enums.Role;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+
 
 import jakarta.persistence.*;
 
@@ -29,11 +28,11 @@ public class Admin extends User {
 
     public Admin(Long id, String firstName, String lastName,
                  String email, String password, String nationalCode,
-                 String address, String phoneNumber, List<Message> sentMessages,
-                 List<Message> receivedMessages, LocalTime createdAt, List<Role> roles,
+                 String address, String phoneNumber
+               , LocalTime createdAt, List<Role> roles,
                  Branch branch) {
         super(id, firstName, lastName, email, password, nationalCode,
-                address, phoneNumber, sentMessages, receivedMessages, createdAt);
+                address, phoneNumber, createdAt);
         this.roles = roles;
         this.branch = branch;
     }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -19,21 +20,20 @@ public class User extends BaseEntity<Long> {
 
      private String lastName;
 
+     @NaturalId
+     @Column(unique = true)
      private String email;
 
      private String password;
 
+     @Column(unique = true)
      private String nationalCode;
 
      private String address;
 
+     @Column(unique = true)
      private String phoneNumber;
 
-     @OneToMany(mappedBy = "sender",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-     private List<Message> sentMessages=new ArrayList<>();
-
-     @OneToMany(mappedBy = "receiver",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-     private List<Message> receivedMessages=new ArrayList<>();
 
      @CreationTimestamp
      private LocalTime createdAt;
@@ -43,8 +43,8 @@ public class User extends BaseEntity<Long> {
 
      public User(Long id, String firstName, String lastName,
                  String email, String password, String nationalCode,
-                 String address, String phoneNumber, List<Message> sentMessages,
-                 List<Message> receivedMessages, LocalTime createdAt) {
+                 String address, String phoneNumber,
+                  LocalTime createdAt) {
           super(id);
           this.firstName = firstName;
           this.lastName = lastName;
@@ -53,8 +53,6 @@ public class User extends BaseEntity<Long> {
           this.nationalCode = nationalCode;
           this.address = address;
           this.phoneNumber = phoneNumber;
-          this.sentMessages = sentMessages;
-          this.receivedMessages = receivedMessages;
           this.createdAt = createdAt;
      }
 
@@ -114,21 +112,7 @@ public class User extends BaseEntity<Long> {
           this.phoneNumber = phoneNumber;
      }
 
-     public List<Message> getSentMessages() {
-          return sentMessages;
-     }
 
-     public void setSentMessages(List<Message> sentMessages) {
-          this.sentMessages = sentMessages;
-     }
-
-     public List<Message> getReceivedMessages() {
-          return receivedMessages;
-     }
-
-     public void setReceivedMessages(List<Message> receivedMessages) {
-          this.receivedMessages = receivedMessages;
-     }
 
      public LocalTime getCreatedAt() {
           return createdAt;

@@ -30,10 +30,10 @@ public class Expert extends User {
 
     public Expert(Long id, String firstName, String lastName,
                   String email, String password, String nationalCode,
-                  String address, String phoneNumber, List<Message> sentMessages,
-                  List<Message> receivedMessages, LocalTime createdAt, List<Branch> branches, List<ExpertBranchRequest> branchRequests) {
+                  String address, String phoneNumber,
+                   LocalTime createdAt, List<Branch> branches, List<ExpertBranchRequest> branchRequests) {
         super(id, firstName, lastName, email, password, nationalCode,
-                address, phoneNumber, sentMessages, receivedMessages, createdAt);
+                address, phoneNumber, createdAt);
         this.branches = branches;
         this.branchRequests = branchRequests;
     }

@@ -1,6 +1,5 @@
 package com.amin.ojrat.service.impl;
-import com.amin.ojrat.dto.entity.admin.AdminCreationDto;
-import com.amin.ojrat.dto.entity.admin.AdminDto;
+import com.amin.ojrat.dto.entity.admin.request.AdminCreationDto;
 import com.amin.ojrat.dto.mapper.AdminMapper;
 import com.amin.ojrat.entity.Admin;
 import com.amin.ojrat.entity.Branch;

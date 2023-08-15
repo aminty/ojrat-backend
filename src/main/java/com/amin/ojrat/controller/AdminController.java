@@ -1,6 +1,5 @@
 package com.amin.ojrat.controller;
-import com.amin.ojrat.dto.entity.admin.AdminCreationDto;
-import com.amin.ojrat.dto.entity.admin.AdminDto;
+import com.amin.ojrat.dto.entity.admin.request.AdminCreationDto;
 import com.amin.ojrat.exception.AdminCreationException;
 import com.amin.ojrat.exception.UserExistsException;
 import com.amin.ojrat.service.ServiceRegistry;
