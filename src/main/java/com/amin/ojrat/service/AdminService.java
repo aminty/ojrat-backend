@@ -13,15 +13,11 @@ public interface AdminService {
 
     void createBranch();
 
-
     void approveUser(Long userId);
-
 
     void BlockUser(Long userId);
 
-
     void deleteUser(Long userId);
-
 
     void deleteMessage(Long userId);
 

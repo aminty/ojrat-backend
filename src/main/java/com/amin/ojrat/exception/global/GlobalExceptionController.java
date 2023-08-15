@@ -69,5 +69,11 @@ public class GlobalExceptionController {
         DefaultResponse errorResponse = new DefaultResponse(-6, ex.getMessage(), new ArrayList<>());
         return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(LoginAuthenticationException.class)
+    public ResponseEntity<DefaultResponse> authenticationException(LoginAuthenticationException ex) {
+        DefaultResponse errorResponse = new DefaultResponse(-7, ex.getMessage(), new ArrayList<>());
+        return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
 }
 

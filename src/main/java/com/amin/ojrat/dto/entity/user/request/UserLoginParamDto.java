@@ -1,9 +1,8 @@
-package com.amin.ojrat.dto.entity.admin.request;
+package com.amin.ojrat.dto.entity.user.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 
-public class AdminLoginParamDto {
+public class UserLoginParamDto {
 
 
     @NotBlank(message = "identity value should not be empty")
@@ -14,7 +13,7 @@ public class AdminLoginParamDto {
     private final String password;
 
 
-    public AdminLoginParamDto(String username, String password) {
+    public UserLoginParamDto(String username, String password) {
         this.username = username;
         this.password = password;
     }
