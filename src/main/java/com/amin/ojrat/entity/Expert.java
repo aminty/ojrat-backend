@@ -22,7 +22,7 @@ public class Expert extends User {
     )
     private List<Branch> branches;
 
-    @OneToMany(mappedBy = "expert")
+    @OneToMany(mappedBy = "expert",orphanRemoval = true)
      private List<ExpertBranchRequest> branchRequests;
 
     public Expert() {

@@ -21,6 +21,8 @@ public interface CodeValidationService {
 
     List<ValidationParam> getAllCacheValue();
 
+    SendSmsResult sendPassword(String phone,String password);
+
 
 
 }

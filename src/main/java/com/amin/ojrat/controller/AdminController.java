@@ -1,6 +1,6 @@
 package com.amin.ojrat.controller;
 import com.amin.ojrat.dto.entity.admin.request.AdminCreationDto;
-import com.amin.ojrat.exception.AdminCreationException;
+import com.amin.ojrat.exception.CreationException;
 import com.amin.ojrat.exception.UserExistsException;
 import com.amin.ojrat.service.ServiceRegistry;
 import jakarta.validation.Valid;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/management")
+@RequestMapping("/Admin")
 public class AdminController {
 
     private final ServiceRegistry serviceRegistry;
@@ -25,7 +25,7 @@ public class AdminController {
     @PostMapping("/create-admin")
     public ResponseEntity<String> createNewAdminWithValidation(@Valid @RequestBody AdminCreationDto param) throws Exception  {
         if (param==null)
-                throw new AdminCreationException("server receive null object!");
+                throw new CreationException("server receive null object!");
         if (!serviceRegistry.getAdminService().isExistsAdminByValue(param)) {
             serviceRegistry.getAdminService().saveAdmin(param);
             return new ResponseEntity<>("Admin created successfully.", HttpStatus.CREATED);

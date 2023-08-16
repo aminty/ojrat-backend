@@ -5,7 +5,6 @@ import com.amin.ojrat.enums.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;
-
 import java.util.List;
 
 public class AdminCreationDto extends UserCreationDto {
@@ -33,4 +32,5 @@ public class AdminCreationDto extends UserCreationDto {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
 }

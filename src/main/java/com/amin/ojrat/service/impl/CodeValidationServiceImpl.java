@@ -81,14 +81,13 @@ public class CodeValidationServiceImpl implements CodeValidationService {
     @Override
     public SendSmsResult sendCodeWithApi(String phoneNumber) {
 
-        //todo: call codeGenerator
         String generatedCode = codeGenerator();
-        //todo: send generated code to mobile
 
-        //todo:set code and mobile into redis
         setCodeInCache(generatedCode, phoneNumber);
 
-        return  melliPayamakClient.sendSms(new SendSmsParam(MELLI_PHONE, phoneNumber,  "کد تایید شماره همراه : " + generatedCode));
+        return  melliPayamakClient.sendSms(
+                new SendSmsParam(MELLI_PHONE, phoneNumber,  "کد تایید شماره همراه : " + generatedCode)
+        );
     }
 
     @Override
@@ -102,5 +101,10 @@ public class CodeValidationServiceImpl implements CodeValidationService {
             values.add(new ValidationParam(key,value));
         }
         return values;
+    }
+
+    @Override
+    public SendSmsResult sendPassword(String phone,String password) {
+        return melliPayamakClient.sendSms(new SendSmsParam(MELLI_PHONE, phone, password));
     }
 }

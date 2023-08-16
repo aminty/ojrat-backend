@@ -34,8 +34,8 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AdminCreationException.class)
-    public ResponseEntity<DefaultResponse> handleUserCreationException(AdminCreationException ex) {
+    @ExceptionHandler(CreationException.class)
+    public ResponseEntity<DefaultResponse> handleUserCreationException(CreationException ex) {
         DefaultResponse errorResponse = new DefaultResponse(-2, ex.getMessage(), new ArrayList<>());
         return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }

@@ -2,14 +2,10 @@ package com.amin.ojrat.entity;
 
 import com.amin.ojrat.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -38,13 +34,18 @@ public class User extends BaseEntity<Long> {
      @CreationTimestamp
      private LocalTime createdAt;
 
+     private boolean isActive;
+
+     private boolean isDeleted;
+
      public User() {
      }
 
      public User(Long id, String firstName, String lastName,
                  String email, String password, String nationalCode,
                  String address, String phoneNumber,
-                  LocalTime createdAt) {
+                  LocalTime createdAt
+                 ) {
           super(id);
           this.firstName = firstName;
           this.lastName = lastName;
@@ -112,13 +113,27 @@ public class User extends BaseEntity<Long> {
           this.phoneNumber = phoneNumber;
      }
 
-
-
      public LocalTime getCreatedAt() {
           return createdAt;
      }
 
      public void setCreatedAt(LocalTime createdAt) {
           this.createdAt = createdAt;
+     }
+
+     public boolean isActive() {
+          return isActive;
+     }
+
+     public void setActive(boolean active) {
+          isActive = active;
+     }
+
+     public boolean isIsDeleted() {
+          return isDeleted;
+     }
+
+     public void setIsDeleted(boolean idDeleted) {
+          this.isDeleted = idDeleted;
      }
 }

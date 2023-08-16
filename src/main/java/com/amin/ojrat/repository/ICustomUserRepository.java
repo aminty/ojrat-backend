@@ -4,9 +4,11 @@ import com.amin.ojrat.dto.entity.user.request.UserLoginParamDto;
 import com.amin.ojrat.dto.entity.user.response.UserLoginResultDto;
 import com.amin.ojrat.entity.User;
 import com.amin.ojrat.exception.LoginAuthenticationException;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IUserRepository extends JpaRepository<User, Long> {
+public interface ICustomUserRepository {
 
-    User findUserByPhoneNumber(String phone);
+    User login(UserLoginParamDto param) throws LoginAuthenticationException;
+
+
+    boolean isUserExistsByValue(String natCode, String email, String phoneNumber);
 }

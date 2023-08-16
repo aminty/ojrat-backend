@@ -30,7 +30,7 @@ public class CodeValidatorController {
 
     @PostMapping("/validateCode")
     public boolean validateCode(@RequestBody ValidationParam param) {
-         return codeValidationService.isValidCode(param.getCode(), param.getPhoneNumber());
+         return codeValidationService.isValidCode(param.getValue(), param.getPhoneNumber());
     }
 
     @GetMapping("/getAllValue")

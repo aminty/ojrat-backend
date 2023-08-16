@@ -1,20 +1,17 @@
 package com.amin.ojrat.dto.payamak.validation;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 
 public class ValidationParam {
 
     String phoneNumber;
-    String code;
+    String value;
 
     public ValidationParam() {
     }
 
-    public ValidationParam(String phoneNumber, String code) {
+    public ValidationParam(String phoneNumber, String value) {
         this.phoneNumber = phoneNumber;
-        this.code = code;
+        this.value = value;
     }
 
     public String getPhoneNumber() {
@@ -25,19 +22,19 @@ public class ValidationParam {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getCode() {
-        return code;
+    public String getValue() {
+        return value;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override
     public String toString() {
         return "ValidationParam{" +
                 "phoneNumber='" + phoneNumber + '\'' +
-                ", code='" + code + '\'' +
+                ", value='" + value + '\'' +
                 '}';
     }
 }

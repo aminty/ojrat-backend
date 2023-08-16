@@ -33,4 +33,12 @@ public class SendSmsResult {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "SendSmsResult{" +
+                "reqId='" + reqId + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

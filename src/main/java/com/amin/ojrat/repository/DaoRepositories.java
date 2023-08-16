@@ -1,6 +1,5 @@
 package com.amin.ojrat.repository;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -10,8 +9,9 @@ import jakarta.persistence.*;
 
 @Repository
 @EnableJpaRepositories
-@EntityScan("com.amin.ojrat.entity")
+@EntityScan("com.amin.ojrat")
 public class DaoRepositories {
+
 
     @Autowired
     public DaoRepositories(IAdminRepository adminRepository,
@@ -21,7 +21,8 @@ public class DaoRepositories {
                            IProductRepository productRepository,
                            IServiceRepository serviceRepository,
                            IUserRepository userRepository,
-                           IBranchRepository branchRepository) {
+                           IBranchRepository branchRepository,
+                           ICustomUserRepository customUserRepository) {
         this.adminRepository = adminRepository;
         this.expertRepository = expertRepository;
         this.messageRepository = messageRepository;
@@ -30,12 +31,12 @@ public class DaoRepositories {
         this.serviceRepository = serviceRepository;
         this.userRepository = userRepository;
         this.branchRepository = branchRepository;
+        this.customUserRepository = customUserRepository;
     }
 
 
 
-    @PersistenceContext
-    private EntityManager entityManager;
+
 
     private IAdminRepository adminRepository;
 
@@ -52,6 +53,8 @@ public class DaoRepositories {
     private IUserRepository userRepository;
 
     private IBranchRepository branchRepository;
+
+    private ICustomUserRepository customUserRepository;
 
     public IAdminRepository getAdminRepository() {
         return adminRepository;
@@ -84,7 +87,10 @@ public class DaoRepositories {
     public IBranchRepository getBranchRepository() {
         return branchRepository;
     }
-    public EntityManager getEntityManager() {
-        return entityManager;
+
+    public ICustomUserRepository getCustomUserRepository() {
+        return customUserRepository;
     }
+
+
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "branch_table")
@@ -25,11 +26,14 @@ public class Branch extends BaseEntity<Long> {
     @ManyToMany(mappedBy = "branches")
     private List<Expert> experts ;
 
-    @OneToMany(mappedBy = "branch",cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "branch",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Product> products;
 
-    @OneToMany(mappedBy = "branch")
+    @OneToMany(mappedBy = "branch",orphanRemoval = true)
     private List<ExpertBranchRequest> requests;
+
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExpertDiscount> expertDiscounts = new ArrayList<>();
 
     private boolean status;
 
@@ -38,6 +42,19 @@ public class Branch extends BaseEntity<Long> {
 
     @CreationTimestamp
     private LocalTime updatedAt;
+
+
+
+
+    public void addExpertDiscount(ExpertDiscount discount) {
+        expertDiscounts.add(discount);
+        discount.setBranch(this);
+    }
+
+    public void removeExpertDiscount(ExpertDiscount discount) {
+        expertDiscounts.remove(discount);
+        discount.setBranch(null);
+    }
 
     public Branch() {
     }
