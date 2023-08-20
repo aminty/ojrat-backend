@@ -27,6 +27,7 @@ public class ProductModificationDto {
 
     private boolean isExist;
 
+    private byte[] image;
 
     public ProductModificationDto() {
     }
@@ -34,7 +35,9 @@ public class ProductModificationDto {
     public ProductModificationDto(Long id, String brandName,
                                   String productName,
                                   String description, double price,
-                                  double discount, boolean isExist) {
+                                  double discount,
+                                  boolean isExist,
+                                  byte[] image) {
         this.id = id;
         this.brandName = brandName;
         this.productName = productName;
@@ -42,6 +45,7 @@ public class ProductModificationDto {
         this.price = price;
         this.discount = discount;
         this.isExist = isExist;
+        this.image=image;
     }
 
     public Long getId() {
@@ -98,5 +102,13 @@ public class ProductModificationDto {
 
     public void setExist(boolean exist) {
         isExist = exist;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

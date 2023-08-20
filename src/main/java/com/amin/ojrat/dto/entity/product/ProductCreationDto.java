@@ -29,14 +29,19 @@ public class ProductCreationDto {
     @NotNull(message = "branch should not be null")
     private Long branchId;
 
+    private byte[] image;
+
     public ProductCreationDto() {
     }
 
-    public ProductCreationDto( String brandName,
+    public ProductCreationDto(String brandName,
                               String productName,
-                              String description, double price,
-                              double discount, boolean isExist,
-                              Long branchId) {
+                              String description,
+                              double price,
+                              double discount,
+                              boolean isExist,
+                              Long branchId,
+                              byte[] image) {
         this.brandName = brandName;
         this.productName = productName;
         this.description = description;
@@ -44,9 +49,8 @@ public class ProductCreationDto {
         this.discount = discount;
         this.isExist = isExist;
         this.branchId = branchId;
+        this.image = image;
     }
-
-
 
     public String getBrandName() {
         return brandName;
@@ -102,5 +106,13 @@ public class ProductCreationDto {
 
     public void setBranchId(Long branchId) {
         this.branchId = branchId;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

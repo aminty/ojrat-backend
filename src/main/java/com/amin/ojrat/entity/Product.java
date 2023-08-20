@@ -34,6 +34,9 @@ public class Product extends BaseEntity<Long> {
      @ManyToOne
      private Branch branch;
 
+    @Lob
+    private byte[] image;
+
 
      public Product() {
      }
@@ -124,4 +127,12 @@ public class Product extends BaseEntity<Long> {
      public void setBranch(Branch branch) {
           this.branch = branch;
      }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 }

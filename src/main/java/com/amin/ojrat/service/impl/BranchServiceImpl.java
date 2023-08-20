@@ -98,6 +98,7 @@ public class BranchServiceImpl implements BranchService {
         existProduct.setPrice(productWithIncomingChange.getPrice());
         existProduct.setDiscount(productWithIncomingChange.getDiscount());
         existProduct.setExist(productWithIncomingChange.isExist());
+        existProduct.setImage(productWithIncomingChange.getImage());
         return existProduct;
     }
 
