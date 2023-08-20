@@ -3,15 +3,13 @@ package com.amin.ojrat.controller;
 import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
 import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDto;
 import com.amin.ojrat.exception.CreationException;
+import com.amin.ojrat.exception.NotFullyRegisteredException;
 import com.amin.ojrat.exception.UserExistsException;
 import com.amin.ojrat.service.ServiceRegistry;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/expert")
@@ -39,11 +37,16 @@ public class ExpertController {
         }
     }
 
+//    @GetMapping("/all-requests")
+//    public ResponseEntity<> getAllJoinRequest(){
+//
+//    }
+
 
 
     @PostMapping("/join-request")
-    public ResponseEntity<String> makeJoinRequest(@Valid @RequestBody ExpBrParam param){
-
+    public ResponseEntity<String> makeJoinRequest
+            (@Valid @RequestBody ExpBrParam param) throws NotFullyRegisteredException {
         serviceRegistry.getExpertService().makeJoinRequest(param);
         return new ResponseEntity<String>("درخواست انجام شد.",HttpStatus.OK);
     }

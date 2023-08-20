@@ -19,4 +19,6 @@ public interface BranchService {
     Product applyNewChange(Product productWithIncomingChange, Product existProduct);
 
     void removeProduct(Long id) throws Exception;
+
+    Branch findBranchById(Long id);
 }

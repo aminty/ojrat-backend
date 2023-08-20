@@ -113,4 +113,15 @@ public class BranchServiceImpl implements BranchService {
         }
     }
 
+    @Override
+    public Branch findBranchById(Long id) {
+        Optional<Branch> found = daoRepositories.getBranchRepository().findById(id);
+        if (found.isPresent())
+            return found.get();
+        throw new EntityNotFoundException("branch not found exception");
+
+    }
+
+
+
 }

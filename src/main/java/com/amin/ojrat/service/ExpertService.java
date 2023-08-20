@@ -6,13 +6,13 @@ import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDto;
 import com.amin.ojrat.entity.Expert;
 import com.amin.ojrat.entity.Product;
 import com.amin.ojrat.exception.DuringSaveException;
+import com.amin.ojrat.exception.NotFullyRegisteredException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface ExpertService {
-
 
     void saveExpert(ExpertCreationDto param) throws DuringSaveException;
 
@@ -22,5 +22,7 @@ public interface ExpertService {
 
     boolean isExistsExpertByValue(ExpertCreationDto param);
 
-    void makeJoinRequest(ExpBrParam param);
+    void makeJoinRequest(ExpBrParam param) throws NotFullyRegisteredException;
+
+
 }
