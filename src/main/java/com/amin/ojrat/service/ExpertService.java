@@ -1,5 +1,6 @@
 package com.amin.ojrat.service;
 
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
 import com.amin.ojrat.dto.entity.admin.request.AdminCreationDto;
 import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDto;
 import com.amin.ojrat.entity.Expert;
@@ -21,4 +22,5 @@ public interface ExpertService {
 
     boolean isExistsExpertByValue(ExpertCreationDto param);
 
+    void makeJoinRequest(ExpBrParam param);
 }

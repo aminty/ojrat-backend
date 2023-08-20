@@ -31,9 +31,9 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public void saveProductToBranch(ProductCreationDto param) throws NotFullyRegisteredException {
         Optional<Branch> findBranchById = daoRepositories.getBranchRepository().findById(param.getBranchId());
-        Product product = productMapper.productDtoToProduct(param);
 
         if (findBranchById.isPresent()) {
+            Product product = productMapper.productDtoToProduct(param);
             Branch branch = findBranchById.get();
             branch.getProducts().add(product);
             product.setBranch(branch);
@@ -59,15 +59,15 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public void editBranchEditInfo(BranchInfoModificationDto param) {
-        Optional<Branch> foundBranch=daoRepositories.getBranchRepository().findById(param.getId());
+        Optional<Branch> foundBranch = daoRepositories.getBranchRepository().findById(param.getId());
         if (foundBranch.isPresent()) {
-            Branch existBranch= foundBranch.get();
+            Branch existBranch = foundBranch.get();
             existBranch.setDescription(param.getDescription());
             existBranch.setName(param.getName());
             existBranch.setLocation(param.getLocation());
             existBranch.setPhone(param.getPhone());
             daoRepositories.getBranchRepository().save(existBranch);
-        }else {
+        } else {
             throw new EntityNotFoundException("branch not found.");
         }
     }

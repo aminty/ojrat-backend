@@ -1,5 +1,6 @@
 package com.amin.ojrat.controller;
 
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
 import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDto;
 import com.amin.ojrat.exception.CreationException;
 import com.amin.ojrat.exception.UserExistsException;
@@ -22,8 +23,11 @@ public class ExpertController {
         this.serviceRegistry = serviceRegistry;
     }
 
+
+
     @PostMapping("/create-expert")
-    public ResponseEntity<String> createNewExpertWithValidation(@Valid @RequestBody ExpertCreationDto param) throws Exception  {
+    public ResponseEntity<String> createNewExpertWithValidation
+            (@Valid @RequestBody ExpertCreationDto param) throws Exception  {
         if (param==null)
             throw new CreationException("server receive null object!");
         if (!serviceRegistry.getExpertService().isExistsExpertByValue(param)) {
@@ -36,4 +40,11 @@ public class ExpertController {
     }
 
 
+
+    @PostMapping("/join-request")
+    public ResponseEntity<String> makeJoinRequest(@Valid @RequestBody ExpBrParam param){
+
+        serviceRegistry.getExpertService().makeJoinRequest(param);
+        return new ResponseEntity<String>("درخواست انجام شد.",HttpStatus.OK);
+    }
 }

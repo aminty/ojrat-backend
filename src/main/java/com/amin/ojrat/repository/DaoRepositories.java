@@ -22,7 +22,8 @@ public class DaoRepositories {
                            IServiceRepository serviceRepository,
                            IUserRepository userRepository,
                            IBranchRepository branchRepository,
-                           ICustomUserRepository customUserRepository) {
+                           ICustomUserRepository customUserRepository,
+                           IExpertBranchRepository expertBranchRepository) {
         this.adminRepository = adminRepository;
         this.expertRepository = expertRepository;
         this.messageRepository = messageRepository;
@@ -32,6 +33,7 @@ public class DaoRepositories {
         this.userRepository = userRepository;
         this.branchRepository = branchRepository;
         this.customUserRepository = customUserRepository;
+        this.expertBranchRepository=expertBranchRepository;
     }
 
 
@@ -55,6 +57,8 @@ public class DaoRepositories {
     private IBranchRepository branchRepository;
 
     private ICustomUserRepository customUserRepository;
+
+    private IExpertBranchRepository expertBranchRepository;
 
     public IAdminRepository getAdminRepository() {
         return adminRepository;
@@ -92,5 +96,7 @@ public class DaoRepositories {
         return customUserRepository;
     }
 
-
+    public IExpertBranchRepository getExpertBranchRepository() {
+        return expertBranchRepository;
+    }
 }

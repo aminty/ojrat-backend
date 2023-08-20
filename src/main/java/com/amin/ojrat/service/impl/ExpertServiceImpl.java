@@ -1,12 +1,10 @@
 package com.amin.ojrat.service.impl;
 
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
 import com.amin.ojrat.dto.entity.admin.request.AdminCreationDto;
 import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDto;
 import com.amin.ojrat.dto.mapper.ExpertMapper;
-import com.amin.ojrat.entity.Admin;
-import com.amin.ojrat.entity.Branch;
-import com.amin.ojrat.entity.Expert;
-import com.amin.ojrat.entity.Product;
+import com.amin.ojrat.entity.*;
 import com.amin.ojrat.exception.DuringSaveException;
 import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.ExpertService;
@@ -59,6 +57,23 @@ public class ExpertServiceImpl implements ExpertService {
         return userService.isUserExistsByValue(
                 param.getNationalCode(), param.getEmail(), param.getPhoneNumber()
         );    }
+
+    @Override
+    public void makeJoinRequest(ExpBrParam param) {
+
+        ExpertBranchRequest expBr=new ExpertBranchRequest();
+
+        Expert expert=new Expert();
+        expert.setId(param.getUserId());
+        expBr.setExpert(expert);
+
+        Branch branch=new Branch();
+        branch.setId(param.getBranchId());
+        expBr.setBranch(branch);
+
+        daoRepositories.getExpertBranchRepository().save(expBr );
+
+    }
 
 
     public Expert findExpert(Long id) {
