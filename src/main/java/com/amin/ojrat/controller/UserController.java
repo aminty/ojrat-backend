@@ -30,9 +30,9 @@ public class UserController {
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
-    @GetMapping("/forget-pass/{phone}")
+    @GetMapping("/account/forget-pass/{phone}")
     public ResponseEntity<SendSmsResult> passwordRecovery(@PathVariable String phone){
-        SendSmsResult result = serviceRegistry.getUserService().resetPassword(phone);
+        SendSmsResult result = serviceRegistry.getUserService().getForgottenPassword(phone);
         return new ResponseEntity<SendSmsResult>(result,HttpStatus.OK);
 
     }

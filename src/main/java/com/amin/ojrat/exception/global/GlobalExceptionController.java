@@ -52,8 +52,8 @@ public class GlobalExceptionController {
     }
 
 
-    @ExceptionHandler(NotFullyRegistredException.class)
-    public ResponseEntity<DefaultResponse> completeRegistration(NotFullyRegistredException ex) {
+    @ExceptionHandler(NotFullyRegisteredException.class)
+    public ResponseEntity<DefaultResponse> completeRegistration(NotFullyRegisteredException ex) {
         DefaultResponse errorResponse = new DefaultResponse(-4, ex.getMessage(), new ArrayList<>());
         return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.NOT_ACCEPTABLE);
     }
@@ -74,6 +74,13 @@ public class GlobalExceptionController {
     public ResponseEntity<DefaultResponse> authenticationException(LoginAuthenticationException ex) {
         DefaultResponse errorResponse = new DefaultResponse(-7, ex.getMessage(), new ArrayList<>());
         return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(TtlExpirationException.class)
+    public ResponseEntity<DefaultResponse> ttlExpirationException(TtlExpirationException ex){
+        DefaultResponse errorResponse = new DefaultResponse(-8,ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<>(errorResponse,HttpStatus.SERVICE_UNAVAILABLE);
+
     }
 }
 

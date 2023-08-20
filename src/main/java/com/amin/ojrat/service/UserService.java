@@ -12,7 +12,7 @@ public interface UserService {
 
      UserLoginResultDto login(UserLoginParamDto param) throws LoginAuthenticationException;
 
-     SendSmsResult resetPassword(String phone);
+     SendSmsResult getForgottenPassword(String phone);
 
      String maskEmail(String email);
 

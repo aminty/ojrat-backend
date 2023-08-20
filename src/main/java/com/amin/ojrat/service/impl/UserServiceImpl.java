@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SendSmsResult resetPassword(String phone) {
+    public SendSmsResult getForgottenPassword(String phone) {
 
         //todo: should check  if reqId is not null, send relative message
         String passage = "کلمه عبور شما:  ";

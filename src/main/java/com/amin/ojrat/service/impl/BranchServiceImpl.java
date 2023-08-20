@@ -7,7 +7,7 @@ import com.amin.ojrat.dto.mapper.ProductMapper;
 import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Product;
 import com.amin.ojrat.exception.MissingIdParameter;
-import com.amin.ojrat.exception.NotFullyRegistredException;
+import com.amin.ojrat.exception.NotFullyRegisteredException;
 import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.BranchService;
 import jakarta.persistence.*;
@@ -29,7 +29,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public void saveProductToBranch(ProductCreationDto param) throws NotFullyRegistredException {
+    public void saveProductToBranch(ProductCreationDto param) throws NotFullyRegisteredException {
         Optional<Branch> findBranchById = daoRepositories.getBranchRepository().findById(param.getBranchId());
         Product product = productMapper.productDtoToProduct(param);
 
@@ -39,7 +39,7 @@ public class BranchServiceImpl implements BranchService {
             product.setBranch(branch);
             if (isBranchFullyRegistered(branch))
                 daoRepositories.getBranchRepository().save(branch);
-            else throw new NotFullyRegistredException("your store is not complete registered.");
+            else throw new NotFullyRegisteredException("your store is not complete registered.");
         } else {
             throw new EntityNotFoundException("Branch not found.");
         }

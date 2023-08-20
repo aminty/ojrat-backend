@@ -3,6 +3,7 @@ package com.amin.ojrat.service.impl;
 import com.amin.ojrat.dto.payamak.send.SendSmsParam;
 import com.amin.ojrat.dto.payamak.send.SendSmsResult;
 import com.amin.ojrat.dto.payamak.validation.ValidationParam;
+import com.amin.ojrat.exception.TtlExpirationException;
 import com.amin.ojrat.service.CodeValidationService;
 import com.amin.ojrat.service.external.MelliPayamakClient;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -24,7 +25,7 @@ public class CodeValidationServiceImpl implements CodeValidationService {
 
     private final MelliPayamakClient melliPayamakClient;
 
-    private final String MELLI_PHONE="50004001501261";
+    private final String MELLI_PHONE = "50004001501261";
 
     @Autowired
     public CodeValidationServiceImpl(MelliPayamakClient melliPayamakClient) {
@@ -36,12 +37,9 @@ public class CodeValidationServiceImpl implements CodeValidationService {
     }
 
 
-
-
     @Override
     public boolean isValidCode(String code, String phoneNumber) {
 
-        //todo: get mobile with sending code to getCodeFromRedis(code)
         String fetchedCode = getCodeBaseOnPhoneFromCache(phoneNumber);
         if (fetchedCode != null)
             return code.equals(fetchedCode);
@@ -49,10 +47,16 @@ public class CodeValidationServiceImpl implements CodeValidationService {
     }
 
     @Override
-    public void setCodeInCache(String code, String phoneNumber) {
-        codeCache.put(phoneNumber, code);
+    public void setCodeInCache(String code, String phoneNumber) throws TtlExpirationException {
+        String ifPresent = codeCache.getIfPresent(phoneNumber);
+        if (ifPresent != null ) {
+            throw new TtlExpirationException("کد قبلا فرستاده شده، لطفا یک دقیقه دیگر تلاش کنید");
+        }
+            codeCache.put(phoneNumber, code);
+
 
     }
+
 
     public String getCodeBaseOnPhoneFromCache(String phoneNumber) {
         if (phoneNumber != null) {
@@ -69,7 +73,6 @@ public class CodeValidationServiceImpl implements CodeValidationService {
         boolean isExistsValueInCache;
 
         do {
-            // Generate a random 4-digit number
             code = String.valueOf(random.nextInt(9000) + 1000);
 
             isExistsValueInCache = codeCache.asMap().containsValue(code);
@@ -79,32 +82,32 @@ public class CodeValidationServiceImpl implements CodeValidationService {
     }
 
     @Override
-    public SendSmsResult sendCodeWithApi(String phoneNumber) {
+    public SendSmsResult sendCodeWithApi(String phoneNumber) throws TtlExpirationException {
 
         String generatedCode = codeGenerator();
 
         setCodeInCache(generatedCode, phoneNumber);
 
-        return  melliPayamakClient.sendSms(
-                new SendSmsParam(MELLI_PHONE, phoneNumber,  "کد تایید شماره همراه : " + generatedCode)
+        return melliPayamakClient.sendSms(
+                new SendSmsParam(MELLI_PHONE, phoneNumber, "کد تایید شماره همراه : " + generatedCode)
         );
     }
 
     @Override
     public List<ValidationParam> getAllCacheValue() {
         ConcurrentMap<String, String> cacheMap = codeCache.asMap();
-        List<ValidationParam> values=new ArrayList<>()  ;
+        List<ValidationParam> values = new ArrayList<>();
         for (Map.Entry<String, String> entry : cacheMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             System.out.println("Key: " + key + ", Value: " + value);
-            values.add(new ValidationParam(key,value));
+            values.add(new ValidationParam(key, value));
         }
         return values;
     }
 
     @Override
-    public SendSmsResult sendPassword(String phone,String password) {
+    public SendSmsResult sendPassword(String phone, String password) {
         return melliPayamakClient.sendSms(new SendSmsParam(MELLI_PHONE, phone, password));
     }
 }
