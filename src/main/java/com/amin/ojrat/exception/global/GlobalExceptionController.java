@@ -82,5 +82,11 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(errorResponse,HttpStatus.SERVICE_UNAVAILABLE);
 
     }
+    @ExceptionHandler(RequestLimitExceededException.class)
+    public ResponseEntity<DefaultResponse> requestLimitException(RequestLimitExceededException ex){
+        DefaultResponse errorResponse = new DefaultResponse(-9,ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<>(errorResponse,HttpStatus.TOO_MANY_REQUESTS);
+
+    }
 }
 

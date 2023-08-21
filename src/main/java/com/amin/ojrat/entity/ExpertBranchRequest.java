@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDate;
 
 @Entity
 
@@ -19,6 +23,12 @@ public class ExpertBranchRequest extends BaseEntity<Long> {
     private Branch branch;
 
     private boolean approved;
+
+    @CreationTimestamp
+    private LocalDate createdAt;
+
+    @UpdateTimestamp
+    private LocalDate updatedAt;
 
     public ExpertBranchRequest() {
     }
@@ -52,5 +62,21 @@ public class ExpertBranchRequest extends BaseEntity<Long> {
 
     public void setApproved(boolean approved) {
         this.approved = approved;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

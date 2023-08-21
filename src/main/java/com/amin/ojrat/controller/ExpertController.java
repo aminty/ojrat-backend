@@ -1,15 +1,19 @@
 package com.amin.ojrat.controller;
 
 import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
+import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
 import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDto;
 import com.amin.ojrat.exception.CreationException;
 import com.amin.ojrat.exception.NotFullyRegisteredException;
+import com.amin.ojrat.exception.RequestLimitExceededException;
 import com.amin.ojrat.exception.UserExistsException;
 import com.amin.ojrat.service.ServiceRegistry;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/expert")
@@ -41,8 +45,18 @@ public class ExpertController {
 
     @PostMapping("/join-request")
     public ResponseEntity<String> makeJoinRequest
-            (@Valid @RequestBody ExpBrParam param) throws NotFullyRegisteredException {
+            (@Valid @RequestBody ExpBrParam param)
+            throws NotFullyRegisteredException, RequestLimitExceededException {
         serviceRegistry.getExpertService().makeJoinRequest(param);
         return new ResponseEntity<String>("درخواست انجام شد.",HttpStatus.OK);
     }
+
+
+    @GetMapping("/get-all-requests/{expertId}")
+    public ResponseEntity<List<ExpBrBasicResult>> getAllRequests(@PathVariable Long expertId){
+        List<ExpBrBasicResult> resultList = serviceRegistry.getExpertService().getAllJoinRequest(expertId);
+        return new ResponseEntity<>(resultList,HttpStatus.OK);
+    }
+
+
 }

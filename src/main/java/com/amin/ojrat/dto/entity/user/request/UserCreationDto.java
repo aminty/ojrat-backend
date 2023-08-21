@@ -1,4 +1,4 @@
-package com.amin.ojrat.dto.entity.user;
+package com.amin.ojrat.dto.entity.user.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -23,12 +23,9 @@ public class UserCreationDto {
     @NotBlank(message = "password should not be blank!")
     private String password;
 
-
-    //@Schema(defaultValue = "nationalCode")
     @NotBlank(message = "nationalCode should not be blank!")
     @Pattern(regexp = "^[0-9]\\d{9}$",message = "nationalCode format is incorrect")
     private String nationalCode;
-
 
     //@Schema(defaultValue = "address")
     @NotBlank(message = "address should not be blank!")
