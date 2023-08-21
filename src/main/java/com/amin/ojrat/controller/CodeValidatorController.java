@@ -2,6 +2,7 @@ package com.amin.ojrat.controller;
 
 
 import com.amin.ojrat.dto.payamak.send.SendSmsResult;
+import com.amin.ojrat.dto.payamak.status.GetSmsStatusResult;
 import com.amin.ojrat.dto.payamak.validation.ValidationParam;
 import com.amin.ojrat.exception.TtlExpirationException;
 import com.amin.ojrat.service.CodeValidationService;
@@ -23,10 +24,9 @@ public class CodeValidatorController {
     }
 
     @GetMapping("/validatePhone/{phoneNumber}")
-    public ResponseEntity<SendSmsResult> validatePhone(@PathVariable String phoneNumber) throws TtlExpirationException {
-        SendSmsResult sendSmsResult = codeValidationService.sendCodeWithApi(phoneNumber);
-        //sendSmsResult.setStatus("پیام ارسال شد.");
-        return ResponseEntity.ok(sendSmsResult);
+    public ResponseEntity<GetSmsStatusResult> validatePhone(@PathVariable String phoneNumber) throws TtlExpirationException {
+        GetSmsStatusResult result = codeValidationService.sendCodeWithApi(phoneNumber);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/validateCode")

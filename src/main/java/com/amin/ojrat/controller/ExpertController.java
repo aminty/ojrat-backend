@@ -37,11 +37,6 @@ public class ExpertController {
         }
     }
 
-//    @GetMapping("/all-requests")
-//    public ResponseEntity<> getAllJoinRequest(){
-//
-//    }
-
 
 
     @PostMapping("/join-request")

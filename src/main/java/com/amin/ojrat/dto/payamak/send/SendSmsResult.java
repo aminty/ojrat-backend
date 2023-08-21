@@ -6,24 +6,24 @@ import lombok.experimental.FieldDefaults;
 
 public class SendSmsResult {
 
-    private String reqId;
+    private String recId;
 
     private String status;
 
     public SendSmsResult() {
     }
 
-    public SendSmsResult(String reqId, String status) {
-        this.reqId = reqId;
+    public SendSmsResult(String recId, String status) {
+        this.recId = recId;
         this.status = status;
     }
 
-    public String getReqId() {
-        return reqId;
+    public String getRecId() {
+        return recId;
     }
 
-    public void setReqId(String reqId) {
-        this.reqId = reqId;
+    public void setRecId(String reqId) {
+        this.recId = reqId;
     }
 
     public String getStatus() {
@@ -37,7 +37,7 @@ public class SendSmsResult {
     @Override
     public String toString() {
         return "SendSmsResult{" +
-                "reqId='" + reqId + '\'' +
+                "recId='" + recId + '\'' +
                 ", status='" + status + '\'' +
                 '}';
     }

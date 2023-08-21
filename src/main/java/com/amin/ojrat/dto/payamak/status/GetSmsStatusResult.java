@@ -9,14 +9,14 @@ public class GetSmsStatusResult {
 
     private List<String> results;
 
-    private List<Long> resultsAsCode;
+    private List<Integer> resultsAsCode;
 
     private String status;
 
     public GetSmsStatusResult() {
     }
 
-    public GetSmsStatusResult(List<String> results, List<Long> resultsAsCode, String status) {
+    public GetSmsStatusResult(List<String> results, List<Integer> resultsAsCode, String status) {
         this.results = results;
         this.resultsAsCode = resultsAsCode;
         this.status = status;
@@ -30,11 +30,11 @@ public class GetSmsStatusResult {
         this.results = results;
     }
 
-    public List<Long> getResultsAsCode() {
+    public List<Integer> getResultsAsCode() {
         return resultsAsCode;
     }
 
-    public void setResultsAsCode(List<Long> resultsAsCode) {
+    public void setResultsAsCode(List<Integer> resultsAsCode) {
         this.resultsAsCode = resultsAsCode;
     }
 

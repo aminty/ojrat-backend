@@ -3,12 +3,13 @@ package com.amin.ojrat.dto.payamak.status;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class GetSmsStatusParam {
 
-     private List<Long> recIds;
+     private List<Long> recIds=new ArrayList<>();
 
      public GetSmsStatusParam() {
      }

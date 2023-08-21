@@ -1,6 +1,8 @@
 package com.amin.ojrat.service;
 
 import com.amin.ojrat.dto.payamak.send.SendSmsResult;
+import com.amin.ojrat.dto.payamak.status.GetSmsStatusParam;
+import com.amin.ojrat.dto.payamak.status.GetSmsStatusResult;
 import com.amin.ojrat.dto.payamak.validation.ValidationParam;
 import com.amin.ojrat.exception.TtlExpirationException;
 
@@ -18,11 +20,13 @@ public interface CodeValidationService {
 
     String codeGenerator();
 
-    SendSmsResult sendCodeWithApi(String phoneNumber) throws TtlExpirationException;
+    GetSmsStatusResult sendCodeWithApi(String phoneNumber) throws TtlExpirationException;
 
     List<ValidationParam> getAllCacheValue();
 
     SendSmsResult sendPassword(String phone,String password);
+
+    GetSmsStatusResult getSmsResultByRecId(GetSmsStatusParam param);
 
 
 

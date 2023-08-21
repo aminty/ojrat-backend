@@ -10,9 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(name = "sms", url = "https://console.melipayamak.com/api")
 public interface MelliPayamakClient {
 
-    @PostMapping("/send/simple/950abd716ef64097a28642e28d69fc64")
+
+    @PostMapping("/send/simple/5261b0a1467f4b1f998fa1fc64ade771")
     SendSmsResult sendSms(SendSmsParam param);
 
-    @PostMapping("receive/status/950abd716ef64097a28642e28d69fc64")
+
+    @PostMapping("receive/status/5261b0a1467f4b1f998fa1fc64ade771")
     GetSmsStatusResult getStatus(GetSmsStatusParam getStatusParam);
+
 }
+
+
+

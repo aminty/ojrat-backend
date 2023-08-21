@@ -2,6 +2,8 @@ package com.amin.ojrat.service.impl;
 
 import com.amin.ojrat.dto.payamak.send.SendSmsParam;
 import com.amin.ojrat.dto.payamak.send.SendSmsResult;
+import com.amin.ojrat.dto.payamak.status.GetSmsStatusParam;
+import com.amin.ojrat.dto.payamak.status.GetSmsStatusResult;
 import com.amin.ojrat.dto.payamak.validation.ValidationParam;
 import com.amin.ojrat.exception.TtlExpirationException;
 import com.amin.ojrat.service.CodeValidationService;
@@ -39,7 +41,6 @@ public class CodeValidationServiceImpl implements CodeValidationService {
 
     @Override
     public boolean isValidCode(String code, String phoneNumber) {
-
         String fetchedCode = getCodeBaseOnPhoneFromCache(phoneNumber);
         if (fetchedCode != null)
             return code.equals(fetchedCode);
@@ -53,8 +54,6 @@ public class CodeValidationServiceImpl implements CodeValidationService {
             throw new TtlExpirationException("کد قبلا فرستاده شده، لطفا یک دقیقه دیگر تلاش کنید");
         }
             codeCache.put(phoneNumber, code);
-
-
     }
 
 
@@ -67,14 +66,11 @@ public class CodeValidationServiceImpl implements CodeValidationService {
 
     @Override
     public String codeGenerator() {
-
         Random random = new Random();
         String code;
         boolean isExistsValueInCache;
-
         do {
             code = String.valueOf(random.nextInt(9000) + 1000);
-
             isExistsValueInCache = codeCache.asMap().containsValue(code);
         } while (isExistsValueInCache);
 
@@ -82,15 +78,14 @@ public class CodeValidationServiceImpl implements CodeValidationService {
     }
 
     @Override
-    public SendSmsResult sendCodeWithApi(String phoneNumber) throws TtlExpirationException {
-
+    public GetSmsStatusResult sendCodeWithApi(String phoneNumber) throws TtlExpirationException {
         String generatedCode = codeGenerator();
-
         setCodeInCache(generatedCode, phoneNumber);
-
-        return melliPayamakClient.sendSms(
-                new SendSmsParam(MELLI_PHONE, phoneNumber, "کد تایید شماره همراه : " + generatedCode)
-        );
+        SendSmsResult result = melliPayamakClient.sendSms(
+                new SendSmsParam(MELLI_PHONE, phoneNumber, "کد تایید شماره همراه : " + generatedCode));
+        GetSmsStatusParam param=new GetSmsStatusParam();
+        param.getRecIds().add(Long.valueOf(result.getRecId()));
+         return getSmsResultByRecId(param);
     }
 
     @Override
@@ -106,8 +101,16 @@ public class CodeValidationServiceImpl implements CodeValidationService {
         return values;
     }
 
+
+
     @Override
     public SendSmsResult sendPassword(String phone, String password) {
         return melliPayamakClient.sendSms(new SendSmsParam(MELLI_PHONE, phone, password));
+    }
+
+
+    @Override
+    public GetSmsStatusResult getSmsResultByRecId(GetSmsStatusParam param) {
+        return melliPayamakClient.getStatus(param);
     }
 }
