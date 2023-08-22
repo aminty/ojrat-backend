@@ -1,6 +1,6 @@
 package com.amin.ojrat.service.impl;
 
-import com.amin.ojrat.dto.entity.branch.BranchInfoModificationDto;
+import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
 import com.amin.ojrat.dto.entity.product.ProductCreationDto;
 import com.amin.ojrat.dto.entity.product.ProductModificationDto;
 import com.amin.ojrat.dto.mapper.ProductMapper;
@@ -12,6 +12,8 @@ import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.BranchService;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -66,6 +68,7 @@ public class BranchServiceImpl implements BranchService {
             existBranch.setName(param.getName());
             existBranch.setLocation(param.getLocation());
             existBranch.setPhone(param.getPhone());
+            existBranch.setStatus(true);
             daoRepositories.getBranchRepository().save(existBranch);
         } else {
             throw new EntityNotFoundException("branch not found.");
@@ -91,7 +94,6 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public Product applyNewChange(Product productWithIncomingChange, Product existProduct) {
-
         existProduct.setBrandName(productWithIncomingChange.getBrandName());
         existProduct.setProductName(productWithIncomingChange.getProductName());
         existProduct.setDescription(productWithIncomingChange.getDescription());
@@ -120,6 +122,11 @@ public class BranchServiceImpl implements BranchService {
             return found.get();
         throw new EntityNotFoundException("branch not found exception");
 
+    }
+
+    @Override
+    public Page<Branch> findAllBranchByStatusTrue(Pageable pageable){
+       return daoRepositories.getBranchRepository().findAllByStatusTrue(pageable);
     }
 
 

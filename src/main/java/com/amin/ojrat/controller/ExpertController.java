@@ -2,13 +2,18 @@ package com.amin.ojrat.controller;
 
 import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
 import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
+import com.amin.ojrat.dto.entity.branch.response.BasicBranchDto;
 import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDto;
+import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.exception.CreationException;
 import com.amin.ojrat.exception.NotFullyRegisteredException;
 import com.amin.ojrat.exception.RequestLimitExceededException;
 import com.amin.ojrat.exception.UserExistsException;
 import com.amin.ojrat.service.ServiceRegistry;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,8 +50,7 @@ public class ExpertController {
 
     @PostMapping("/join-request")
     public ResponseEntity<String> makeJoinRequest
-            (@Valid @RequestBody ExpBrParam param)
-            throws NotFullyRegisteredException, RequestLimitExceededException {
+            (@Valid @RequestBody ExpBrParam param) throws Exception {
         serviceRegistry.getExpertService().makeJoinRequest(param);
         return new ResponseEntity<String>("درخواست انجام شد.",HttpStatus.OK);
     }
@@ -56,6 +60,16 @@ public class ExpertController {
     public ResponseEntity<List<ExpBrBasicResult>> getAllRequests(@PathVariable Long expertId){
         List<ExpBrBasicResult> resultList = serviceRegistry.getExpertService().getAllJoinRequest(expertId);
         return new ResponseEntity<>(resultList,HttpStatus.OK);
+    }
+
+    @GetMapping("/get-active-branch")
+    public ResponseEntity<Page<BasicBranchDto>> getActiveBranches(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BasicBranchDto> activeBranches = serviceRegistry.getExpertService().getAllAllowedBranch(pageable);
+        return ResponseEntity.ok(activeBranches);
     }
 
 

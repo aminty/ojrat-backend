@@ -1,6 +1,6 @@
 package com.amin.ojrat.controller;
 
-import com.amin.ojrat.dto.entity.branch.BranchInfoModificationDto;
+import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
 import com.amin.ojrat.dto.entity.product.ProductCreationDto;
 import com.amin.ojrat.dto.entity.product.ProductModificationDto;
 import com.amin.ojrat.service.ServiceRegistry;

@@ -1,36 +1,24 @@
-package com.amin.ojrat.dto.entity.branch;
+package com.amin.ojrat.dto.entity.branch.response;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public class BranchInfoModificationDto {
+public class BasicBranchDto {
 
-
-    @NotNull(message = "branch id should not be null")
     private Long id;
 
-
-    @NotEmpty(message = "name should not be empty.")
     private String name;
 
-
-    @NotEmpty(message = "address should not be empty.")
     private String location;
 
-
-    @NotEmpty(message = "phone should not be empty.")
     private String phone;
 
-
-    @NotEmpty(message = "description should not be empty.")
     private String description;
 
-
-    public BranchInfoModificationDto() {
-
+    public BasicBranchDto() {
     }
 
-    public BranchInfoModificationDto(Long id, String name, String location, String phone, String description) {
+    public BasicBranchDto(Long id, String name, String location, String phone, String description) {
         this.id = id;
         this.name = name;
         this.location = location;

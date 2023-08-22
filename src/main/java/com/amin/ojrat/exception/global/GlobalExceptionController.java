@@ -88,5 +88,17 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(errorResponse,HttpStatus.TOO_MANY_REQUESTS);
 
     }
+    @ExceptionHandler(LicenseStatusException.class)
+    public ResponseEntity<DefaultResponse> licenseStatusException(LicenseStatusException ex){
+        DefaultResponse errorResponse = new DefaultResponse(-10,ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<>(errorResponse,HttpStatus.NOT_ACCEPTABLE);
+
+    }
+    @ExceptionHandler(ActivationException.class)
+    public ResponseEntity<DefaultResponse> activationException(ActivationException ex){
+        DefaultResponse errorResponse = new DefaultResponse(-11,ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<>(errorResponse,HttpStatus.NOT_ACCEPTABLE);
+
+    }
 }
 

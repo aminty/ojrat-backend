@@ -40,9 +40,7 @@ public class ExpertBranchServiceImpl implements ExpertBranchService {
     public List<ExpBrBasicResult> findAllRequestByExpertId(Long expertId) {
         List<ExpertBranchRequest> foundItems =
                 daoRepositories.getExpertBranchRepository().findExpertBranchRequestsByExpert_Id(expertId);
-
         List<ExpBrBasicResult> resultList = new ArrayList<>();
-
         foundItems.forEach(item -> {
             ExpBrBasicResult result = expertBranchMapper.expertBranchToExpBrBasicResult(item);
             resultList.add(result);
