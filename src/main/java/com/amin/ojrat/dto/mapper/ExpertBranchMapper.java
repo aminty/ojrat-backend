@@ -13,5 +13,6 @@ public interface ExpertBranchMapper {
     @Mapping(target = "branchName",source = "branch.name")
     @Mapping(target = "expertName",source = "expert.firstName")
     @Mapping(target = "requestStatus",source = "approved")
+    @Mapping(target = "expertLastName",source = "expert.lastName")
     ExpBrBasicResult expertBranchToExpBrBasicResult(ExpertBranchRequest param);
 }

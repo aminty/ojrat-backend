@@ -1,5 +1,8 @@
 package com.amin.ojrat.controller;
 
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationParam;
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
+import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
 import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
 import com.amin.ojrat.dto.entity.product.ProductCreationDto;
 import com.amin.ojrat.dto.entity.product.ProductModificationDto;
@@ -9,6 +12,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/branch")
@@ -44,4 +49,26 @@ public class BranchController {
         serviceRegistry.getBranchService().editBranchEditInfo(param);
         return new ResponseEntity<>("branch info updated successfully!",HttpStatus.OK);
     }
+
+    @GetMapping("/get-all-requests/{branchId}")
+    public ResponseEntity<List<ExpBrBasicResult>> getAllRequests(@PathVariable Long branchId){
+        List<ExpBrBasicResult> resultList = serviceRegistry.getBranchService().getAllJoinRequest(branchId);
+        if (resultList.isEmpty()) return new ResponseEntity<>(resultList,HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(resultList,HttpStatus.OK);
+    }
+
+    @PostMapping("/request/delete")
+    public ResponseEntity<String> deleteRequest(@Valid @RequestBody ExpBrParam param){
+        serviceRegistry.getExpertBranchService().deleteRequest(param);
+        return new ResponseEntity<>("request was deleted successfully!",HttpStatus.OK);
+
+    }
+
+    @PostMapping("/request/status")
+    public ResponseEntity<String> deleteRequest(@Valid @RequestBody ExpBrActivationParam param){
+        serviceRegistry.getExpertBranchService().changeRequestStatus(param);
+        return new ResponseEntity<>("request was updated successfully!",HttpStatus.OK);
+
+    }
+
 }

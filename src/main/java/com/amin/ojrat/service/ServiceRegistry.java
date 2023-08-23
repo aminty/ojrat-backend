@@ -16,17 +16,20 @@ public class ServiceRegistry {
 
     private final BranchService branchService;
 
+    private final ExpertBranchService expertBranchService;
+
     @Autowired
     public ServiceRegistry(AdminService adminService,
                            ExpertService expertService,
                            CodeValidationService codeValidationService,
                            UserService userService,
-                           BranchService branchService) {
+                           BranchService branchService, ExpertBranchService expertBranchService) {
         this.adminService = adminService;
         this.expertService = expertService;
         this.codeValidationService = codeValidationService;
         this.userService = userService;
         this.branchService = branchService;
+        this.expertBranchService = expertBranchService;
     }
 
     public AdminService getAdminService() {
@@ -47,5 +50,9 @@ public class ServiceRegistry {
 
     public BranchService getBranchService(){
         return branchService;
+    }
+
+    public ExpertBranchService getExpertBranchService() {
+        return expertBranchService;
     }
 }

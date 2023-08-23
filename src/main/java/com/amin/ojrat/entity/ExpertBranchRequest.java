@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
-
 public class ExpertBranchRequest extends BaseEntity<Long> {
 
     @ManyToOne

@@ -1,36 +1,40 @@
 package com.amin.ojrat.service.impl;
 
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationParam;
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
+import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
 import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
 import com.amin.ojrat.dto.entity.product.ProductCreationDto;
 import com.amin.ojrat.dto.entity.product.ProductModificationDto;
 import com.amin.ojrat.dto.mapper.ProductMapper;
 import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Product;
-import com.amin.ojrat.exception.MissingIdParameter;
 import com.amin.ojrat.exception.NotFullyRegisteredException;
 import com.amin.ojrat.exception.UniqueNameException;
 import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.BranchService;
+import com.amin.ojrat.service.ExpertBranchService;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class BranchServiceImpl implements BranchService {
 
     private final DaoRepositories daoRepositories;
     private final ProductMapper productMapper;
+    private final ExpertBranchService expertBranchService;
 
     @Autowired
-    public BranchServiceImpl(DaoRepositories daoRepositories, ProductMapper productMapper) {
+    public BranchServiceImpl(DaoRepositories daoRepositories, ProductMapper productMapper, ExpertBranchService expertBranchService) {
         this.daoRepositories = daoRepositories;
         this.productMapper = productMapper;
+        this.expertBranchService = expertBranchService;
     }
 
     @Override
@@ -82,6 +86,25 @@ public class BranchServiceImpl implements BranchService {
     public Page<Branch> findAllBranchByStatusTrue(Pageable pageable) {
         return daoRepositories.getBranchRepository().findAllByStatusTrue(pageable);
     }
+
+    @Override
+    public List<ExpBrBasicResult> getAllJoinRequest(Long branchId) {
+        if (daoRepositories.getBranchRepository().existsById(branchId))
+            return expertBranchService.findAllRequestByBranchId(branchId);
+        else throw new EntityNotFoundException("branch not found");
+    }
+
+    @Override
+    public void deleteRequest(ExpBrParam param) {
+        expertBranchService.deleteRequest(param);
+
+    }
+
+    @Override
+    public ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) {
+        return expertBranchService.changeRequestStatus(param);
+    }
+
 
 
     private Branch findBranchByIdOrThrow(Long id, String errorMessage) {

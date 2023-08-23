@@ -14,6 +14,10 @@ public class ExpBrBasicResult {
 
     String expertName;
 
+    String expertLastName;
+
+
+
     boolean requestStatus;
 
     Timestamp createdAt;
@@ -29,7 +33,8 @@ public class ExpBrBasicResult {
                             String expertName,
                             boolean requestStatus,
                             Timestamp createdAt,
-                            Timestamp updatedAt) {
+                            Timestamp updatedAt,
+                            String expertLastName) {
         this.expertId = expertId;
         this.branchId = branchId;
         this.branchName = branchName;
@@ -37,6 +42,7 @@ public class ExpBrBasicResult {
         this.requestStatus = requestStatus;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.expertLastName=expertLastName;
     }
 
     public Long getExpertId() {
@@ -93,5 +99,17 @@ public class ExpBrBasicResult {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getExpertLastName() {
+        return expertLastName;
+    }
+
+    public void setExpertLastName(String expertLastName) {
+        this.expertLastName = expertLastName;
+    }
+
+    public boolean isRequestStatus() {
+        return requestStatus;
     }
 }

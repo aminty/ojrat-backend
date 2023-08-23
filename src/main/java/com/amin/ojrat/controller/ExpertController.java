@@ -59,6 +59,7 @@ public class ExpertController {
     @GetMapping("/get-all-requests/{expertId}")
     public ResponseEntity<List<ExpBrBasicResult>> getAllRequests(@PathVariable Long expertId){
         List<ExpBrBasicResult> resultList = serviceRegistry.getExpertService().getAllJoinRequest(expertId);
+        if (resultList.isEmpty()) return new ResponseEntity<>(resultList,HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(resultList,HttpStatus.OK);
     }
 
@@ -69,6 +70,7 @@ public class ExpertController {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<BasicBranchDto> activeBranches = serviceRegistry.getExpertService().getAllAllowedBranch(pageable);
+        if (activeBranches.isEmpty()) return new ResponseEntity<>(activeBranches,HttpStatus.NO_CONTENT);
         return ResponseEntity.ok(activeBranches);
     }
 

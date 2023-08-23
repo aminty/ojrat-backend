@@ -68,10 +68,18 @@ public class ExpertServiceImpl implements ExpertService {
     public void makeJoinRequest(ExpBrParam param) throws Exception {
         Long userId = param.getUserId();
         Long branchId = param.getBranchId();
-
+        checkIfRequestIsExistsThenThrow(param);
         ExpertBranchRequest expBr = createExpertBranchRequest(userId, branchId);
-
         expertBranchService.saveJoinRequest(expBr);
+    }
+
+    private void checkIfRequestIsExistsThenThrow(ExpBrParam param)
+            throws RequestLimitExceededException {
+        boolean checkExists =
+                expertBranchService.isExistRequestToBranchByThisUserId(param);
+        if (checkExists)
+            throw new RequestLimitExceededException("you already have request for this branch");
+
     }
 
 

@@ -14,4 +14,8 @@ public interface IExpertBranchRepository extends JpaRepository<ExpertBranchReque
 
     List<ExpertBranchRequest> findExpertBranchRequestsByExpert_Id(Long expert_id);
 
+    List<ExpertBranchRequest> findExpertBranchRequestsByBranch_Id(Long branchId);
+    boolean existsByExpert_IdAndBranch_Id(Long expertId,Long branchId);
+
+    ExpertBranchRequest findByExpert_IdAndBranch_Id(Long userId, Long branchId);
 }
