@@ -33,4 +33,6 @@ public interface ExpertService {
     List<ExpBrBasicResult> getAllJoinRequest(Long expertId);
 
     Page<BasicBranchDto> getAllAllowedBranch(Pageable pageable);
+
+    Expert findExpert(Long id);
 }

@@ -9,33 +9,37 @@ public class BranchInfoModificationDto {
     @NotNull(message = "branch id should not be null")
     private Long id;
 
-
     @NotEmpty(message = "name should not be empty.")
     private String name;
-
 
     @NotEmpty(message = "address should not be empty.")
     private String location;
 
-
     @NotEmpty(message = "phone should not be empty.")
     private String phone;
-
 
     @NotEmpty(message = "description should not be empty.")
     private String description;
 
+    @NotEmpty(message = "unique name should not be empty.")
+    private String uniqueName;
 
     public BranchInfoModificationDto() {
 
     }
 
-    public BranchInfoModificationDto(Long id, String name, String location, String phone, String description) {
+    public BranchInfoModificationDto(Long id,
+                                     String name,
+                                     String location,
+                                     String phone,
+                                     String description,
+                                     String uniqueName) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.phone = phone;
         this.description = description;
+        this.uniqueName=uniqueName;
     }
 
     public Long getId() {
@@ -76,5 +80,13 @@ public class BranchInfoModificationDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUniqueName() {
+        return uniqueName;
+    }
+
+    public void setUniqueName(String uniqueName) {
+        this.uniqueName = uniqueName;
     }
 }

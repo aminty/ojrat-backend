@@ -19,7 +19,6 @@ public class AdminServiceImpl implements AdminService {
     private final DaoRepositories daoRepositories;
     private final AdminMapper adminMapper;
 
-
     @Autowired
     public AdminServiceImpl(UserService userService, DaoRepositories daoRepositories, AdminMapper adminMapper) {
         this.userService = userService;

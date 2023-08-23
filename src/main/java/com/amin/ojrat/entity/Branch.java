@@ -3,7 +3,9 @@ package com.amin.ojrat.entity;
 import com.amin.ojrat.base.BaseEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,10 @@ public class Branch extends BaseEntity<Long> {
     private String phone;
 
     private String description;
+
+    @Column(unique = true)
+    private String uniqueName;
+
 
     @OneToOne
     private Admin admin;
@@ -38,10 +44,10 @@ public class Branch extends BaseEntity<Long> {
     private boolean status;
 
     @CreationTimestamp
-    private LocalTime createdAt;
+    private Timestamp createdAt;
 
-    @CreationTimestamp
-    private LocalTime updatedAt;
+    @UpdateTimestamp
+    private Timestamp updatedAt;
 
 
 
@@ -63,7 +69,8 @@ public class Branch extends BaseEntity<Long> {
                   String phone, String description,
                   Admin admin, List<Expert> experts,
                   List<Product> products, List<ExpertBranchRequest> requests,
-                  boolean status, LocalTime createdAt, LocalTime updatedAt) {
+                  boolean status, Timestamp createdAt,
+                  Timestamp updatedAt,String uniqueName) {
         super(id);
         this.name = name;
         this.location = location;
@@ -76,6 +83,7 @@ public class Branch extends BaseEntity<Long> {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.uniqueName=uniqueName ;
     }
 
     public String getName() {
@@ -150,19 +158,35 @@ public class Branch extends BaseEntity<Long> {
         this.status = status;
     }
 
-    public LocalTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalTime getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalTime updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getUniqueName() {
+        return uniqueName;
+    }
+
+    public void setUniqueName(String uniqueName) {
+        this.uniqueName = uniqueName;
+    }
+
+    public List<ExpertDiscount> getExpertDiscounts() {
+        return expertDiscounts;
+    }
+
+    public void setExpertDiscounts(List<ExpertDiscount> expertDiscounts) {
+        this.expertDiscounts = expertDiscounts;
     }
 }

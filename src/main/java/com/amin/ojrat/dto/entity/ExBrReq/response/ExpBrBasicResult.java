@@ -1,6 +1,7 @@
 package com.amin.ojrat.dto.entity.ExBrReq.response;
 
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class ExpBrBasicResult {
@@ -15,9 +16,9 @@ public class ExpBrBasicResult {
 
     boolean requestStatus;
 
-    LocalDate createdAt;
+    Timestamp createdAt;
 
-    LocalDate updatedAt;
+    Timestamp updatedAt;
 
     public ExpBrBasicResult() {
     }
@@ -27,8 +28,8 @@ public class ExpBrBasicResult {
                             String branchName,
                             String expertName,
                             boolean requestStatus,
-                            LocalDate createdAt,
-                            LocalDate updatedAt) {
+                            Timestamp createdAt,
+                            Timestamp updatedAt) {
         this.expertId = expertId;
         this.branchId = branchId;
         this.branchName = branchName;
@@ -78,19 +79,19 @@ public class ExpBrBasicResult {
         this.requestStatus = requestStatus;
     }
 
-    public LocalDate getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDate getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDate updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

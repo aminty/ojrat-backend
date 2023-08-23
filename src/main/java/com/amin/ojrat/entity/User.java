@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NaturalId;
 
+import java.sql.Timestamp;
 import java.time.LocalTime;
 
 @Entity
@@ -32,7 +33,7 @@ public class User extends BaseEntity<Long> {
 
 
      @CreationTimestamp
-     private LocalTime createdAt;
+     private Timestamp createdAt;
 
      private boolean isActive;
 
@@ -44,7 +45,7 @@ public class User extends BaseEntity<Long> {
      public User(Long id, String firstName, String lastName,
                  String email, String password, String nationalCode,
                  String address, String phoneNumber,
-                  LocalTime createdAt
+                 Timestamp createdAt
                  ) {
           super(id);
           this.firstName = firstName;
@@ -113,11 +114,11 @@ public class User extends BaseEntity<Long> {
           this.phoneNumber = phoneNumber;
      }
 
-     public LocalTime getCreatedAt() {
+     public Timestamp getCreatedAt() {
           return createdAt;
      }
 
-     public void setCreatedAt(LocalTime createdAt) {
+     public void setCreatedAt(Timestamp createdAt) {
           this.createdAt = createdAt;
      }
 

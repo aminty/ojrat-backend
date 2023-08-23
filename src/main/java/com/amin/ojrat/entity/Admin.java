@@ -5,6 +5,7 @@ import com.amin.ojrat.enums.Role;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Admin extends User {
     public Admin(Long id, String firstName, String lastName,
                  String email, String password, String nationalCode,
                  String address, String phoneNumber
-               , LocalTime createdAt, List<Role> roles,
+               , Timestamp createdAt, List<Role> roles,
                  Branch branch) {
         super(id, firstName, lastName, email, password, nationalCode,
                 address, phoneNumber, createdAt);

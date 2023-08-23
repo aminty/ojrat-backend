@@ -8,6 +8,7 @@ import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Product;
 import com.amin.ojrat.exception.MissingIdParameter;
 import com.amin.ojrat.exception.NotFullyRegisteredException;
+import com.amin.ojrat.exception.UniqueNameException;
 import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.BranchService;
 import jakarta.persistence.*;
@@ -15,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -32,103 +35,95 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public void saveProductToBranch(ProductCreationDto param) throws NotFullyRegisteredException {
-        Optional<Branch> findBranchById = daoRepositories.getBranchRepository().findById(param.getBranchId());
+        Branch branch = findBranchByIdOrThrow(param.getBranchId(), "Branch not found.");
 
-        if (findBranchById.isPresent()) {
-            Product product = productMapper.productDtoToProduct(param);
-            Branch branch = findBranchById.get();
-            branch.getProducts().add(product);
-            product.setBranch(branch);
-            if (isBranchFullyRegistered(branch))
-                daoRepositories.getBranchRepository().save(branch);
-            else throw new NotFullyRegisteredException("your store is not complete registered.");
+        Product product = productMapper.productDtoToProduct(param);
+        branch.getProducts().add(product);
+        product.setBranch(branch);
+
+        if (isBranchFullyRegistered(branch)) {
+            daoRepositories.getBranchRepository().save(branch);
         } else {
-            throw new EntityNotFoundException("Branch not found.");
+            throw new NotFullyRegisteredException("Your store is not completely registered.");
         }
-
     }
 
     @Override
-    public boolean isBranchFullyRegistered(Branch branch) {
-        if (branch.getDescription() == null
-                || branch.getLocation() == null
-                || branch.getName() == null
-                || branch.getPhone() == null)
-            return false;
-        else
-            return true;
-    }
-
-    @Override
-    public void editBranchEditInfo(BranchInfoModificationDto param) {
-        Optional<Branch> foundBranch = daoRepositories.getBranchRepository().findById(param.getId());
-        if (foundBranch.isPresent()) {
-            Branch existBranch = foundBranch.get();
-            existBranch.setDescription(param.getDescription());
-            existBranch.setName(param.getName());
-            existBranch.setLocation(param.getLocation());
-            existBranch.setPhone(param.getPhone());
-            existBranch.setStatus(true);
-            daoRepositories.getBranchRepository().save(existBranch);
-        } else {
-            throw new EntityNotFoundException("branch not found.");
-        }
+    public void editBranchEditInfo(BranchInfoModificationDto param) throws UniqueNameException {
+        Branch existBranch = findBranchByIdOrThrow(param.getId(), "Branch not found.");
+        if (!Objects.equals(param.getUniqueName(), existBranch.getUniqueName()))
+            checkUniqueNameAndThrow(param.getUniqueName());
+        updateBranchInfo(existBranch, param);
+        daoRepositories.getBranchRepository().save(existBranch);
     }
 
     @Override
     public void editProduct(ProductModificationDto param) throws Exception {
-        if (param.getId() != null) {
-            Optional<Product> foundProduct = daoRepositories.getProductRepository().findById(param.getId());
-            if (foundProduct.isPresent()) {
-                Product productWithIncomingChange = productMapper.productDtoToProduct(param);
-                Product existProduct = foundProduct.get();
+        Product existProduct = findProductByIdOrThrow(param.getId(), "Product not found.");
 
-                daoRepositories.getProductRepository().save(applyNewChange(productWithIncomingChange, existProduct));
-            } else {
-                throw new EntityNotFoundException("Product not found.");
-            }
-        } else {
-            throw new MissingIdParameter("id parameter is null");
-        }
-    }
+        Product updatedProduct = productMapper.productDtoToProduct(param);
+        applyNewChange(updatedProduct, existProduct);
 
-    @Override
-    public Product applyNewChange(Product productWithIncomingChange, Product existProduct) {
-        existProduct.setBrandName(productWithIncomingChange.getBrandName());
-        existProduct.setProductName(productWithIncomingChange.getProductName());
-        existProduct.setDescription(productWithIncomingChange.getDescription());
-        existProduct.setPrice(productWithIncomingChange.getPrice());
-        existProduct.setDiscount(productWithIncomingChange.getDiscount());
-        existProduct.setExist(productWithIncomingChange.isExist());
-        existProduct.setImage(productWithIncomingChange.getImage());
-        return existProduct;
+        daoRepositories.getProductRepository().save(existProduct);
     }
 
     @Override
     public void removeProduct(Long id) throws Exception {
-        if (id != null) {
-            if (daoRepositories.getProductRepository().findById(id).isPresent())
-                daoRepositories.getProductRepository().deleteById(id);
-            else throw new EntityNotFoundException("product not found");
-        } else {
-            throw new MissingIdParameter("id parameter is null");
-        }
+        findProductByIdOrThrow(id, "Product not found");
+        daoRepositories.getProductRepository().deleteById(id);
     }
 
     @Override
     public Branch findBranchById(Long id) {
-        Optional<Branch> found = daoRepositories.getBranchRepository().findById(id);
-        if (found.isPresent())
-            return found.get();
-        throw new EntityNotFoundException("branch not found exception");
-
+        return findBranchByIdOrThrow(id, "Branch not found exception");
     }
 
     @Override
-    public Page<Branch> findAllBranchByStatusTrue(Pageable pageable){
-       return daoRepositories.getBranchRepository().findAllByStatusTrue(pageable);
+    public Page<Branch> findAllBranchByStatusTrue(Pageable pageable) {
+        return daoRepositories.getBranchRepository().findAllByStatusTrue(pageable);
     }
 
 
+    private Branch findBranchByIdOrThrow(Long id, String errorMessage) {
+        return daoRepositories.getBranchRepository().findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(errorMessage));
+    }
 
+    private void checkUniqueNameAndThrow(String uniqueName) throws UniqueNameException {
+        if (daoRepositories.getBranchRepository().existsBranchByUniqueName(uniqueName)) {
+            throw new UniqueNameException("This unique name is already taken by another store.");
+        }
+    }
+
+    private Product findProductByIdOrThrow(Long id, String errorMessage) {
+        return daoRepositories.getProductRepository().findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(errorMessage));
+    }
+
+    @Override
+    public void applyNewChange(Product updatedProduct, Product existProduct) {
+        existProduct.setBrandName(updatedProduct.getBrandName());
+        existProduct.setProductName(updatedProduct.getProductName());
+        existProduct.setDescription(updatedProduct.getDescription());
+        existProduct.setPrice(updatedProduct.getPrice());
+        existProduct.setDiscount(updatedProduct.getDiscount());
+        existProduct.setExist(updatedProduct.isExist());
+        existProduct.setImage(updatedProduct.getImage());
+    }
+    private void updateBranchInfo(Branch branch, BranchInfoModificationDto param) {
+        branch.setUniqueName(param.getUniqueName());
+        branch.setDescription(param.getDescription());
+        branch.setName(param.getName());
+        branch.setLocation(param.getLocation());
+        branch.setPhone(param.getPhone());
+        branch.setStatus(true);
+    }
+    @Override
+    public boolean isBranchFullyRegistered(Branch branch) {
+        return branch.getDescription() != null
+                && branch.getLocation() != null
+                && branch.getName() != null
+                && branch.getPhone() != null
+                && branch.getUniqueName() != null;
+    }
 }

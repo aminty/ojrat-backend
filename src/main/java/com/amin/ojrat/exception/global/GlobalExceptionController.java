@@ -24,7 +24,6 @@ public class GlobalExceptionController {
     public ResponseEntity<DefaultResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-
         List<String> errorMessages = new ArrayList<>();
         for (FieldError fieldError : fieldErrors) {
             errorMessages.add(fieldError.getDefaultMessage());
@@ -48,9 +47,7 @@ public class GlobalExceptionController {
         errorMessages.add("email");
         DefaultResponse errorResponse = new DefaultResponse(-3, ex.getMessage(), errorMessages);
         return new ResponseEntity<DefaultResponse>(errorResponse, HttpStatus.CONFLICT);
-
     }
-
 
     @ExceptionHandler(NotFullyRegisteredException.class)
     public ResponseEntity<DefaultResponse> completeRegistration(NotFullyRegisteredException ex) {
@@ -100,5 +97,12 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(errorResponse,HttpStatus.NOT_ACCEPTABLE);
 
     }
+
+    @ExceptionHandler(UniqueNameException.class)
+    public ResponseEntity<DefaultResponse> activationException(UniqueNameException ex){
+        DefaultResponse errorResponse = new DefaultResponse(-12,ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<>(errorResponse,HttpStatus.CONFLICT);
+    }
+
 }
 

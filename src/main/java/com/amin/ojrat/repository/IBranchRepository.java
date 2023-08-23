@@ -11,4 +11,5 @@ public interface IBranchRepository extends JpaRepository<Branch,Long> {
 
     Page<Branch> findAllByStatusTrue(Pageable pageable);
 
+    boolean existsBranchByUniqueName(String uniqueName);
 }

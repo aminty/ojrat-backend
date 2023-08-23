@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.sql.Timestamp;
 import java.time.LocalTime;
 
 @Entity
@@ -26,10 +28,10 @@ public class Product extends BaseEntity<Long> {
      private boolean isExist;
 
      @CreationTimestamp
-    private LocalTime createdAt;
+    private Timestamp createdAt;
 
-     @CreationTimestamp
-     private LocalTime updatedAt;
+     @UpdateTimestamp
+     private Timestamp updatedAt;
 
      @ManyToOne
      private Branch branch;
@@ -43,7 +45,7 @@ public class Product extends BaseEntity<Long> {
 
      public Product(Long id, String brandName, String productName,
                     String description, double price, double discount,
-                    boolean isExist, LocalTime createdAt, LocalTime updatedAt, Branch branch) {
+                    boolean isExist, Timestamp createdAt, Timestamp updatedAt, Branch branch) {
           super(id);
           this.brandName = brandName;
           this.productName = productName;
@@ -104,19 +106,19 @@ public class Product extends BaseEntity<Long> {
           isExist = exist;
      }
 
-     public LocalTime getCreatedAt() {
+     public Timestamp getCreatedAt() {
           return createdAt;
      }
 
-     public void setCreatedAt(LocalTime createdAt) {
+     public void setCreatedAt(Timestamp createdAt) {
           this.createdAt = createdAt;
      }
 
-     public LocalTime getUpdatedAt() {
+     public Timestamp getUpdatedAt() {
           return updatedAt;
      }
 
-     public void setUpdatedAt(LocalTime updatedAt) {
+     public void setUpdatedAt(Timestamp updatedAt) {
           this.updatedAt = updatedAt;
      }
 

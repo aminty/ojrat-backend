@@ -13,7 +13,6 @@ import jakarta.persistence.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -30,79 +29,69 @@ public class UserServiceImpl implements UserService {
         this.codeValidationService = codeValidationService;
     }
 
-
     @Override
     public boolean isUserExistsByValue(String nationalCode, String email, String phoneNumber) {
         return daoRepositories.getCustomUserRepository().isUserExistsByValue(nationalCode, email, phoneNumber);
-
     }
 
     @Override
     public UserLoginResultDto login(UserLoginParamDto param) throws LoginAuthenticationException {
-
-        User userWhoWantLogin = daoRepositories.getCustomUserRepository().login(param);
-        if (userWhoWantLogin.isIsDeleted()) {
-            throw new EntityNotFoundException("this account was suspended");
-        }
-        if (!param.getPassword().trim().equals(userWhoWantLogin.getPassword())) {
-
-            throw new LoginAuthenticationException("username or password is not correct!");
-
-        }
-        if (!userWhoWantLogin.isActive()) {
-
-            throw new LoginAuthenticationException("this user is not active.");
-        }
+        User userWhoWantLogin = findUserForLogin(param.getUsername(), param.getPassword());
+        checkUserLoginStatus(userWhoWantLogin);
         return userMapper.userToUserLoginResultDto(userWhoWantLogin);
-
     }
 
     @Override
     public SendSmsResult getForgottenPassword(String phone) {
-
-        //todo: should check  if reqId is not null, send relative message
-        String passage = "کلمه عبور شما:  ";
-        try {
-            User userByPhoneNumber = daoRepositories.getUserRepository().findUserByPhoneNumber(phone);
-            SendSmsResult result =
-                    codeValidationService.sendPassword(
-                            userByPhoneNumber.getPhoneNumber(),
-                            passage.concat(userByPhoneNumber.getPassword())
-                    );
-            result.setStatus("رمز عبور به این شماره ارسال شد. " + maskPhone(phone));
-            return result;
-        } catch (Exception e) {
-            throw new EntityNotFoundException("user not found by :" + phone);
-
-        }
+        User userByPhoneNumber = findUserByPhoneNumber(phone);
+        String message = "کلمه عبور شما: " + userByPhoneNumber.getPassword();
+        SendSmsResult result = codeValidationService.sendPassword(userByPhoneNumber.getPhoneNumber(), message);
+        result.setStatus("رمز عبور به این شماره ارسال شد. " + maskPhone(phone));
+        return result;
     }
 
     @Override
     public String maskEmail(String email) {
         int atIndex = email.indexOf("@");
-        if (atIndex == -1) {
+        if (atIndex < 3) {
             return email;
         }
-        String username = email.substring(0, atIndex);
-        String domain = email.substring(atIndex);
-
-        if (username.length() < 3) {
-            return email;
-        }
-
-        String maskedUsername = username.substring(0, 3) + "****";
-
-        return maskedUsername + domain;
+        String maskedUsername = email.substring(0, 3) + "****";
+        return maskedUsername + email.substring(atIndex);
     }
 
     @Override
     public String maskPhone(String phone) {
-        int firstFrom = 0;
-        int firstEnd = 4;
-        int secondFrom = 7;
-        int secondEnd = 11;
-        String result = phone.substring(firstFrom, firstEnd) + "****" + phone.substring(secondFrom, secondEnd);
-        System.out.println(result);
-        return result;
+        return phone.substring(0, 4) + "****" + phone.substring(7, 11);
+    }
+
+    // Helper methods
+
+    private User findUserForLogin(String username, String password) throws LoginAuthenticationException {
+        User userWhoWantLogin = daoRepositories.getCustomUserRepository().login(new UserLoginParamDto(username, password));
+        if (userWhoWantLogin.isIsDeleted()) {
+            throw new EntityNotFoundException("This account was suspended");
+        }
+        if (!password.trim().equals(userWhoWantLogin.getPassword())) {
+            throw new LoginAuthenticationException("Username or password is not correct!");
+        }
+        if (!userWhoWantLogin.isActive()) {
+            throw new LoginAuthenticationException("This user is not active.");
+        }
+        return userWhoWantLogin;
+    }
+
+    private void checkUserLoginStatus(User user) throws LoginAuthenticationException {
+        if (user.isIsDeleted()) {
+            throw new EntityNotFoundException("This account was suspended");
+        }
+        if (!user.isActive()) {
+            throw new LoginAuthenticationException("This user is not active.");
+        }
+    }
+
+
+    private User findUserByPhoneNumber(String phone) {
+        return daoRepositories.getUserRepository().findUserByPhoneNumber(phone);
     }
 }

@@ -3,6 +3,7 @@ package com.amin.ojrat.controller;
 import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
 import com.amin.ojrat.dto.entity.product.ProductCreationDto;
 import com.amin.ojrat.dto.entity.product.ProductModificationDto;
+import com.amin.ojrat.exception.UniqueNameException;
 import com.amin.ojrat.service.ServiceRegistry;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,8 @@ public class BranchController {
     }
 
     @PostMapping("edit-branch_info")
-    public ResponseEntity<String> updateBranchInfo(@Valid @RequestBody BranchInfoModificationDto param) {
+    public ResponseEntity<String> updateBranchInfo(@Valid @RequestBody BranchInfoModificationDto param)
+            throws UniqueNameException {
         serviceRegistry.getBranchService().editBranchEditInfo(param);
         return new ResponseEntity<>("branch info updated successfully!",HttpStatus.OK);
     }

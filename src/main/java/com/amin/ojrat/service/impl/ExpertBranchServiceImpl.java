@@ -7,6 +7,7 @@ import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.ExpertBranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class ExpertBranchServiceImpl implements ExpertBranchService {
 
 
     @Override
+    @Transactional
     public void saveJoinRequest(ExpertBranchRequest expBr) {
         daoRepositories.getExpertBranchRepository().save(expBr);
 

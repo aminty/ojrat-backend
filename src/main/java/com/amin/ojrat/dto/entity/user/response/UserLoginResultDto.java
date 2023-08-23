@@ -1,5 +1,6 @@
 package com.amin.ojrat.dto.entity.user.response;
 
+import java.sql.Timestamp;
 import java.time.LocalTime;
 
 public class UserLoginResultDto {
@@ -16,7 +17,7 @@ public class UserLoginResultDto {
 
     private final String phoneNumber;
 
-    private final LocalTime createdAt;
+    private final Timestamp createdAt;
 
 
     public UserLoginResultDto(String firstName,
@@ -25,7 +26,7 @@ public class UserLoginResultDto {
                               String nationalCode,
                               String address,
                               String phoneNumber,
-                              LocalTime createdAt) {
+                              Timestamp createdAt) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -59,7 +60,7 @@ public class UserLoginResultDto {
         return phoneNumber;
     }
 
-    public LocalTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 }

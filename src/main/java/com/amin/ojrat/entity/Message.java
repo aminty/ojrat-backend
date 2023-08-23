@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Timestamp;
 import java.time.LocalTime;
 
 @Entity
@@ -28,12 +29,12 @@ public class Message extends BaseEntity<Long> {
 
 
     @CreationTimestamp
-    private LocalTime sentAt;
+    private Timestamp sentAt;
 
     public Message() {
     }
 
-    public Message(Long id, String text, boolean isRead, User sender, User receiver, LocalTime sentAt) {
+    public Message(Long id, String text, boolean isRead, User sender, User receiver, Timestamp sentAt) {
         super(id);
         this.text = text;
         this.isRead = isRead;
@@ -74,11 +75,11 @@ public class Message extends BaseEntity<Long> {
         this.receiver = receiver;
     }
 
-    public LocalTime getSentAt() {
+    public Timestamp getSentAt() {
         return sentAt;
     }
 
-    public void setSentAt(LocalTime sentAt) {
+    public void setSentAt(Timestamp sentAt) {
         this.sentAt = sentAt;
     }
 }

@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class ExpertServiceImpl implements ExpertService {
@@ -51,50 +50,28 @@ public class ExpertServiceImpl implements ExpertService {
     @Override
     @Transactional
     public void saveExpert(ExpertCreationDto param) throws DuringSaveException {
-        Expert expert=expertMapper.expertCreationDtoToExpert(param);
+        Expert expert = expertMapper.expertCreationDtoToExpert(param);
         Expert saveExpert = daoRepositories.getExpertRepository().save(expert);
-        if (saveExpert.getId()==null){
+        if (saveExpert.getId() == null) {
             throw new DuringSaveException("new record doesn't save");
         }
     }
-
 
     @Override
     public boolean isExistsExpertByValue(ExpertCreationDto param) {
         return userService.isUserExistsByValue(
                 param.getNationalCode(), param.getEmail(), param.getPhoneNumber()
-        );  
+        );
     }
 
     @Override
     public void makeJoinRequest(ExpBrParam param) throws Exception {
         Long userId = param.getUserId();
         Long branchId = param.getBranchId();
-        ExpertBranchRequest expBr = new ExpertBranchRequest();
 
-        Branch foundBranch = branchService.findBranchById(branchId);
-        Expert foundExpert = findExpert(userId);
-       if (foundExpert.isIsDeleted())
-           throw new UserExistsException("it's seems to like the user was deleted.");
-       if (!foundExpert.isActive())
-           throw new ActivationException("it seems to like user does not active yet.");
-        if (branchService.isBranchFullyRegistered(foundBranch)) {
-            if (expertBranchService.countOfRequestByExpertId(userId) > 5)
-                throw new RequestLimitExceededException("You can't send more than 5 requests");
+        ExpertBranchRequest expBr = createExpertBranchRequest(userId, branchId);
 
-            if (isExpertExistsInBranch(userId, foundBranch))
-                throw new UserExistsException("You already joined this branch");
-
-            if (!foundBranch.isStatus())
-                throw new LicenseStatusException("Store is not active yet");
-
-
-            expBr.setExpert(foundExpert);
-            expBr.setBranch(foundBranch);
-            expertBranchService.saveJoinRequest(expBr);
-        } else {
-            throw new NotFullyRegisteredException("Store is not initialized");
-        }
+        expertBranchService.saveJoinRequest(expBr);
     }
 
 
@@ -116,10 +93,57 @@ public class ExpertServiceImpl implements ExpertService {
         return allBranchByStatusTrue.map(branchMapper::branchToBasicBranchDto);
     }
 
-
+    @Override
     public Expert findExpert(Long id) {
         return daoRepositories.getExpertRepository().findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Expert not found"));
     }
+
+    private ExpertBranchRequest createExpertBranchRequest(Long userId, Long branchId) throws Exception {
+        Expert foundExpert = findExpert(userId);
+        Branch foundBranch = branchService.findBranchById(branchId);
+
+        validateExpertStatus(foundExpert);
+        validateBranchStatus(foundBranch);
+        validateJoinRequestLimit(userId);
+        validateExpertBranchRelation(userId, foundBranch);
+
+        ExpertBranchRequest expBr = new ExpertBranchRequest();
+        expBr.setExpert(foundExpert);
+        expBr.setBranch(foundBranch);
+
+        return expBr;
+    }
+
+    private void validateExpertStatus(Expert expert) throws Exception {
+        if (expert.isIsDeleted()) {
+            throw new UserExistsException("It seems like the user was deleted.");
+        }
+        if (!expert.isActive()) {
+            throw new ActivationException("It seems like the user is not active yet.");
+        }
+    }
+
+    private void validateBranchStatus(Branch branch) throws Exception {
+        if (!branch.isStatus()) {
+            throw new LicenseStatusException("The store is not active yet.");
+        }
+    }
+
+    private void validateJoinRequestLimit(Long userId) throws Exception {
+        if (expertBranchService.countOfRequestByExpertId(userId) > 5) {
+            throw new RequestLimitExceededException("You can't send more than 5 requests.");
+        }
+    }
+
+    private void validateExpertBranchRelation(Long userId, Branch branch) throws Exception {
+        if (isExpertExistsInBranch(userId, branch)) {
+            throw new UserExistsException("You have already joined this branch.");
+        }
+        if (!branchService.isBranchFullyRegistered(branch)) {
+            throw new NotFullyRegisteredException("The store is not fully initialized.");
+        }
+    }
+
 
 }

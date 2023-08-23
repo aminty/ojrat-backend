@@ -15,15 +15,23 @@ public class BasicBranchDto {
 
     private String description;
 
+    private String uniqueName;
+
     public BasicBranchDto() {
     }
 
-    public BasicBranchDto(Long id, String name, String location, String phone, String description) {
+    public BasicBranchDto(Long id,
+                          String name,
+                          String location,
+                          String phone,
+                          String description,
+                          String uniqueName) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.phone = phone;
         this.description = description;
+        this.uniqueName=uniqueName;
     }
 
     public Long getId() {
@@ -64,5 +72,13 @@ public class BasicBranchDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUniqueName() {
+        return uniqueName;
+    }
+
+    public void setUniqueName(String uniqueName) {
+        this.uniqueName = uniqueName;
     }
 }

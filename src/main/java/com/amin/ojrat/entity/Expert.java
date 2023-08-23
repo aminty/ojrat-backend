@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class Expert extends User {
     public Expert(Long id, String firstName, String lastName,
                   String email, String password, String nationalCode,
                   String address, String phoneNumber,
-                   LocalTime createdAt, List<Branch> branches, List<ExpertBranchRequest> branchRequests) {
+                  Timestamp createdAt, List<Branch> branches, List<ExpertBranchRequest> branchRequests) {
         super(id, firstName, lastName, email, password, nationalCode,
                 address, phoneNumber, createdAt);
         this.branches = branches;

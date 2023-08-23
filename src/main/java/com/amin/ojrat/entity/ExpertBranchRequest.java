@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
@@ -25,10 +26,10 @@ public class ExpertBranchRequest extends BaseEntity<Long> {
     private boolean approved;
 
     @CreationTimestamp
-    private LocalDate createdAt;
+    private Timestamp createdAt;
 
     @UpdateTimestamp
-    private LocalDate updatedAt;
+    private Timestamp updatedAt;
 
     public ExpertBranchRequest() {
     }
@@ -64,19 +65,19 @@ public class ExpertBranchRequest extends BaseEntity<Long> {
         this.approved = approved;
     }
 
-    public LocalDate getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDate getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDate updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
