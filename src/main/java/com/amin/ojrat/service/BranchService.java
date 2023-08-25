@@ -8,6 +8,8 @@ import com.amin.ojrat.dto.entity.product.ProductCreationDto;
 import com.amin.ojrat.dto.entity.product.ProductModificationDto;
 import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Product;
+import com.amin.ojrat.exception.ChangeStatusException;
+import com.amin.ojrat.exception.DeletionException;
 import com.amin.ojrat.exception.UniqueNameException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,12 +36,9 @@ public interface BranchService {
 
     List<ExpBrBasicResult> getAllJoinRequest(Long branchId);
 
-    void deleteRequest(ExpBrParam param);
-    ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param);
+    void deleteRequest(Long requestId) throws DeletionException;
+    ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) throws ChangeStatusException;
 
 
-
-
-
-
+    void save(Branch branch);
 }

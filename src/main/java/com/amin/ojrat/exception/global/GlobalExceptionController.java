@@ -104,5 +104,17 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(errorResponse,HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(DeletionException.class)
+    public ResponseEntity<DefaultResponse> activationException(DeletionException ex){
+        DefaultResponse errorResponse = new DefaultResponse(-13,ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<>(errorResponse,HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(ChangeStatusException.class)
+    public ResponseEntity<DefaultResponse> activationException(ChangeStatusException ex){
+        DefaultResponse errorResponse = new DefaultResponse(-14,ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<>(errorResponse,HttpStatus.NOT_ACCEPTABLE);
+    }
+
 }
 

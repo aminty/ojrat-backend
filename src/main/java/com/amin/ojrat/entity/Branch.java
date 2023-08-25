@@ -26,7 +26,7 @@ public class Branch extends BaseEntity<Long> {
     private String uniqueName;
 
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Admin admin;
 
     @ManyToMany(mappedBy = "branches")
@@ -35,7 +35,7 @@ public class Branch extends BaseEntity<Long> {
     @OneToMany(mappedBy = "branch",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Product> products;
 
-    @OneToMany(mappedBy = "branch",orphanRemoval = true)
+    @OneToMany(mappedBy = "branch",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ExpertBranchRequest> requests;
 
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -84,6 +84,11 @@ public class Branch extends BaseEntity<Long> {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.uniqueName=uniqueName ;
+    }
+
+    public void addToExpertList(Expert expert) {
+        this.experts.add(expert);
+        expert.getBranches().add(this);
     }
 
     public String getName() {
@@ -189,4 +194,6 @@ public class Branch extends BaseEntity<Long> {
     public void setExpertDiscounts(List<ExpertDiscount> expertDiscounts) {
         this.expertDiscounts = expertDiscounts;
     }
+
+
 }

@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class ExpBrBasicResult {
+    Long id;
 
     Long expertId;
 
@@ -27,7 +28,8 @@ public class ExpBrBasicResult {
     public ExpBrBasicResult() {
     }
 
-    public ExpBrBasicResult(Long expertId,
+    public ExpBrBasicResult(Long id,
+                            Long expertId,
                             Long branchId,
                             String branchName,
                             String expertName,
@@ -43,6 +45,15 @@ public class ExpBrBasicResult {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.expertLastName=expertLastName;
+        this.id=id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getExpertId() {

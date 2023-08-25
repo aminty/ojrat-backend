@@ -6,11 +6,13 @@ import com.amin.ojrat.dto.entity.branch.response.BasicBranchDto;
 import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDto;
 import com.amin.ojrat.dto.mapper.BranchMapper;
 import com.amin.ojrat.dto.mapper.ExpertMapper;
-import com.amin.ojrat.entity.*;
+import com.amin.ojrat.entity.Branch;
+import com.amin.ojrat.entity.Expert;
+import com.amin.ojrat.entity.ExpertBranchRequest;
 import com.amin.ojrat.exception.*;
 import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.BranchService;
-import com.amin.ojrat.service.ExpertBranchService;
+import com.amin.ojrat.service.ExpertBranchRequestService;
 import com.amin.ojrat.service.ExpertService;
 import com.amin.ojrat.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,7 +30,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     private final UserService userService;
     private final BranchService branchService;
-    private final ExpertBranchService expertBranchService;
+    private final ExpertBranchRequestService expertBranchService;
     private final DaoRepositories daoRepositories;
     private final ExpertMapper expertMapper;
     private final BranchMapper branchMapper;
@@ -36,7 +38,7 @@ public class ExpertServiceImpl implements ExpertService {
     @Autowired
     public ExpertServiceImpl(UserService userService,
                              BranchService branchService,
-                             ExpertBranchService expertBranchService,
+                             ExpertBranchRequestService expertBranchService,
                              DaoRepositories daoRepositories,
                              ExpertMapper expertMapper, BranchMapper branchMapper) {
         this.userService = userService;
@@ -66,7 +68,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public void makeJoinRequest(ExpBrParam param) throws Exception {
-        Long userId = param.getUserId();
+        Long userId = param.getExpertId();
         Long branchId = param.getBranchId();
         checkIfRequestIsExistsThenThrow(param);
         ExpertBranchRequest expBr = createExpertBranchRequest(userId, branchId);
@@ -76,7 +78,7 @@ public class ExpertServiceImpl implements ExpertService {
     private void checkIfRequestIsExistsThenThrow(ExpBrParam param)
             throws RequestLimitExceededException {
         boolean checkExists =
-                expertBranchService.isExistRequestToBranchByThisUserId(param);
+                expertBranchService.isExistRequestByExpertAndBranchIds(param);
         if (checkExists)
             throw new RequestLimitExceededException("you already have request for this branch");
 

@@ -5,26 +5,26 @@ import jakarta.validation.constraints.NotNull;
 
 public class ExpBrParam {
 
-    @NotNull(message = "user id should not be null")
-    Long userId;
+    @NotNull(message = "expert id should not be null")
+    Long expertId;
 
     @NotNull(message = "branch id should not be null")
     Long branchId;
 
-    public ExpBrParam(Long userId, Long branchId) {
-        this.userId = userId;
-        this.branchId = branchId;
-    }
-
     public ExpBrParam() {
     }
 
-    public Long getUserId() {
-        return userId;
+    public ExpBrParam(Long expertId, Long branchId) {
+        this.expertId = expertId;
+        this.branchId = branchId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public Long getExpertId() {
+        return expertId;
+    }
+
+    public void setExpertId(Long expertId) {
+        this.expertId = expertId;
     }
 
     public Long getBranchId() {

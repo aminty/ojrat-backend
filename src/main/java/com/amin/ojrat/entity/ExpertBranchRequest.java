@@ -14,11 +14,11 @@ import java.time.LocalDate;
 @Entity
 public class ExpertBranchRequest extends BaseEntity<Long> {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expert_id")
     private Expert expert;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
     private Branch branch;
 

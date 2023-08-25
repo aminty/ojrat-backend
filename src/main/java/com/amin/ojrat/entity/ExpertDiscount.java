@@ -2,15 +2,16 @@ package com.amin.ojrat.entity;
 
 import com.amin.ojrat.base.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 
 @Entity
 public class ExpertDiscount extends BaseEntity<Long> {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Expert expert;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Branch branch;
 
     private double discountPercentage;

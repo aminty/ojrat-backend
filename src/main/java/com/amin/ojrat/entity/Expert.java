@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Expert extends User {
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "expert_branch",
             joinColumns = @JoinColumn(name = "expert_id"),

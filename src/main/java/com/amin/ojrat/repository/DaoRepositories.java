@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
-import jakarta.persistence.*;
 
 
 @Repository
@@ -23,7 +22,8 @@ public class DaoRepositories {
                            IUserRepository userRepository,
                            IBranchRepository branchRepository,
                            ICustomUserRepository customUserRepository,
-                           IExpertBranchRepository expertBranchRepository) {
+                           IExpertBranchRequestRepository expertBranchRepository,
+                           IExpertDiscountRepository expertDiscountRepository) {
         this.adminRepository = adminRepository;
         this.expertRepository = expertRepository;
         this.messageRepository = messageRepository;
@@ -34,6 +34,7 @@ public class DaoRepositories {
         this.branchRepository = branchRepository;
         this.customUserRepository = customUserRepository;
         this.expertBranchRepository=expertBranchRepository;
+        this.expertDiscountRepository=expertDiscountRepository;
     }
 
 
@@ -58,7 +59,9 @@ public class DaoRepositories {
 
     private ICustomUserRepository customUserRepository;
 
-    private IExpertBranchRepository expertBranchRepository;
+    private IExpertBranchRequestRepository expertBranchRepository;
+
+    private IExpertDiscountRepository expertDiscountRepository;
 
     public IAdminRepository getAdminRepository() {
         return adminRepository;
@@ -96,7 +99,11 @@ public class DaoRepositories {
         return customUserRepository;
     }
 
-    public IExpertBranchRepository getExpertBranchRepository() {
+    public IExpertBranchRequestRepository getExpertBranchRequestRepository() {
         return expertBranchRepository;
+    }
+
+    public IExpertDiscountRepository getExpertDiscountRepository() {
+        return expertDiscountRepository;
     }
 }

@@ -4,11 +4,12 @@ import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationParam;
 import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
 import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
 import com.amin.ojrat.entity.ExpertBranchRequest;
-import org.springframework.data.domain.Page;
+import com.amin.ojrat.exception.ChangeStatusException;
+import com.amin.ojrat.exception.DeletionException;
 
 import java.util.List;
 
-public interface ExpertBranchService {
+public interface ExpertBranchRequestService {
 
 
     void saveJoinRequest(ExpertBranchRequest expBr);
@@ -19,9 +20,11 @@ public interface ExpertBranchService {
 
     List<ExpBrBasicResult> findAllRequestByBranchId(Long branchId);
 
-    boolean isExistRequestToBranchByThisUserId(ExpBrParam param);
+    boolean isExistRequest(Long requestId);
 
-    void deleteRequest(ExpBrParam param );
+    boolean isExistRequestByExpertAndBranchIds(ExpBrParam param);
 
-    ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param);
+    void deleteRequest(Long requestId) throws DeletionException;
+
+    ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) throws ChangeStatusException;
 }

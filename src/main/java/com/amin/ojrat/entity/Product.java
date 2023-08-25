@@ -33,7 +33,7 @@ public class Product extends BaseEntity<Long> {
      @UpdateTimestamp
      private Timestamp updatedAt;
 
-     @ManyToOne
+     @ManyToOne(fetch = FetchType.LAZY)
      private Branch branch;
 
     @Lob

@@ -1,7 +1,6 @@
 package com.amin.ojrat.service.impl;
 
 import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationParam;
-import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
 import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
 import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
 import com.amin.ojrat.dto.entity.product.ProductCreationDto;
@@ -9,11 +8,13 @@ import com.amin.ojrat.dto.entity.product.ProductModificationDto;
 import com.amin.ojrat.dto.mapper.ProductMapper;
 import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Product;
+import com.amin.ojrat.exception.ChangeStatusException;
+import com.amin.ojrat.exception.DeletionException;
 import com.amin.ojrat.exception.NotFullyRegisteredException;
 import com.amin.ojrat.exception.UniqueNameException;
 import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.BranchService;
-import com.amin.ojrat.service.ExpertBranchService;
+import com.amin.ojrat.service.ExpertBranchRequestService;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,18 +29,22 @@ public class BranchServiceImpl implements BranchService {
 
     private final DaoRepositories daoRepositories;
     private final ProductMapper productMapper;
-    private final ExpertBranchService expertBranchService;
+    private final ExpertBranchRequestService expertBranchRequestService;
+
 
     @Autowired
-    public BranchServiceImpl(DaoRepositories daoRepositories, ProductMapper productMapper, ExpertBranchService expertBranchService) {
+    public BranchServiceImpl(DaoRepositories daoRepositories,
+                             ProductMapper productMapper,
+                             ExpertBranchRequestService expertBranchRequestService) {
         this.daoRepositories = daoRepositories;
         this.productMapper = productMapper;
-        this.expertBranchService = expertBranchService;
+        this.expertBranchRequestService = expertBranchRequestService;
+
     }
 
     @Override
     public void saveProductToBranch(ProductCreationDto param) throws NotFullyRegisteredException {
-        Branch branch = findBranchByIdOrThrow(param.getBranchId(), "Branch not found.");
+        Branch branch = findBranchById(param.getBranchId());
 
         Product product = productMapper.productDtoToProduct(param);
         branch.getProducts().add(product);
@@ -54,7 +59,7 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public void editBranchEditInfo(BranchInfoModificationDto param) throws UniqueNameException {
-        Branch existBranch = findBranchByIdOrThrow(param.getId(), "Branch not found.");
+        Branch existBranch = findBranchById(param.getId());
         if (!Objects.equals(param.getUniqueName(), existBranch.getUniqueName()))
             checkUniqueNameAndThrow(param.getUniqueName());
         updateBranchInfo(existBranch, param);
@@ -79,7 +84,8 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public Branch findBranchById(Long id) {
-        return findBranchByIdOrThrow(id, "Branch not found exception");
+        return daoRepositories.getBranchRepository().findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Branch not found exception"));
     }
 
     @Override
@@ -90,27 +96,26 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public List<ExpBrBasicResult> getAllJoinRequest(Long branchId) {
         if (daoRepositories.getBranchRepository().existsById(branchId))
-            return expertBranchService.findAllRequestByBranchId(branchId);
+            return expertBranchRequestService.findAllRequestByBranchId(branchId);
         else throw new EntityNotFoundException("branch not found");
     }
 
     @Override
-    public void deleteRequest(ExpBrParam param) {
-        expertBranchService.deleteRequest(param);
+    public void deleteRequest(Long requestId) throws DeletionException {
+        expertBranchRequestService.deleteRequest(requestId);
 
     }
 
     @Override
-    public ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) {
-        return expertBranchService.changeRequestStatus(param);
+    public ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) throws ChangeStatusException {
+       return expertBranchRequestService.changeRequestStatus(param);
     }
 
-
-
-    private Branch findBranchByIdOrThrow(Long id, String errorMessage) {
-        return daoRepositories.getBranchRepository().findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(errorMessage));
+    @Override
+    public void save(Branch branch) {
+        daoRepositories.getBranchRepository().save(branch);
     }
+
 
     private void checkUniqueNameAndThrow(String uniqueName) throws UniqueNameException {
         if (daoRepositories.getBranchRepository().existsBranchByUniqueName(uniqueName)) {

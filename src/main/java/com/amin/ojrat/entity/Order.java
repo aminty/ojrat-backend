@@ -15,13 +15,13 @@ import java.util.List;
 public class Order extends BaseEntity<Long> {
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Expert expert;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Service> services;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Product> products;
 
     private OrderStatus status;

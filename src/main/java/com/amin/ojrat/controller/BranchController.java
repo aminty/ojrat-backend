@@ -6,6 +6,8 @@ import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
 import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
 import com.amin.ojrat.dto.entity.product.ProductCreationDto;
 import com.amin.ojrat.dto.entity.product.ProductModificationDto;
+import com.amin.ojrat.exception.ChangeStatusException;
+import com.amin.ojrat.exception.DeletionException;
 import com.amin.ojrat.exception.UniqueNameException;
 import com.amin.ojrat.service.ServiceRegistry;
 import jakarta.validation.Valid;
@@ -50,23 +52,24 @@ public class BranchController {
         return new ResponseEntity<>("branch info updated successfully!",HttpStatus.OK);
     }
 
-    @GetMapping("/get-all-requests/{branchId}")
+    @GetMapping("/request/get-all/{branchId}")
     public ResponseEntity<List<ExpBrBasicResult>> getAllRequests(@PathVariable Long branchId){
         List<ExpBrBasicResult> resultList = serviceRegistry.getBranchService().getAllJoinRequest(branchId);
         if (resultList.isEmpty()) return new ResponseEntity<>(resultList,HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(resultList,HttpStatus.OK);
     }
 
-    @PostMapping("/request/delete")
-    public ResponseEntity<String> deleteRequest(@Valid @RequestBody ExpBrParam param){
-        serviceRegistry.getExpertBranchService().deleteRequest(param);
+    @GetMapping("/request/delete/{requestId}")
+    public ResponseEntity<String> deleteRequest(@PathVariable Long requestId) throws DeletionException {
+        serviceRegistry.getBranchService().deleteRequest(requestId);
         return new ResponseEntity<>("request was deleted successfully!",HttpStatus.OK);
 
     }
 
-    @PostMapping("/request/status")
-    public ResponseEntity<String> deleteRequest(@Valid @RequestBody ExpBrActivationParam param){
-        serviceRegistry.getExpertBranchService().changeRequestStatus(param);
+    @PostMapping("/request/accept")
+    public ResponseEntity<String> deleteRequest(@Valid @RequestBody ExpBrActivationParam param)
+            throws ChangeStatusException {
+        serviceRegistry.getBranchService().changeRequestStatus(param);
         return new ResponseEntity<>("request was updated successfully!",HttpStatus.OK);
 
     }
