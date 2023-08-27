@@ -23,6 +23,7 @@ public interface ExpertService {
 
     void saveExpert(ExpertCreationDto param) throws DuringSaveException;
 
+    void updateExpert(Expert expert);
 
     boolean isExistsExpertByValue(ExpertCreationDto param);
 

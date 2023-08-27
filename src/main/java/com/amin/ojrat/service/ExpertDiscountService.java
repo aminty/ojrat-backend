@@ -4,7 +4,10 @@ import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Expert;
 
 public interface ExpertDiscountService {
-    void setDiscountForExpert(Branch branch, Expert expert, double discount);
 
-    boolean isExistsDiscountForThisExpertInBranch(Long id, Long id1);
+    boolean isExistsDiscountForThisExpertInBranch(Long branchId, Long expertId);
+
+    void deleteDiscountByIds(Long expertId,Long branchId);
+
+
 }

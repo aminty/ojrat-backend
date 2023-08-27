@@ -1,7 +1,7 @@
 package com.amin.ojrat.dto.mapper;
 
-import com.amin.ojrat.dto.entity.product.ProductCreationDto;
-import com.amin.ojrat.dto.entity.product.ProductModificationDto;
+import com.amin.ojrat.dto.entity.product.request.ProductCreationDto;
+import com.amin.ojrat.dto.entity.product.request.ProductModificationDto;
 import com.amin.ojrat.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

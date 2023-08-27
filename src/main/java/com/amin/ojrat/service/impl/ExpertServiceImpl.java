@@ -17,6 +17,7 @@ import com.amin.ojrat.service.ExpertService;
 import com.amin.ojrat.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Autowired
     public ExpertServiceImpl(UserService userService,
-                             BranchService branchService,
+                             @Lazy BranchService branchService,
                              ExpertBranchRequestService expertBranchService,
                              DaoRepositories daoRepositories,
                              ExpertMapper expertMapper, BranchMapper branchMapper) {
@@ -57,6 +58,11 @@ public class ExpertServiceImpl implements ExpertService {
         if (saveExpert.getId() == null) {
             throw new DuringSaveException("new record doesn't save");
         }
+    }
+
+    @Override
+    public void updateExpert(Expert expert) {
+        daoRepositories.getExpertRepository().save(expert);
     }
 
     @Override

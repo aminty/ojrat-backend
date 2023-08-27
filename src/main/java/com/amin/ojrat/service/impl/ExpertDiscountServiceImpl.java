@@ -19,21 +19,28 @@ public class ExpertDiscountServiceImpl implements ExpertDiscountService {
     }
 
 
-    @Override
-    public void setDiscountForExpert(Branch branch, Expert expert, double discount) {
-        if (!isExistsDiscountForThisExpertInBranch(branch.getId(), expert.getId())) {
-            ExpertDiscount expertDiscount = new ExpertDiscount();
-            expertDiscount.setExpert(expert);
-            expertDiscount.setBranch(branch);
-            expertDiscount.setDiscountPercentage(discount);
-            daoRepositories.getExpertDiscountRepository().save(expertDiscount);
-        }
-    }
+//    @Override
+//    public void setDiscountForExpert(Branch branch, Expert expert, double discount) {
+//        if (!isExistsDiscountForThisExpertInBranch(branch.getId(), expert.getId())) {
+//            ExpertDiscount expertDiscount = new ExpertDiscount();
+//            expertDiscount.setExpert(expert);
+//            expertDiscount.setBranch(branch);
+//            expertDiscount.setDiscountPercentage(discount);
+//            daoRepositories.getExpertDiscountRepository().save(expertDiscount);
+//        }
+//    }
 
     @Override
     public boolean isExistsDiscountForThisExpertInBranch(Long branchId, Long expertId) {
         return daoRepositories
                 .getExpertDiscountRepository()
                 .existsByBranch_IdAndExpert_Id(branchId, expertId);
+    }
+
+    @Override
+    public void deleteDiscountByIds(Long expertId, Long branchId) {
+        if (daoRepositories.getExpertDiscountRepository().existsByBranch_IdAndExpert_Id(branchId,expertId))
+                 daoRepositories.getExpertDiscountRepository().deleteByExpert_IdAndBranch_Id(expertId,branchId);
+
     }
 }

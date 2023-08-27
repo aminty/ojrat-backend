@@ -4,8 +4,8 @@ import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationParam;
 import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
 import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
 import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
-import com.amin.ojrat.dto.entity.product.ProductCreationDto;
-import com.amin.ojrat.dto.entity.product.ProductModificationDto;
+import com.amin.ojrat.dto.entity.product.request.ProductCreationDto;
+import com.amin.ojrat.dto.entity.product.request.ProductModificationDto;
 import com.amin.ojrat.exception.ChangeStatusException;
 import com.amin.ojrat.exception.DeletionException;
 import com.amin.ojrat.exception.UniqueNameException;
@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.relation.RelationNotFoundException;
 import java.util.List;
 
 @RestController
@@ -71,6 +72,14 @@ public class BranchController {
             throws ChangeStatusException {
         serviceRegistry.getBranchService().changeRequestStatus(param);
         return new ResponseEntity<>("request was updated successfully!",HttpStatus.OK);
+
+    }
+
+    @PostMapping("/remove-joined-expert")
+    public ResponseEntity<String> removeJoinedExpert(@Valid @RequestBody ExpBrParam param)
+            throws RelationNotFoundException {
+        serviceRegistry.getBranchService().removeExpertFromBranch(param.getExpertId(), param.getBranchId());
+        return new ResponseEntity<>("user removed from branch",HttpStatus.OK);
 
     }
 

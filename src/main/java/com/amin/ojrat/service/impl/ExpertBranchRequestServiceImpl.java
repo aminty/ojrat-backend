@@ -113,6 +113,19 @@ public class ExpertBranchRequestServiceImpl implements ExpertBranchRequestServic
     }
 
     @Override
+    public void deleteRequestByIdsInsideExpertRelationDeletionInBranchService(Long expertId, Long branchID) {
+        boolean isExists = daoRepositories
+                .getExpertBranchRequestRepository()
+                .existsByExpert_IdAndBranch_Id(expertId, branchID);
+        if (isExists)
+            daoRepositories
+                    .getExpertBranchRequestRepository()
+                    .deleteByExpert_IdAndBranch_Id(expertId, branchID);
+
+
+    }
+
+    @Override
     @Transactional
     public ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) throws ChangeStatusException {
         Optional<ExpertBranchRequest> foundRequest
@@ -123,17 +136,26 @@ public class ExpertBranchRequestServiceImpl implements ExpertBranchRequestServic
                 throw new ChangeStatusException("you could not reject the accepted request!");
             if (!request.isApproved() && param.isStatus()) {
                 request.setApproved(param.isStatus());
-                ExpertDiscount discount = new ExpertDiscount();
-                discount.setExpert(request.getExpert());
-                discount.setBranch(request.getBranch());
-                discount.setDiscountPercentage(0);
-                request.getBranch().addExpertDiscount(discount);
-                request.getBranch().addToExpertList(request.getExpert());
+                setDiscount(request);
                 branchService.save(request.getBranch());
             }
-                return expertBranchMapper.expertBranchToExpBrBasicResult(request);
+            return expertBranchMapper.expertBranchToExpBrBasicResult(request);
         }
         throw new EntityNotFoundException("request not found");
+    }
+
+    private void setDiscount(ExpertBranchRequest request) {
+        boolean result = expertDiscountService.isExistsDiscountForThisExpertInBranch(
+                request.getBranch().getId()
+                , request.getExpert().getId());
+        if (!result) {
+            ExpertDiscount discount = new ExpertDiscount();
+            discount.setExpert(request.getExpert());
+            discount.setBranch(request.getBranch());
+            discount.setDiscountPercentage(0);
+            request.getBranch().addExpertDiscount(discount);
+            request.getBranch().addToExpertList(request.getExpert());
+        }
     }
 
 }

@@ -26,5 +26,7 @@ public interface ExpertBranchRequestService {
 
     void deleteRequest(Long requestId) throws DeletionException;
 
+    void deleteRequestByIdsInsideExpertRelationDeletionInBranchService(Long expertId,Long branchID );
+
     ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) throws ChangeStatusException;
 }

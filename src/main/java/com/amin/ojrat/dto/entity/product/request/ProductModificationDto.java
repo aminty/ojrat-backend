@@ -1,4 +1,4 @@
-package com.amin.ojrat.dto.entity.product;
+package com.amin.ojrat.dto.entity.product.request;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

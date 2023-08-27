@@ -3,10 +3,11 @@ package com.amin.ojrat.service.impl;
 import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationParam;
 import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
 import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
-import com.amin.ojrat.dto.entity.product.ProductCreationDto;
-import com.amin.ojrat.dto.entity.product.ProductModificationDto;
+import com.amin.ojrat.dto.entity.product.request.ProductCreationDto;
+import com.amin.ojrat.dto.entity.product.request.ProductModificationDto;
 import com.amin.ojrat.dto.mapper.ProductMapper;
 import com.amin.ojrat.entity.Branch;
+import com.amin.ojrat.entity.Expert;
 import com.amin.ojrat.entity.Product;
 import com.amin.ojrat.exception.ChangeStatusException;
 import com.amin.ojrat.exception.DeletionException;
@@ -15,12 +16,16 @@ import com.amin.ojrat.exception.UniqueNameException;
 import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.BranchService;
 import com.amin.ojrat.service.ExpertBranchRequestService;
+import com.amin.ojrat.service.ExpertDiscountService;
+import com.amin.ojrat.service.ExpertService;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.relation.RelationNotFoundException;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,16 +35,19 @@ public class BranchServiceImpl implements BranchService {
     private final DaoRepositories daoRepositories;
     private final ProductMapper productMapper;
     private final ExpertBranchRequestService expertBranchRequestService;
+    private final ExpertService expertService;
+    private final ExpertDiscountService discountService;
 
 
     @Autowired
     public BranchServiceImpl(DaoRepositories daoRepositories,
                              ProductMapper productMapper,
-                             ExpertBranchRequestService expertBranchRequestService) {
+                             ExpertBranchRequestService expertBranchRequestService, ExpertService expertService, ExpertDiscountService discountService) {
         this.daoRepositories = daoRepositories;
         this.productMapper = productMapper;
         this.expertBranchRequestService = expertBranchRequestService;
-
+        this.expertService = expertService;
+        this.discountService = discountService;
     }
 
     @Override
@@ -106,9 +114,32 @@ public class BranchServiceImpl implements BranchService {
 
     }
 
+
+    @Override
+    @Transactional
+    public void removeExpertFromBranch(Long expertId, Long branchId) throws RelationNotFoundException {
+        Expert foundExpert = expertService.findExpert(expertId);
+        Branch foundBranch = new Branch();
+        foundBranch.setId(branchId);
+        boolean isRelationExists = foundExpert
+                .getBranches()
+                .stream()
+                .anyMatch(branch -> Objects.equals(branch.getId(), branchId));
+        if (isRelationExists){
+            foundBranch=findBranchById(branchId);
+            foundExpert.getBranches().remove(foundBranch);
+            expertService
+                    .updateExpert(foundExpert);
+            expertBranchRequestService
+                    .deleteRequestByIdsInsideExpertRelationDeletionInBranchService(expertId,branchId);
+            discountService.deleteDiscountByIds(expertId,branchId);
+        }else throw new RelationNotFoundException("no relation found for this expert");
+
+    }
+
     @Override
     public ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) throws ChangeStatusException {
-       return expertBranchRequestService.changeRequestStatus(param);
+        return expertBranchRequestService.changeRequestStatus(param);
     }
 
     @Override
@@ -138,6 +169,7 @@ public class BranchServiceImpl implements BranchService {
         existProduct.setExist(updatedProduct.isExist());
         existProduct.setImage(updatedProduct.getImage());
     }
+
     private void updateBranchInfo(Branch branch, BranchInfoModificationDto param) {
         branch.setUniqueName(param.getUniqueName());
         branch.setDescription(param.getDescription());
@@ -146,6 +178,7 @@ public class BranchServiceImpl implements BranchService {
         branch.setPhone(param.getPhone());
         branch.setStatus(true);
     }
+
     @Override
     public boolean isBranchFullyRegistered(Branch branch) {
         return branch.getDescription() != null

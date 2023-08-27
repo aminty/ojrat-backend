@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.management.relation.RelationNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +115,11 @@ public class GlobalExceptionController {
     public ResponseEntity<DefaultResponse> activationException(ChangeStatusException ex){
         DefaultResponse errorResponse = new DefaultResponse(-14,ex.getMessage(),new ArrayList<>());
         return new ResponseEntity<>(errorResponse,HttpStatus.NOT_ACCEPTABLE);
+    }
+    @ExceptionHandler(RelationNotFoundException.class)
+    public ResponseEntity<DefaultResponse> activationException(RelationNotFoundException ex){
+        DefaultResponse errorResponse = new DefaultResponse(-15,ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
     }
 
 }
