@@ -1,9 +1,9 @@
 package com.amin.ojrat.service.impl;
 
-import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
-import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
-import com.amin.ojrat.dto.entity.branch.response.BasicBranchDto;
-import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDto;
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrDtoParam;
+import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicDtoResult;
+import com.amin.ojrat.dto.entity.branch.response.BasicBranchDtoResult;
+import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDtoParam;
 import com.amin.ojrat.dto.mapper.BranchMapper;
 import com.amin.ojrat.dto.mapper.ExpertMapper;
 import com.amin.ojrat.entity.Branch;
@@ -52,7 +52,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     @Transactional
-    public void saveExpert(ExpertCreationDto param) throws DuringSaveException {
+    public void saveExpert(ExpertCreationDtoParam param) throws DuringSaveException {
         Expert expert = expertMapper.expertCreationDtoToExpert(param);
         Expert saveExpert = daoRepositories.getExpertRepository().save(expert);
         if (saveExpert.getId() == null) {
@@ -66,14 +66,14 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public boolean isExistsExpertByValue(ExpertCreationDto param) {
+    public boolean isExistsExpertByValue(ExpertCreationDtoParam param) {
         return userService.isUserExistsByValue(
                 param.getNationalCode(), param.getEmail(), param.getPhoneNumber()
         );
     }
 
     @Override
-    public void makeJoinRequest(ExpBrParam param) throws Exception {
+    public void makeJoinRequest(ExpBrDtoParam param) throws Exception {
         Long userId = param.getExpertId();
         Long branchId = param.getBranchId();
         checkIfRequestIsExistsThenThrow(param);
@@ -81,7 +81,7 @@ public class ExpertServiceImpl implements ExpertService {
         expertBranchService.saveJoinRequest(expBr);
     }
 
-    private void checkIfRequestIsExistsThenThrow(ExpBrParam param)
+    private void checkIfRequestIsExistsThenThrow(ExpBrDtoParam param)
             throws RequestLimitExceededException {
         boolean checkExists =
                 expertBranchService.isExistRequestByExpertAndBranchIds(param);
@@ -97,14 +97,14 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public List<ExpBrBasicResult> getAllJoinRequest(Long expertId) {
+    public List<ExpBrBasicDtoResult> getAllJoinRequest(Long expertId) {
         if (daoRepositories.getExpertRepository().existsById(expertId))
             return expertBranchService.findAllRequestByExpertId(expertId);
         else throw new EntityNotFoundException("Expert not found");
     }
 
     @Override
-    public Page<BasicBranchDto> getAllAllowedBranch(Pageable pageable) {
+    public Page<BasicBranchDtoResult> getAllAllowedBranch(Pageable pageable) {
         Page<Branch> allBranchByStatusTrue = branchService.findAllBranchByStatusTrue(pageable);
         return allBranchByStatusTrue.map(branchMapper::branchToBasicBranchDto);
     }
@@ -113,6 +113,14 @@ public class ExpertServiceImpl implements ExpertService {
     public Expert findExpert(Long id) {
         return daoRepositories.getExpertRepository().findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Expert not found"));
+    }
+
+    @Override
+    public Page<BasicBranchDtoResult> findAvailableBranch(Long expertId, Pageable pageable) {
+        Page<Branch> allBranch = daoRepositories
+                .getExpertRepository()
+                .findAvailableBranchForExpertById(expertId, pageable);
+        return allBranch.map(branchMapper::branchToBasicBranchDto);
     }
 
     private ExpertBranchRequest createExpertBranchRequest(Long userId, Long branchId) throws Exception {

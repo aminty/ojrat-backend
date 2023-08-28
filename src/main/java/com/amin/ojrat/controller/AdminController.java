@@ -1,5 +1,5 @@
 package com.amin.ojrat.controller;
-import com.amin.ojrat.dto.entity.admin.request.AdminCreationDto;
+import com.amin.ojrat.dto.entity.admin.request.AdminCreationDtoParam;
 import com.amin.ojrat.exception.CreationException;
 import com.amin.ojrat.exception.UserExistsException;
 import com.amin.ojrat.service.ServiceRegistry;
@@ -23,7 +23,7 @@ public class AdminController {
     }
 
     @PostMapping("/create-admin")
-    public ResponseEntity<String> createNewAdminWithValidation(@Valid @RequestBody AdminCreationDto param) throws Exception  {
+    public ResponseEntity<String> createNewAdminWithValidation(@Valid @RequestBody AdminCreationDtoParam param) throws Exception  {
         if (param==null)
                 throw new CreationException("server receive null object!");
         if (!serviceRegistry.getAdminService().isExistsAdminByValue(param)) {

@@ -65,6 +65,13 @@ public class UserServiceImpl implements UserService {
         return phone.substring(0, 4) + "****" + phone.substring(7, 11);
     }
 
+    @Override
+    public User findUserById(Long id) {
+        return daoRepositories
+                .getUserRepository()
+                .findById(id).orElseThrow(()-> new EntityNotFoundException("user not found"));
+    }
+
     // Helper methods
 
     private User findUserForLogin(String username, String password) throws LoginAuthenticationException {

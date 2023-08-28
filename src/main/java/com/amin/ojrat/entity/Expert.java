@@ -8,11 +8,8 @@ import lombok.experimental.FieldDefaults;
 import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.List;
-
 @Entity
 @Table(name = "expert_table")
-
-
 public class Expert extends User {
 
     @ManyToMany(fetch = FetchType.LAZY)

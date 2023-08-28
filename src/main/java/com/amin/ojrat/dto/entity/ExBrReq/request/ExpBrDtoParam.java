@@ -1,9 +1,8 @@
 package com.amin.ojrat.dto.entity.ExBrReq.request;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class ExpBrParam {
+public class ExpBrDtoParam {
 
     @NotNull(message = "expert id should not be null")
     Long expertId;
@@ -11,10 +10,10 @@ public class ExpBrParam {
     @NotNull(message = "branch id should not be null")
     Long branchId;
 
-    public ExpBrParam() {
+    public ExpBrDtoParam() {
     }
 
-    public ExpBrParam(Long expertId, Long branchId) {
+    public ExpBrDtoParam(Long expertId, Long branchId) {
         this.expertId = expertId;
         this.branchId = branchId;
     }

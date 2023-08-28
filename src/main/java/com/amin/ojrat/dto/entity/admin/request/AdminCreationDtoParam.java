@@ -7,19 +7,19 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
-public class AdminCreationDto extends UserCreationDto {
+public class AdminCreationDtoParam extends UserCreationDto {
 
     @NotEmpty(message = "roles should not be blank!")
     @Enumerated(EnumType.STRING)
     private List<Role> roles;
 
-    public AdminCreationDto() {
+    public AdminCreationDtoParam() {
     }
 
-    public AdminCreationDto(String firstName, String lastName,
-                            String email, String password,
-                            String nationalCode, String address,
-                            String phoneNumber, List<Role> roles) {
+    public AdminCreationDtoParam(String firstName, String lastName,
+                                 String email, String password,
+                                 String nationalCode, String address,
+                                 String phoneNumber, List<Role> roles) {
 
         super(firstName, lastName, email, password, nationalCode, address, phoneNumber);
         this.roles = roles;

@@ -1,13 +1,16 @@
 package com.amin.ojrat.service.impl;
 
-import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationParam;
-import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
-import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationDtoParam;
+import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicDtoResult;
+import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDtoParam;
+import com.amin.ojrat.dto.entity.branch.request.ChangeDiscountDtoParam;
 import com.amin.ojrat.dto.entity.product.request.ProductCreationDto;
 import com.amin.ojrat.dto.entity.product.request.ProductModificationDto;
+import com.amin.ojrat.dto.entity.product.response.BasicProductDto;
 import com.amin.ojrat.dto.mapper.ProductMapper;
 import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Expert;
+import com.amin.ojrat.entity.ExpertDiscount;
 import com.amin.ojrat.entity.Product;
 import com.amin.ojrat.exception.ChangeStatusException;
 import com.amin.ojrat.exception.DeletionException;
@@ -66,7 +69,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public void editBranchEditInfo(BranchInfoModificationDto param) throws UniqueNameException {
+    public void editBranchEditInfo(BranchInfoModificationDtoParam param) throws UniqueNameException {
         Branch existBranch = findBranchById(param.getId());
         if (!Objects.equals(param.getUniqueName(), existBranch.getUniqueName()))
             checkUniqueNameAndThrow(param.getUniqueName());
@@ -102,7 +105,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public List<ExpBrBasicResult> getAllJoinRequest(Long branchId) {
+    public List<ExpBrBasicDtoResult> getAllJoinRequest(Long branchId) {
         if (daoRepositories.getBranchRepository().existsById(branchId))
             return expertBranchRequestService.findAllRequestByBranchId(branchId);
         else throw new EntityNotFoundException("branch not found");
@@ -138,13 +141,29 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) throws ChangeStatusException {
+    public ExpBrBasicDtoResult changeRequestStatus(ExpBrActivationDtoParam param) throws ChangeStatusException {
         return expertBranchRequestService.changeRequestStatus(param);
     }
 
     @Override
     public void save(Branch branch) {
         daoRepositories.getBranchRepository().save(branch);
+    }
+
+    @Override
+    public void changeDiscountPercent(ChangeDiscountDtoParam param) {
+        ExpertDiscount expertDiscount = discountService.findExpertDiscount(param);
+        expertDiscount.setDiscountPercentage(param.getPercent());
+        discountService.updateDiscount(expertDiscount);
+    }
+
+    @Override
+    @Transactional
+    public Page<BasicProductDto> findAvailableProduct(Long branchId, Pageable pageable) {
+        Page<Product> allProductWithBranchId = daoRepositories
+                .getBranchRepository()
+                .findAllProductWithBranchId(branchId, pageable);
+        return allProductWithBranchId.map(productMapper::productToBasicProductDto);
     }
 
 
@@ -170,7 +189,7 @@ public class BranchServiceImpl implements BranchService {
         existProduct.setImage(updatedProduct.getImage());
     }
 
-    private void updateBranchInfo(Branch branch, BranchInfoModificationDto param) {
+    private void updateBranchInfo(Branch branch, BranchInfoModificationDtoParam param) {
         branch.setUniqueName(param.getUniqueName());
         branch.setDescription(param.getDescription());
         branch.setName(param.getName());

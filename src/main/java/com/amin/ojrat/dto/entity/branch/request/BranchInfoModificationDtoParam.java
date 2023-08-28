@@ -3,7 +3,7 @@ package com.amin.ojrat.dto.entity.branch.request;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public class BranchInfoModificationDto {
+public class BranchInfoModificationDtoParam {
 
 
     @NotNull(message = "branch id should not be null")
@@ -24,16 +24,16 @@ public class BranchInfoModificationDto {
     @NotEmpty(message = "unique name should not be empty.")
     private String uniqueName;
 
-    public BranchInfoModificationDto() {
+    public BranchInfoModificationDtoParam() {
 
     }
 
-    public BranchInfoModificationDto(Long id,
-                                     String name,
-                                     String location,
-                                     String phone,
-                                     String description,
-                                     String uniqueName) {
+    public BranchInfoModificationDtoParam(Long id,
+                                          String name,
+                                          String location,
+                                          String phone,
+                                          String description,
+                                          String uniqueName) {
         this.id = id;
         this.name = name;
         this.location = location;

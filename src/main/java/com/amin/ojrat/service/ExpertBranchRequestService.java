@@ -1,8 +1,8 @@
 package com.amin.ojrat.service;
 
-import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationParam;
-import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
-import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationDtoParam;
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrDtoParam;
+import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicDtoResult;
 import com.amin.ojrat.entity.ExpertBranchRequest;
 import com.amin.ojrat.exception.ChangeStatusException;
 import com.amin.ojrat.exception.DeletionException;
@@ -16,17 +16,17 @@ public interface ExpertBranchRequestService {
 
     Long countOfRequestByExpertId(Long expertId);
 
-    List<ExpBrBasicResult> findAllRequestByExpertId(Long expertId);
+    List<ExpBrBasicDtoResult> findAllRequestByExpertId(Long expertId);
 
-    List<ExpBrBasicResult> findAllRequestByBranchId(Long branchId);
+    List<ExpBrBasicDtoResult> findAllRequestByBranchId(Long branchId);
 
     boolean isExistRequest(Long requestId);
 
-    boolean isExistRequestByExpertAndBranchIds(ExpBrParam param);
+    boolean isExistRequestByExpertAndBranchIds(ExpBrDtoParam param);
 
     void deleteRequest(Long requestId) throws DeletionException;
 
     void deleteRequestByIdsInsideExpertRelationDeletionInBranchService(Long expertId,Long branchID );
 
-    ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) throws ChangeStatusException;
+    ExpBrBasicDtoResult changeRequestStatus(ExpBrActivationDtoParam param) throws ChangeStatusException;
 }

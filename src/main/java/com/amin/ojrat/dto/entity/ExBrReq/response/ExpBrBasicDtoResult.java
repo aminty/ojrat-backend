@@ -2,9 +2,8 @@ package com.amin.ojrat.dto.entity.ExBrReq.response;
 
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
-public class ExpBrBasicResult {
+public class ExpBrBasicDtoResult {
     Long id;
 
     Long expertId;
@@ -25,18 +24,18 @@ public class ExpBrBasicResult {
 
     Timestamp updatedAt;
 
-    public ExpBrBasicResult() {
+    public ExpBrBasicDtoResult() {
     }
 
-    public ExpBrBasicResult(Long id,
-                            Long expertId,
-                            Long branchId,
-                            String branchName,
-                            String expertName,
-                            boolean requestStatus,
-                            Timestamp createdAt,
-                            Timestamp updatedAt,
-                            String expertLastName) {
+    public ExpBrBasicDtoResult(Long id,
+                               Long expertId,
+                               Long branchId,
+                               String branchName,
+                               String expertName,
+                               boolean requestStatus,
+                               Timestamp createdAt,
+                               Timestamp updatedAt,
+                               String expertLastName) {
         this.expertId = expertId;
         this.branchId = branchId;
         this.branchName = branchName;

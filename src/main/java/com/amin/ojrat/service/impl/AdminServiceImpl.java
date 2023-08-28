@@ -1,5 +1,5 @@
 package com.amin.ojrat.service.impl;
-import com.amin.ojrat.dto.entity.admin.request.AdminCreationDto;
+import com.amin.ojrat.dto.entity.admin.request.AdminCreationDtoParam;
 import com.amin.ojrat.dto.mapper.AdminMapper;
 import com.amin.ojrat.entity.Admin;
 import com.amin.ojrat.entity.Branch;
@@ -28,7 +28,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public void saveAdmin(AdminCreationDto param) throws Exception {
+    public void saveAdmin(AdminCreationDtoParam param) throws Exception {
         Admin admin = adminMapper.adminCreationDtoToAdmin(param);
         Branch branch=new Branch();
         branch.setAdmin(admin);
@@ -71,7 +71,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean isExistsAdminByValue(AdminCreationDto param) {
+    public boolean isExistsAdminByValue(AdminCreationDtoParam param) {
       return userService.isUserExistsByValue(
               param.getNationalCode(), param.getEmail(), param.getPhoneNumber()
       );

@@ -1,8 +1,8 @@
 package com.amin.ojrat.service.impl;
 
-import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationParam;
-import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrParam;
-import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationDtoParam;
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrDtoParam;
+import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicDtoResult;
 import com.amin.ojrat.dto.mapper.ExpertBranchMapper;
 import com.amin.ojrat.entity.ExpertBranchRequest;
 import com.amin.ojrat.entity.ExpertDiscount;
@@ -58,24 +58,24 @@ public class ExpertBranchRequestServiceImpl implements ExpertBranchRequestServic
     }
 
     @Override
-    public List<ExpBrBasicResult> findAllRequestByExpertId(Long expertId) {
+    public List<ExpBrBasicDtoResult> findAllRequestByExpertId(Long expertId) {
         List<ExpertBranchRequest> foundItems =
                 daoRepositories.getExpertBranchRequestRepository().findExpertBranchRequestsByExpert_Id(expertId);
-        List<ExpBrBasicResult> resultList = new ArrayList<>();
+        List<ExpBrBasicDtoResult> resultList = new ArrayList<>();
         foundItems.forEach(item -> {
-            ExpBrBasicResult result = expertBranchMapper.expertBranchToExpBrBasicResult(item);
+            ExpBrBasicDtoResult result = expertBranchMapper.expertBranchToExpBrBasicResult(item);
             resultList.add(result);
         });
         return resultList;
     }
 
     @Override
-    public List<ExpBrBasicResult> findAllRequestByBranchId(Long branchId) {
+    public List<ExpBrBasicDtoResult> findAllRequestByBranchId(Long branchId) {
         List<ExpertBranchRequest> foundItems =
                 daoRepositories.getExpertBranchRequestRepository().findExpertBranchRequestsByBranch_Id(branchId);
-        List<ExpBrBasicResult> resultList = new ArrayList<>();
+        List<ExpBrBasicDtoResult> resultList = new ArrayList<>();
         foundItems.forEach(item -> {
-            ExpBrBasicResult result = expertBranchMapper.expertBranchToExpBrBasicResult(item);
+            ExpBrBasicDtoResult result = expertBranchMapper.expertBranchToExpBrBasicResult(item);
             resultList.add(result);
         });
         return resultList;
@@ -89,7 +89,7 @@ public class ExpertBranchRequestServiceImpl implements ExpertBranchRequestServic
     }
 
     @Override
-    public boolean isExistRequestByExpertAndBranchIds(ExpBrParam param) {
+    public boolean isExistRequestByExpertAndBranchIds(ExpBrDtoParam param) {
         return daoRepositories
                 .getExpertBranchRequestRepository()
                 .existsByExpert_IdAndBranch_Id(param.getExpertId(), param.getBranchId());
@@ -127,7 +127,7 @@ public class ExpertBranchRequestServiceImpl implements ExpertBranchRequestServic
 
     @Override
     @Transactional
-    public ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) throws ChangeStatusException {
+    public ExpBrBasicDtoResult changeRequestStatus(ExpBrActivationDtoParam param) throws ChangeStatusException {
         Optional<ExpertBranchRequest> foundRequest
                 = daoRepositories.getExpertBranchRequestRepository().findById(param.getId());
         if (foundRequest.isPresent()) {

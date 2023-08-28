@@ -1,6 +1,6 @@
 package com.amin.ojrat.dto.mapper;
 
-import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
+import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicDtoResult;
 import com.amin.ojrat.entity.ExpertBranchRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,5 +14,5 @@ public interface ExpertBranchMapper {
     @Mapping(target = "expertName",source = "expert.firstName")
     @Mapping(target = "requestStatus",source = "approved")
     @Mapping(target = "expertLastName",source = "expert.lastName")
-    ExpBrBasicResult expertBranchToExpBrBasicResult(ExpertBranchRequest param);
+    ExpBrBasicDtoResult expertBranchToExpBrBasicResult(ExpertBranchRequest param);
 }

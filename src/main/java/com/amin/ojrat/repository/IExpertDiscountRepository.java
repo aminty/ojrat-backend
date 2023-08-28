@@ -12,4 +12,6 @@ public interface IExpertDiscountRepository extends JpaRepository<ExpertDiscount,
 
     void deleteByExpert_IdAndBranch_Id(Long expertId,Long branchId);
 
+    ExpertDiscount findExpertDiscountByBranch_IdAndExpert_Id(Long expertId,Long branchId);
+
 }

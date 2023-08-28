@@ -1,9 +1,6 @@
 package com.amin.ojrat.dto.entity.branch.response;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-
-public class BasicBranchDto {
+public class BasicBranchDtoResult {
 
     private Long id;
 
@@ -17,15 +14,15 @@ public class BasicBranchDto {
 
     private String uniqueName;
 
-    public BasicBranchDto() {
+    public BasicBranchDtoResult() {
     }
 
-    public BasicBranchDto(Long id,
-                          String name,
-                          String location,
-                          String phone,
-                          String description,
-                          String uniqueName) {
+    public BasicBranchDtoResult(Long id,
+                                String name,
+                                String location,
+                                String phone,
+                                String description,
+                                String uniqueName) {
         this.id = id;
         this.name = name;
         this.location = location;

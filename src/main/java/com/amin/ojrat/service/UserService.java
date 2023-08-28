@@ -3,6 +3,7 @@ package com.amin.ojrat.service;
 import com.amin.ojrat.dto.entity.user.request.UserLoginParamDto;
 import com.amin.ojrat.dto.entity.user.response.UserLoginResultDto;
 import com.amin.ojrat.dto.payamak.send.SendSmsResult;
+import com.amin.ojrat.entity.User;
 import com.amin.ojrat.exception.LoginAuthenticationException;
 
 public interface UserService {
@@ -17,6 +18,8 @@ public interface UserService {
      String maskEmail(String email);
 
      String maskPhone(String email);
+
+     User findUserById(Long id);
 
 
 }

@@ -2,17 +2,17 @@ package com.amin.ojrat.dto.entity.ExBrReq.request;
 
 import jakarta.validation.constraints.NotNull;
 
-public class ExpBrActivationParam {
+public class ExpBrActivationDtoParam {
 
     @NotNull(message = "id should not be null")
     Long id;
 
     boolean status;
 
-    public ExpBrActivationParam() {
+    public ExpBrActivationDtoParam() {
     }
 
-    public ExpBrActivationParam( Long id,boolean status) {
+    public ExpBrActivationDtoParam(Long id, boolean status) {
         this.id=id;
         this.status = status;
     }

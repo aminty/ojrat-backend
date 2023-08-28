@@ -1,10 +1,12 @@
 package com.amin.ojrat.service;
 
-import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationParam;
-import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicResult;
-import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDto;
+import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationDtoParam;
+import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicDtoResult;
+import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDtoParam;
+import com.amin.ojrat.dto.entity.branch.request.ChangeDiscountDtoParam;
 import com.amin.ojrat.dto.entity.product.request.ProductCreationDto;
 import com.amin.ojrat.dto.entity.product.request.ProductModificationDto;
+import com.amin.ojrat.dto.entity.product.response.BasicProductDto;
 import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Product;
 import com.amin.ojrat.exception.ChangeStatusException;
@@ -22,7 +24,7 @@ public interface BranchService {
 
     boolean isBranchFullyRegistered(Branch branch);
 
-    void editBranchEditInfo(BranchInfoModificationDto param) throws UniqueNameException;
+    void editBranchEditInfo(BranchInfoModificationDtoParam param) throws UniqueNameException;
 
     void editProduct(ProductModificationDto param) throws Exception;
 
@@ -34,14 +36,18 @@ public interface BranchService {
 
     Page<Branch> findAllBranchByStatusTrue(Pageable pageable);
 
-    List<ExpBrBasicResult> getAllJoinRequest(Long branchId);
+    List<ExpBrBasicDtoResult> getAllJoinRequest(Long branchId);
 
     void deleteRequest(Long requestId) throws DeletionException;
 
     void removeExpertFromBranch(Long expertId,Long branchId) throws RelationNotFoundException;
 
-    ExpBrBasicResult changeRequestStatus(ExpBrActivationParam param) throws ChangeStatusException;
-
+    ExpBrBasicDtoResult changeRequestStatus(ExpBrActivationDtoParam param) throws ChangeStatusException;
 
     void save(Branch branch);
+
+    void changeDiscountPercent(ChangeDiscountDtoParam param);
+
+    Page<BasicProductDto> findAvailableProduct(Long branchId, Pageable pageable);
+
 }
