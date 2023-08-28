@@ -14,7 +14,7 @@ import java.time.LocalTime;
 
 public class Message extends BaseEntity<Long> {
 
-
+    @Lob
     private String text;
 
    private boolean isRead;
