@@ -137,7 +137,7 @@ public class ExpertBranchRequestServiceImpl implements ExpertBranchRequestServic
             if (!request.isApproved() && param.isStatus()) {
                 request.setApproved(param.isStatus());
                 setDiscount(request);
-                branchService.save(request.getBranch());
+                branchService.saveBranch(request.getBranch());
             }
             return expertBranchMapper.expertBranchToExpBrBasicResult(request);
         }

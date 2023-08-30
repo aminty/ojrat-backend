@@ -15,7 +15,7 @@ public class DaoRepositories {
     @Autowired
     public DaoRepositories(IAdminRepository adminRepository,
                            IExpertRepository expertRepository,
-                           IMessageRepository messageRepository,
+                           ITicketRepository ticketRepository,
                            IOrderRepository orderRepository,
                            IProductRepository productRepository,
                            IServiceRepository serviceRepository,
@@ -23,29 +23,27 @@ public class DaoRepositories {
                            IBranchRepository branchRepository,
                            ICustomUserRepository customUserRepository,
                            IExpertBranchRequestRepository expertBranchRepository,
-                           IExpertDiscountRepository expertDiscountRepository) {
+                           IExpertDiscountRepository expertDiscountRepository, ISubjectRepository subjectRepository) {
         this.adminRepository = adminRepository;
         this.expertRepository = expertRepository;
-        this.messageRepository = messageRepository;
+        this.ticketRepository = ticketRepository;
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.serviceRepository = serviceRepository;
         this.userRepository = userRepository;
         this.branchRepository = branchRepository;
         this.customUserRepository = customUserRepository;
-        this.expertBranchRepository=expertBranchRepository;
-        this.expertDiscountRepository=expertDiscountRepository;
+        this.expertBranchRepository = expertBranchRepository;
+        this.expertDiscountRepository = expertDiscountRepository;
+        this.subjectRepository = subjectRepository;
     }
-
-
-
 
 
     private IAdminRepository adminRepository;
 
     private IExpertRepository expertRepository;
 
-    private IMessageRepository messageRepository;
+    private ITicketRepository ticketRepository;
 
     private IOrderRepository orderRepository;
 
@@ -63,6 +61,9 @@ public class DaoRepositories {
 
     private IExpertDiscountRepository expertDiscountRepository;
 
+    private  ISubjectRepository subjectRepository;
+
+
     public IAdminRepository getAdminRepository() {
         return adminRepository;
     }
@@ -71,8 +72,8 @@ public class DaoRepositories {
         return expertRepository;
     }
 
-    public IMessageRepository getMessageRepository() {
-        return messageRepository;
+    public ITicketRepository getTicketRepository() {
+        return ticketRepository;
     }
 
     public IOrderRepository getOrderRepository() {
@@ -106,4 +107,9 @@ public class DaoRepositories {
     public IExpertDiscountRepository getExpertDiscountRepository() {
         return expertDiscountRepository;
     }
+
+    public ISubjectRepository getSubjectRepository() {
+        return subjectRepository;
+    }
+
 }

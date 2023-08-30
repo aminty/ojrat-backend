@@ -29,12 +29,12 @@ import java.util.Objects;
 @Service
 public class ExpertServiceImpl implements ExpertService {
 
-    private final UserService userService;
-    private final BranchService branchService;
-    private final ExpertBranchRequestService expertBranchService;
     private final DaoRepositories daoRepositories;
-    private final ExpertMapper expertMapper;
     private final BranchMapper branchMapper;
+    private final ExpertMapper expertMapper;
+    private final BranchService branchService;
+    private final UserService userService;
+    private final ExpertBranchRequestService expertBranchService;
 
     @Autowired
     public ExpertServiceImpl(UserService userService,
@@ -110,9 +110,14 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public Expert findExpert(Long id) {
+    public Expert findExpertById(Long id) {
         return daoRepositories.getExpertRepository().findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Expert not found"));
+    }
+
+    @Override
+    public boolean isExistsById(Long expertId) {
+        return daoRepositories.getExpertRepository().existsById(expertId);
     }
 
     @Override
@@ -124,7 +129,7 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     private ExpertBranchRequest createExpertBranchRequest(Long userId, Long branchId) throws Exception {
-        Expert foundExpert = findExpert(userId);
+        Expert foundExpert = findExpertById(userId);
         Branch foundBranch = branchService.findBranchById(branchId);
 
         validateExpertStatus(foundExpert);

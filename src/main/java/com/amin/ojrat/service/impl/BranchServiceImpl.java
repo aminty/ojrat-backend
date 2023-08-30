@@ -4,9 +4,9 @@ import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationDtoParam;
 import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicDtoResult;
 import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDtoParam;
 import com.amin.ojrat.dto.entity.branch.request.ChangeDiscountDtoParam;
-import com.amin.ojrat.dto.entity.product.request.ProductCreationDto;
-import com.amin.ojrat.dto.entity.product.request.ProductModificationDto;
-import com.amin.ojrat.dto.entity.product.response.BasicProductDto;
+import com.amin.ojrat.dto.entity.product.request.ProductCreationDtoParam;
+import com.amin.ojrat.dto.entity.product.request.ProductModificationDtoParam;
+import com.amin.ojrat.dto.entity.product.response.BasicProductDtoResult;
 import com.amin.ojrat.dto.mapper.ProductMapper;
 import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Expert;
@@ -54,7 +54,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public void saveProductToBranch(ProductCreationDto param) throws NotFullyRegisteredException {
+    public void saveProductToBranch(ProductCreationDtoParam param) throws NotFullyRegisteredException {
         Branch branch = findBranchById(param.getBranchId());
 
         Product product = productMapper.productDtoToProduct(param);
@@ -78,7 +78,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public void editProduct(ProductModificationDto param) throws Exception {
+    public void editProduct(ProductModificationDtoParam param) throws Exception {
         Product existProduct = findProductByIdOrThrow(param.getId(), "Product not found.");
 
         Product updatedProduct = productMapper.productDtoToProduct(param);
@@ -96,7 +96,7 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public Branch findBranchById(Long id) {
         return daoRepositories.getBranchRepository().findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Branch not found exception"));
+                .orElseThrow(() -> new EntityNotFoundException("Branch not found"));
     }
 
     @Override
@@ -121,7 +121,7 @@ public class BranchServiceImpl implements BranchService {
     @Override
     @Transactional
     public void removeExpertFromBranch(Long expertId, Long branchId) throws RelationNotFoundException {
-        Expert foundExpert = expertService.findExpert(expertId);
+        Expert foundExpert = expertService.findExpertById(expertId);
         Branch foundBranch = new Branch();
         foundBranch.setId(branchId);
         boolean isRelationExists = foundExpert
@@ -146,8 +146,13 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public void save(Branch branch) {
+    public void saveBranch(Branch branch) {
         daoRepositories.getBranchRepository().save(branch);
+    }
+
+    @Override
+    public boolean isExistsById(Long branchId) {
+        return daoRepositories.getBranchRepository().existsById(branchId);
     }
 
     @Override
@@ -159,7 +164,7 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     @Transactional
-    public Page<BasicProductDto> findAvailableProduct(Long branchId, Pageable pageable) {
+    public Page<BasicProductDtoResult> findAvailableProduct(Long branchId, Pageable pageable) {
         Page<Product> allProductWithBranchId = daoRepositories
                 .getBranchRepository()
                 .findAllProductWithBranchId(branchId, pageable);

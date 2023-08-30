@@ -1,54 +1,52 @@
 package com.amin.ojrat.entity;
 
 import com.amin.ojrat.base.BaseEntity;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToOne;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
-import java.time.LocalTime;
+
 
 @Entity
-@Table(name = "message_table")
-
 public class Message extends BaseEntity<Long> {
+
+
+    @OneToOne
+    private Message replyTo;
 
     @Lob
     private String text;
 
-   private boolean isRead;
+    private Long senderId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
-    private User sender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_id")
-    private User receiver;
-
+    private boolean isRead;
 
     @CreationTimestamp
-    private Timestamp sentAt;
+    private Timestamp createdAt;
+
+    @UpdateTimestamp
+    private Timestamp updatedAt;
 
     public Message() {
-    }
-
-    public Message(Long id, String text, boolean isRead, User sender, User receiver, Timestamp sentAt) {
-        super(id);
-        this.text = text;
-        this.isRead = isRead;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.sentAt = sentAt;
     }
 
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setText(String message) {
+        this.text = message;
+    }
+
+    public Long getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
     }
 
     public boolean isRead() {
@@ -59,27 +57,27 @@ public class Message extends BaseEntity<Long> {
         isRead = read;
     }
 
-    public User getSender() {
-        return sender;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public User getReceiver() {
-        return receiver;
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Timestamp getSentAt() {
-        return sentAt;
+    public Message getReplyTo() {
+        return replyTo;
     }
 
-    public void setSentAt(Timestamp sentAt) {
-        this.sentAt = sentAt;
+    public void setReplyTo(Message replyTo) {
+        this.replyTo = replyTo;
     }
 }

@@ -19,16 +19,6 @@ public class ExpertDiscountServiceImpl implements ExpertDiscountService {
     }
 
 
-//    @Override
-//    public void setDiscountForExpert(Branch branch, Expert expert, double discount) {
-//        if (!isExistsDiscountForThisExpertInBranch(branch.getId(), expert.getId())) {
-//            ExpertDiscount expertDiscount = new ExpertDiscount();
-//            expertDiscount.setExpert(expert);
-//            expertDiscount.setBranch(branch);
-//            expertDiscount.setDiscountPercentage(discount);
-//            daoRepositories.getExpertDiscountRepository().save(expertDiscount);
-//        }
-//    }
 
     @Override
     public boolean isExistsDiscountForThisExpertInBranch(Long branchId, Long expertId) {

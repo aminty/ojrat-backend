@@ -20,20 +20,21 @@ public class Expert extends User {
     )
     private List<Branch> branches;
 
-    @OneToMany(mappedBy = "expert",orphanRemoval = true)
+     @OneToMany(mappedBy = "expert",orphanRemoval = true)
      private List<ExpertBranchRequest> branchRequests;
+
+     @OneToMany(fetch = FetchType.LAZY,mappedBy = "expert",orphanRemoval = true)
+     private List<Ticket> tickets;
 
     public Expert() {
     }
 
-    public Expert(Long id, String firstName, String lastName,
-                  String email, String password, String nationalCode,
-                  String address, String phoneNumber,
-                  Timestamp createdAt, List<Branch> branches, List<ExpertBranchRequest> branchRequests) {
-        super(id, firstName, lastName, email, password, nationalCode,
-                address, phoneNumber, createdAt);
-        this.branches = branches;
-        this.branchRequests = branchRequests;
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public List<Branch> getBranches() {

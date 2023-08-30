@@ -5,8 +5,8 @@ import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrDtoParam;
 import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicDtoResult;
 import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDtoParam;
 import com.amin.ojrat.dto.entity.branch.request.ChangeDiscountDtoParam;
-import com.amin.ojrat.dto.entity.product.request.ProductCreationDto;
-import com.amin.ojrat.dto.entity.product.request.ProductModificationDto;
+import com.amin.ojrat.dto.entity.product.request.ProductCreationDtoParam;
+import com.amin.ojrat.dto.entity.product.request.ProductModificationDtoParam;
 import com.amin.ojrat.exception.ChangeStatusException;
 import com.amin.ojrat.exception.DeletionException;
 import com.amin.ojrat.exception.UniqueNameException;
@@ -30,13 +30,13 @@ public class BranchController {
     }
 
     @PostMapping("/add-product")
-    public ResponseEntity<String> addProductToBranch(@Valid @RequestBody ProductCreationDto param) throws Exception {
+    public ResponseEntity<String> addProductToBranch(@Valid @RequestBody ProductCreationDtoParam param) throws Exception {
         serviceRegistry.getBranchService().saveProductToBranch(param);
         return new ResponseEntity<>("product saved successfully", HttpStatus.OK);
     }
 
     @PostMapping("edit-product")
-    public ResponseEntity<String> editProduct(@Valid @RequestBody ProductModificationDto param) throws Exception {
+    public ResponseEntity<String> editProduct(@Valid @RequestBody ProductModificationDtoParam param) throws Exception {
         serviceRegistry.getBranchService().editProduct(param);
         return new ResponseEntity<>("product updated successfully", HttpStatus.OK);
     }

@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminServiceImpl implements AdminService {
 
 
-    private final UserService userService;
     private final DaoRepositories daoRepositories;
     private final AdminMapper adminMapper;
+    private final UserService userService;
 
     @Autowired
     public AdminServiceImpl(UserService userService, DaoRepositories daoRepositories, AdminMapper adminMapper) {

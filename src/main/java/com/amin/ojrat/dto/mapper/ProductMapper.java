@@ -1,10 +1,9 @@
 package com.amin.ojrat.dto.mapper;
 
-import com.amin.ojrat.dto.entity.product.request.ProductCreationDto;
-import com.amin.ojrat.dto.entity.product.request.ProductModificationDto;
-import com.amin.ojrat.dto.entity.product.response.BasicProductDto;
+import com.amin.ojrat.dto.entity.product.request.ProductCreationDtoParam;
+import com.amin.ojrat.dto.entity.product.request.ProductModificationDtoParam;
+import com.amin.ojrat.dto.entity.product.response.BasicProductDtoResult;
 import com.amin.ojrat.entity.Product;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,13 +12,13 @@ public interface ProductMapper {
 
 
     @Mapping(source = "branchId",target = "branch.id")
-    Product productDtoToProduct(ProductCreationDto param);
+    Product productDtoToProduct(ProductCreationDtoParam param);
 
 
-    Product productDtoToProduct(ProductModificationDto param);
+    Product productDtoToProduct(ProductModificationDtoParam param);
 
 
-    BasicProductDto productToBasicProductDto(Product product);
+    BasicProductDtoResult productToBasicProductDto(Product product);
 
 
 }

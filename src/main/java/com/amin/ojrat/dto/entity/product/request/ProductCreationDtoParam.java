@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class ProductCreationDto {
+public class ProductCreationDtoParam {
 
 
     @NotBlank(message = "brand name should not be empty")
@@ -31,17 +31,17 @@ public class ProductCreationDto {
 
     private byte[] image;
 
-    public ProductCreationDto() {
+    public ProductCreationDtoParam() {
     }
 
-    public ProductCreationDto(String brandName,
-                              String productName,
-                              String description,
-                              double price,
-                              double discount,
-                              boolean isExist,
-                              Long branchId,
-                              byte[] image) {
+    public ProductCreationDtoParam(String brandName,
+                                   String productName,
+                                   String description,
+                                   double price,
+                                   double discount,
+                                   boolean isExist,
+                                   Long branchId,
+                                   byte[] image) {
         this.brandName = brandName;
         this.productName = productName;
         this.description = description;

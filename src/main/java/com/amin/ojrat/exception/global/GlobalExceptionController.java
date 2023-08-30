@@ -122,5 +122,11 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(PermissionDeniedException.class)
+    public ResponseEntity<DefaultResponse> permissionDeniedException(PermissionDeniedException ex){
+        DefaultResponse errorResponse = new DefaultResponse(-16,ex.getMessage(),new ArrayList<>());
+        return new ResponseEntity<>(errorResponse,HttpStatus.FORBIDDEN);
+    }
+
 }
 

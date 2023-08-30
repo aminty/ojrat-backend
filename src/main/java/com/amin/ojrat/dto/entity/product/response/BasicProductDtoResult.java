@@ -2,7 +2,7 @@ package com.amin.ojrat.dto.entity.product.response;
 
 import jakarta.validation.constraints.NotEmpty;
 
-public class BasicProductDto {
+public class BasicProductDtoResult {
 
 
     @NotEmpty(message = "brandName should not be empty!")
@@ -18,10 +18,10 @@ public class BasicProductDto {
     @NotEmpty(message = "isExist should not be empty!")
     private boolean isExist;
 
-    public BasicProductDto() {
+    public BasicProductDtoResult() {
     }
 
-    public BasicProductDto(String brandName, String productName, String description, double price, double discount, boolean isExist) {
+    public BasicProductDtoResult(String brandName, String productName, String description, double price, double discount, boolean isExist) {
         this.brandName = brandName;
         this.productName = productName;
         this.description = description;

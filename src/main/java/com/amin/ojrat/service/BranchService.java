@@ -4,9 +4,9 @@ import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrActivationDtoParam;
 import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicDtoResult;
 import com.amin.ojrat.dto.entity.branch.request.BranchInfoModificationDtoParam;
 import com.amin.ojrat.dto.entity.branch.request.ChangeDiscountDtoParam;
-import com.amin.ojrat.dto.entity.product.request.ProductCreationDto;
-import com.amin.ojrat.dto.entity.product.request.ProductModificationDto;
-import com.amin.ojrat.dto.entity.product.response.BasicProductDto;
+import com.amin.ojrat.dto.entity.product.request.ProductCreationDtoParam;
+import com.amin.ojrat.dto.entity.product.request.ProductModificationDtoParam;
+import com.amin.ojrat.dto.entity.product.response.BasicProductDtoResult;
 import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Product;
 import com.amin.ojrat.exception.ChangeStatusException;
@@ -20,13 +20,13 @@ import java.util.List;
 
 public interface BranchService {
 
-    void saveProductToBranch( ProductCreationDto param) throws Exception;
+    void saveProductToBranch( ProductCreationDtoParam param) throws Exception;
 
     boolean isBranchFullyRegistered(Branch branch);
 
     void editBranchEditInfo(BranchInfoModificationDtoParam param) throws UniqueNameException;
 
-    void editProduct(ProductModificationDto param) throws Exception;
+    void editProduct(ProductModificationDtoParam param) throws Exception;
 
     void applyNewChange(Product productWithIncomingChange, Product existProduct);
 
@@ -44,10 +44,12 @@ public interface BranchService {
 
     ExpBrBasicDtoResult changeRequestStatus(ExpBrActivationDtoParam param) throws ChangeStatusException;
 
-    void save(Branch branch);
+    void saveBranch(Branch branch);
+
+    boolean isExistsById(Long branchId);
 
     void changeDiscountPercent(ChangeDiscountDtoParam param);
 
-    Page<BasicProductDto> findAvailableProduct(Long branchId, Pageable pageable);
+    Page<BasicProductDtoResult> findAvailableProduct(Long branchId, Pageable pageable);
 
 }

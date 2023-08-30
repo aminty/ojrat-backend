@@ -20,14 +20,15 @@ public class ServiceRegistry {
 
     private final ExpertDiscountService expertDiscountService;
 
-    private final MessageService messageService ;
+    private  final TicketService ticketService;
+
 
     @Autowired
     public ServiceRegistry(AdminService adminService,
                            ExpertService expertService,
                            CodeValidationService codeValidationService,
                            UserService userService,
-                           BranchService branchService, ExpertBranchRequestService expertBranchService, ExpertDiscountService expertDiscountService, MessageService messageService) {
+                           BranchService branchService, ExpertBranchRequestService expertBranchService, ExpertDiscountService expertDiscountService, TicketService ticketService) {
         this.adminService = adminService;
         this.expertService = expertService;
         this.codeValidationService = codeValidationService;
@@ -35,7 +36,7 @@ public class ServiceRegistry {
         this.branchService = branchService;
         this.expertBranchService = expertBranchService;
         this.expertDiscountService = expertDiscountService;
-        this.messageService = messageService;
+        this.ticketService = ticketService;
     }
 
     public AdminService getAdminService() {
@@ -66,7 +67,7 @@ public class ServiceRegistry {
         return expertDiscountService;
     }
 
-    public MessageService getMessageService() {
-        return messageService;
+    public TicketService getTicketService() {
+        return ticketService;
     }
 }

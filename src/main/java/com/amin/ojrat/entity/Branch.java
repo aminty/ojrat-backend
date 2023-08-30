@@ -43,6 +43,9 @@ public class Branch extends BaseEntity<Long> {
 
     private boolean status;
 
+    @OneToMany(mappedBy = "branch",fetch = FetchType.LAZY,orphanRemoval = true)
+    private List<Ticket> tickets;
+
     @CreationTimestamp
     private Timestamp createdAt;
 
@@ -65,30 +68,19 @@ public class Branch extends BaseEntity<Long> {
     public Branch() {
     }
 
-    public Branch(Long id, String name, String location,
-                  String phone, String description,
-                  Admin admin, List<Expert> experts,
-                  List<Product> products, List<ExpertBranchRequest> requests,
-                  boolean status, Timestamp createdAt,
-                  Timestamp updatedAt,String uniqueName) {
-        super(id);
-        this.name = name;
-        this.location = location;
-        this.phone = phone;
-        this.description = description;
-        this.admin = admin;
-        this.experts = experts;
-        this.products = products;
-        this.requests = requests;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.uniqueName=uniqueName ;
-    }
+
 
     public void addToExpertList(Expert expert) {
         this.experts.add(expert);
         expert.getBranches().add(this);
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public String getName() {

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class ProductModificationDto {
+public class ProductModificationDtoParam {
     @NotNull(message = "id should not be null")
     private Long id;
 
@@ -29,15 +29,15 @@ public class ProductModificationDto {
 
     private byte[] image;
 
-    public ProductModificationDto() {
+    public ProductModificationDtoParam() {
     }
 
-    public ProductModificationDto(Long id, String brandName,
-                                  String productName,
-                                  String description, double price,
-                                  double discount,
-                                  boolean isExist,
-                                  byte[] image) {
+    public ProductModificationDtoParam(Long id, String brandName,
+                                       String productName,
+                                       String description, double price,
+                                       double discount,
+                                       boolean isExist,
+                                       byte[] image) {
         this.id = id;
         this.brandName = brandName;
         this.productName = productName;

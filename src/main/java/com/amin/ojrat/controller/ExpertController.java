@@ -4,8 +4,11 @@ import com.amin.ojrat.dto.entity.ExBrReq.request.ExpBrDtoParam;
 import com.amin.ojrat.dto.entity.ExBrReq.response.ExpBrBasicDtoResult;
 import com.amin.ojrat.dto.entity.branch.response.BasicBranchDtoResult;
 import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDtoParam;
-import com.amin.ojrat.dto.entity.product.response.BasicProductDto;
+import com.amin.ojrat.dto.entity.product.response.BasicProductDtoResult;
+import com.amin.ojrat.dto.entity.ticket.request.ChangeTicketStatusDtoParam;
+import com.amin.ojrat.dto.entity.ticket.request.TicketCreationDtoParam;
 import com.amin.ojrat.exception.CreationException;
+import com.amin.ojrat.exception.PermissionDeniedException;
 import com.amin.ojrat.exception.UserExistsException;
 import com.amin.ojrat.service.ServiceRegistry;
 import jakarta.validation.Valid;
@@ -45,12 +48,11 @@ public class ExpertController {
     }
 
 
-
     @PostMapping("/join-request")
     public ResponseEntity<String> makeJoinRequest
             (@Valid @RequestBody ExpBrDtoParam param) throws Exception {
         serviceRegistry.getExpertService().makeJoinRequest(param);
-        return new ResponseEntity<String>("درخواست انجام شد.",HttpStatus.OK);
+        return new ResponseEntity<>("درخواست انجام شد.",HttpStatus.OK);
     }
 
 
@@ -86,14 +88,33 @@ public class ExpertController {
 
 
     @GetMapping("/get-products/{branchId}")
-    public ResponseEntity<Page<BasicProductDto>> getProductOfBranch(@PathVariable Long branchId,
-                                                                  @RequestParam(defaultValue = "0") int page,
-                                                                  @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<BasicProductDtoResult>> getProductOfBranch(@PathVariable Long branchId,
+                                                                          @RequestParam(defaultValue = "0") int page,
+                                                                          @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<BasicProductDto> availableProduct = serviceRegistry.getBranchService().findAvailableProduct(branchId, pageable);
+        Page<BasicProductDtoResult> availableProduct =
+                serviceRegistry
+                        .getBranchService()
+                        .findAvailableProduct(branchId, pageable);
         if (availableProduct.isEmpty())
             return new ResponseEntity<>(availableProduct,HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(availableProduct,HttpStatus.OK);
 
+    }
+
+
+    @PostMapping("/ticket/create")
+    public ResponseEntity<String> createNewTicket(@Valid @RequestBody TicketCreationDtoParam param)
+            throws CreationException {
+        serviceRegistry.getTicketService().createTicket(param);
+        return new ResponseEntity<>("ticket created successfully",HttpStatus.OK);
+    }
+
+
+    @PostMapping("/ticket/change-status")
+    public ResponseEntity<String> changeStatusToClose(@Valid @RequestBody ChangeTicketStatusDtoParam param)
+            throws PermissionDeniedException {
+        serviceRegistry.getTicketService().closeTicketByExpert(param.getTicketId(), param.getExpertId());
+        return new ResponseEntity<>("ticket closed successfully",HttpStatus.OK);
     }
 }

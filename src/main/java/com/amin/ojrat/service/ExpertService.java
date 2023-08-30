@@ -33,7 +33,9 @@ public interface ExpertService {
 
     Page<BasicBranchDtoResult> getAllAllowedBranch(Pageable pageable);
 
-    Expert findExpert(Long id);
+    Expert findExpertById(Long id);
+
+    boolean isExistsById(Long expertId);
 
     Page<BasicBranchDtoResult> findAvailableBranch(Long expertId, Pageable pageable);
 
