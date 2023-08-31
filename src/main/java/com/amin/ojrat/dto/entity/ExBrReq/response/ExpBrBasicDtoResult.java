@@ -1,9 +1,11 @@
 package com.amin.ojrat.dto.entity.ExBrReq.response;
 
 
+import com.amin.ojrat.dto.entity.base.Context;
+
 import java.sql.Timestamp;
 
-public class ExpBrBasicDtoResult {
+public class ExpBrBasicDtoResult extends Context {
     Long id;
 
     Long expertId;

@@ -1,9 +1,10 @@
 package com.amin.ojrat.dto.entity.user.response;
 
-import java.sql.Timestamp;
-import java.time.LocalTime;
+import com.amin.ojrat.dto.entity.base.Context;
 
-public class UserLoginResultDto {
+import java.sql.Timestamp;
+
+public class UserLoginDtoResult extends Context{
 
     private final String firstName;
 
@@ -20,7 +21,7 @@ public class UserLoginResultDto {
     private final Timestamp createdAt;
 
 
-    public UserLoginResultDto(String firstName,
+    public UserLoginDtoResult(String firstName,
                               String lastName,
                               String email,
                               String nationalCode,

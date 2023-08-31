@@ -2,7 +2,7 @@ package com.amin.ojrat.dto.entity.user.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class UserLoginParamDto {
+public class UserLoginDtoParam {
 
 
     @NotBlank(message = "identity value should not be empty")
@@ -13,7 +13,7 @@ public class UserLoginParamDto {
     private final String password;
 
 
-    public UserLoginParamDto(String username, String password) {
+    public UserLoginDtoParam(String username, String password) {
         this.username = username;
         this.password = password;
     }

@@ -1,6 +1,8 @@
 package com.amin.ojrat.dto.entity.branch.response;
 
-public class BasicBranchDtoResult {
+import com.amin.ojrat.dto.entity.base.Context;
+
+public class BasicBranchDtoResult extends Context {
 
     private Long id;
 

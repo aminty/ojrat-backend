@@ -1,8 +1,9 @@
 package com.amin.ojrat.dto.entity.product.response;
 
+import com.amin.ojrat.dto.entity.base.Context;
 import jakarta.validation.constraints.NotEmpty;
 
-public class BasicProductDtoResult {
+public class BasicProductDtoResult extends Context {
 
 
     @NotEmpty(message = "brandName should not be empty!")

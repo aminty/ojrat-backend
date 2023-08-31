@@ -1,13 +1,13 @@
 package com.amin.ojrat.dto.entity.admin.request;
 
-import com.amin.ojrat.dto.entity.user.request.UserCreationDto;
+import com.amin.ojrat.dto.entity.user.request.UserCreationDtoParam;
 import com.amin.ojrat.enums.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
-public class AdminCreationDtoParam extends UserCreationDto {
+public class AdminCreationDtoParam extends UserCreationDtoParam {
 
     @NotEmpty(message = "roles should not be blank!")
     @Enumerated(EnumType.STRING)

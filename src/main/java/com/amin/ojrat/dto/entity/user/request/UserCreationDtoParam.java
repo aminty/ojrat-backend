@@ -3,7 +3,7 @@ package com.amin.ojrat.dto.entity.user.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class UserCreationDto {
+public class UserCreationDtoParam {
 
     @NotBlank(message = "firstName should not be blank!")
     private String firstName;
@@ -36,16 +36,16 @@ public class UserCreationDto {
     private String phoneNumber;
 
 
-    public UserCreationDto() {
+    public UserCreationDtoParam() {
     }
 
-    public UserCreationDto(String firstName,
-                   String lastName,
-                   String email,
-                   String password,
-                   String nationalCode,
-                   String address,
-                   String phoneNumber) {
+    public UserCreationDtoParam(String firstName,
+                                String lastName,
+                                String email,
+                                String password,
+                                String nationalCode,
+                                String address,
+                                String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

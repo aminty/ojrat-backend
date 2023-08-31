@@ -1,11 +1,11 @@
-package com.amin.ojrat.dto.entity.user;
+package com.amin.ojrat.dto.entity.user.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 
 
-public class UserDto {
+public class UserDtoParam {
 
     @NotBlank(message = "id should not null!")
     private Long id;
@@ -46,17 +46,17 @@ public class UserDto {
     private String phoneNumber;
 
 
-    public UserDto() {
+    public UserDtoParam() {
     }
 
-    public UserDto(Long id,
-                   String firstName,
-                   String lastName,
-                   String email,
-                   String password,
-                   String nationalCode,
-                   String address,
-                   String phoneNumber) {
+    public UserDtoParam(Long id,
+                        String firstName,
+                        String lastName,
+                        String email,
+                        String password,
+                        String nationalCode,
+                        String address,
+                        String phoneNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

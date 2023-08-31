@@ -7,6 +7,7 @@ import com.amin.ojrat.dto.payamak.validation.ValidationParam;
 import com.amin.ojrat.exception.TtlExpirationException;
 import com.amin.ojrat.service.CodeValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,14 +31,18 @@ public class CodeValidatorController {
     }
 
     @PostMapping("/validateCode")
-    public boolean validateCode(@RequestBody ValidationParam param) {
-         return codeValidationService.isValidCode(param.getValue(), param.getPhoneNumber());
+    public ResponseEntity<Boolean> validateCode(@RequestBody ValidationParam param) {
+        boolean isValidCode = codeValidationService.isValidCode(param.getValue(), param.getPhoneNumber());
+        return new ResponseEntity<>(isValidCode, HttpStatus.OK );
     }
 
     @GetMapping("/getAllValue")
-    public List<ValidationParam> getAllCacheValue(){
+    public ResponseEntity<List<ValidationParam>> getAllCacheValue(){
 
-        return codeValidationService.getAllCacheValue();
+        List<ValidationParam> allCacheValue = codeValidationService.getAllCacheValue();
+        if (allCacheValue.isEmpty())
+            return new ResponseEntity<>(allCacheValue,HttpStatus.NO_CONTENT);
+        else return new ResponseEntity<>(allCacheValue,HttpStatus.OK);
 
     }
 

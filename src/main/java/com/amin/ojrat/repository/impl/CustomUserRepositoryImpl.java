@@ -1,18 +1,13 @@
 package com.amin.ojrat.repository.impl;
 
-import com.amin.ojrat.dto.entity.user.request.UserLoginParamDto;
-import com.amin.ojrat.dto.entity.user.response.UserLoginResultDto;
-import com.amin.ojrat.dto.mapper.UserMapper;
+import com.amin.ojrat.dto.entity.user.request.UserLoginDtoParam;
 import com.amin.ojrat.entity.User;
-import com.amin.ojrat.exception.LoginAuthenticationException;
-import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.repository.ICustomUserRepository;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -50,7 +45,7 @@ public class CustomUserRepositoryImpl implements ICustomUserRepository {
     }
 
     @Override
-    public User login(UserLoginParamDto param) {
+    public User login(UserLoginDtoParam param) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> cq = cb.createQuery(User.class);

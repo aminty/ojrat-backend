@@ -1,7 +1,7 @@
 package com.amin.ojrat.controller;
 
-import com.amin.ojrat.dto.entity.user.request.UserLoginParamDto;
-import com.amin.ojrat.dto.entity.user.response.UserLoginResultDto;
+import com.amin.ojrat.dto.entity.user.request.UserLoginDtoParam;
+import com.amin.ojrat.dto.entity.user.response.UserLoginDtoResult;
 import com.amin.ojrat.dto.payamak.send.SendSmsResult;
 import com.amin.ojrat.exception.LoginAuthenticationException;
 import com.amin.ojrat.service.ServiceRegistry;
@@ -22,11 +22,11 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResultDto>
-    loginUser(@Valid @RequestBody UserLoginParamDto param) throws LoginAuthenticationException {
+    public ResponseEntity<UserLoginDtoResult>
+    loginUser(@Valid @RequestBody UserLoginDtoParam param) throws LoginAuthenticationException {
 
         //todo :should return session inside of UserLoginParamDto
-        UserLoginResultDto result = serviceRegistry.getUserService().login(param);
+        UserLoginDtoResult result = serviceRegistry.getUserService().login(param);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 

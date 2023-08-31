@@ -1,7 +1,7 @@
 package com.amin.ojrat.service.impl;
 
-import com.amin.ojrat.dto.entity.user.request.UserLoginParamDto;
-import com.amin.ojrat.dto.entity.user.response.UserLoginResultDto;
+import com.amin.ojrat.dto.entity.user.request.UserLoginDtoParam;
+import com.amin.ojrat.dto.entity.user.response.UserLoginDtoResult;
 import com.amin.ojrat.dto.mapper.UserMapper;
 import com.amin.ojrat.dto.payamak.send.SendSmsResult;
 import com.amin.ojrat.entity.User;
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserLoginResultDto login(UserLoginParamDto param) throws LoginAuthenticationException {
+    public UserLoginDtoResult login(UserLoginDtoParam param) throws LoginAuthenticationException {
         User userWhoWantLogin = findUserForLogin(param.getUsername(), param.getPassword());
         checkUserLoginStatus(userWhoWantLogin);
         return userMapper.userToUserLoginResultDto(userWhoWantLogin);
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     // Helper methods
 
     private User findUserForLogin(String username, String password) throws LoginAuthenticationException {
-        User userWhoWantLogin = daoRepositories.getCustomUserRepository().login(new UserLoginParamDto(username, password));
+        User userWhoWantLogin = daoRepositories.getCustomUserRepository().login(new UserLoginDtoParam(username, password));
         if (userWhoWantLogin.isIsDeleted()) {
             throw new EntityNotFoundException("This account was suspended");
         }

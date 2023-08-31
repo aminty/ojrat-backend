@@ -80,10 +80,8 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public void editProduct(ProductModificationDtoParam param) throws Exception {
         Product existProduct = findProductByIdOrThrow(param.getId(), "Product not found.");
-
         Product updatedProduct = productMapper.productDtoToProduct(param);
         applyNewChange(updatedProduct, existProduct);
-
         daoRepositories.getProductRepository().save(existProduct);
     }
 
