@@ -11,10 +11,7 @@ import com.amin.ojrat.entity.Expert;
 import com.amin.ojrat.entity.ExpertBranchRequest;
 import com.amin.ojrat.exception.*;
 import com.amin.ojrat.repository.DaoRepositories;
-import com.amin.ojrat.service.BranchService;
-import com.amin.ojrat.service.ExpertBranchRequestService;
-import com.amin.ojrat.service.ExpertService;
-import com.amin.ojrat.service.UserService;
+import com.amin.ojrat.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -29,22 +26,17 @@ import java.util.Objects;
 @Service
 public class ExpertServiceImpl implements ExpertService {
 
+    private final ServiceRegistry serviceRegistry;
     private final DaoRepositories daoRepositories;
     private final BranchMapper branchMapper;
     private final ExpertMapper expertMapper;
-    private final BranchService branchService;
-    private final UserService userService;
-    private final ExpertBranchRequestService expertBranchService;
 
     @Autowired
-    public ExpertServiceImpl(UserService userService,
-                             @Lazy BranchService branchService,
-                             ExpertBranchRequestService expertBranchService,
+    public ExpertServiceImpl(ServiceRegistry serviceRegistry,
                              DaoRepositories daoRepositories,
-                             ExpertMapper expertMapper, BranchMapper branchMapper) {
-        this.userService = userService;
-        this.branchService = branchService;
-        this.expertBranchService = expertBranchService;
+                             ExpertMapper expertMapper,
+                             BranchMapper branchMapper) {
+        this.serviceRegistry = serviceRegistry;
         this.daoRepositories = daoRepositories;
         this.expertMapper = expertMapper;
         this.branchMapper = branchMapper;
@@ -67,7 +59,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public boolean isExistsExpertByValue(ExpertCreationDtoParam param) {
-        return userService.isUserExistsByValue(
+        return serviceRegistry.getUserService().isUserExistsByValue(
                 param.getNationalCode(), param.getEmail(), param.getPhoneNumber()
         );
     }
@@ -78,13 +70,13 @@ public class ExpertServiceImpl implements ExpertService {
         Long branchId = param.getBranchId();
         checkIfRequestIsExistsThenThrow(param);
         ExpertBranchRequest expBr = createExpertBranchRequest(userId, branchId);
-        expertBranchService.saveJoinRequest(expBr);
+        serviceRegistry.getExpertBranchService().saveJoinRequest(expBr);
     }
 
     private void checkIfRequestIsExistsThenThrow(ExpBrDtoParam param)
             throws RequestLimitExceededException {
         boolean checkExists =
-                expertBranchService.isExistRequestByExpertAndBranchIds(param);
+                serviceRegistry.getExpertBranchService().isExistRequestByExpertAndBranchIds(param);
         if (checkExists)
             throw new RequestLimitExceededException("you already have request for this branch");
 
@@ -99,13 +91,13 @@ public class ExpertServiceImpl implements ExpertService {
     @Override
     public List<ExpBrBasicDtoResult> getAllJoinRequest(Long expertId) {
         if (daoRepositories.getExpertRepository().existsById(expertId))
-            return expertBranchService.findAllRequestByExpertId(expertId);
+            return serviceRegistry.getExpertBranchService().findAllRequestByExpertId(expertId);
         else throw new EntityNotFoundException("Expert not found");
     }
 
     @Override
     public Page<BasicBranchDtoResult> getAllAllowedBranch(Pageable pageable) {
-        Page<Branch> allBranchByStatusTrue = branchService.findAllBranchByStatusTrue(pageable);
+        Page<Branch> allBranchByStatusTrue = serviceRegistry.getBranchService().findAllBranchByStatusTrue(pageable);
         return allBranchByStatusTrue.map(branchMapper::branchToBasicBranchDto);
     }
 
@@ -130,7 +122,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     private ExpertBranchRequest createExpertBranchRequest(Long userId, Long branchId) throws Exception {
         Expert foundExpert = findExpertById(userId);
-        Branch foundBranch = branchService.findBranchById(branchId);
+        Branch foundBranch = serviceRegistry.getBranchService().findBranchById(branchId);
 
         validateExpertStatus(foundExpert);
         validateBranchStatus(foundBranch);
@@ -160,7 +152,7 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     private void validateJoinRequestLimit(Long userId) throws Exception {
-        if (expertBranchService.countOfRequestByExpertId(userId) > 5) {
+        if (serviceRegistry.getExpertBranchService().countOfRequestByExpertId(userId) > 5) {
             throw new RequestLimitExceededException("You can't send more than 5 requests.");
         }
     }
@@ -169,7 +161,7 @@ public class ExpertServiceImpl implements ExpertService {
         if (isExpertExistsInBranch(userId, branch)) {
             throw new UserExistsException("You have already joined this branch.");
         }
-        if (!branchService.isBranchFullyRegistered(branch)) {
+        if (!serviceRegistry.getBranchService().isBranchFullyRegistered(branch)) {
             throw new NotFullyRegisteredException("The store is not fully initialized.");
         }
     }

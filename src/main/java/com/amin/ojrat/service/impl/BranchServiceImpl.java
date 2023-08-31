@@ -17,10 +17,7 @@ import com.amin.ojrat.exception.DeletionException;
 import com.amin.ojrat.exception.NotFullyRegisteredException;
 import com.amin.ojrat.exception.UniqueNameException;
 import com.amin.ojrat.repository.DaoRepositories;
-import com.amin.ojrat.service.BranchService;
-import com.amin.ojrat.service.ExpertBranchRequestService;
-import com.amin.ojrat.service.ExpertDiscountService;
-import com.amin.ojrat.service.ExpertService;
+import com.amin.ojrat.service.*;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,32 +32,28 @@ import java.util.Objects;
 @Service
 public class BranchServiceImpl implements BranchService {
 
+    private final ServiceRegistry serviceRegistry;
     private final DaoRepositories daoRepositories;
     private final ProductMapper productMapper;
-    private final ExpertBranchRequestService expertBranchRequestService;
-    private final ExpertService expertService;
-    private final ExpertDiscountService discountService;
+
+
 
 
     @Autowired
     public BranchServiceImpl(DaoRepositories daoRepositories,
                              ProductMapper productMapper,
-                             ExpertBranchRequestService expertBranchRequestService, ExpertService expertService, ExpertDiscountService discountService) {
+                               ServiceRegistry serviceRegistry) {
         this.daoRepositories = daoRepositories;
         this.productMapper = productMapper;
-        this.expertBranchRequestService = expertBranchRequestService;
-        this.expertService = expertService;
-        this.discountService = discountService;
+        this.serviceRegistry = serviceRegistry;
     }
 
     @Override
     public void saveProductToBranch(ProductCreationDtoParam param) throws NotFullyRegisteredException {
         Branch branch = findBranchById(param.getBranchId());
-
         Product product = productMapper.productDtoToProduct(param);
         branch.getProducts().add(product);
         product.setBranch(branch);
-
         if (isBranchFullyRegistered(branch)) {
             daoRepositories.getBranchRepository().save(branch);
         } else {
@@ -68,6 +61,14 @@ public class BranchServiceImpl implements BranchService {
         }
     }
 
+    /**
+     * in this case, if admin want edit branch info, since this method
+     * check uniqueness of {uniqueName} in the first step ,the {if()}
+     * expression says if uniqueName in entry data is equal with uniqueName
+     * in found branch ,it is not necessary to check uniqueness of it.
+     * @param param
+     * @throws UniqueNameException
+     */
     @Override
     public void editBranchEditInfo(BranchInfoModificationDtoParam param) throws UniqueNameException {
         Branch existBranch = findBranchById(param.getId());
@@ -104,14 +105,14 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public List<ExpBrBasicDtoResult> getAllJoinRequest(Long branchId) {
-        if (daoRepositories.getBranchRepository().existsById(branchId))
-            return expertBranchRequestService.findAllRequestByBranchId(branchId);
+        if (isExistsById(branchId))
+            return serviceRegistry.getExpertBranchService().findAllRequestByBranchId(branchId);
         else throw new EntityNotFoundException("branch not found");
     }
 
     @Override
     public void deleteRequest(Long requestId) throws DeletionException {
-        expertBranchRequestService.deleteRequest(requestId);
+        serviceRegistry.getExpertBranchService().deleteRequest(requestId);
 
     }
 
@@ -119,7 +120,7 @@ public class BranchServiceImpl implements BranchService {
     @Override
     @Transactional
     public void removeExpertFromBranch(Long expertId, Long branchId) throws RelationNotFoundException {
-        Expert foundExpert = expertService.findExpertById(expertId);
+        Expert foundExpert = serviceRegistry.getExpertService().findExpertById(expertId);
         Branch foundBranch = new Branch();
         foundBranch.setId(branchId);
         boolean isRelationExists = foundExpert
@@ -129,18 +130,18 @@ public class BranchServiceImpl implements BranchService {
         if (isRelationExists){
             foundBranch=findBranchById(branchId);
             foundExpert.getBranches().remove(foundBranch);
-            expertService
+            serviceRegistry.getExpertService()
                     .updateExpert(foundExpert);
-            expertBranchRequestService
+            serviceRegistry.getExpertBranchService()
                     .deleteRequestByIdsInsideExpertRelationDeletionInBranchService(expertId,branchId);
-            discountService.deleteDiscountByIds(expertId,branchId);
+            serviceRegistry.getExpertDiscountService().deleteDiscountByIds(expertId,branchId);
         }else throw new RelationNotFoundException("no relation found for this expert");
 
     }
 
     @Override
     public ExpBrBasicDtoResult changeRequestStatus(ExpBrActivationDtoParam param) throws ChangeStatusException {
-        return expertBranchRequestService.changeRequestStatus(param);
+        return serviceRegistry.getExpertBranchService().changeRequestStatus(param);
     }
 
     @Override
@@ -155,9 +156,9 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public void changeDiscountPercent(ChangeDiscountDtoParam param) {
-        ExpertDiscount expertDiscount = discountService.findExpertDiscount(param);
+        ExpertDiscount expertDiscount = serviceRegistry.getExpertDiscountService().findExpertDiscount(param);
         expertDiscount.setDiscountPercentage(param.getPercent());
-        discountService.updateDiscount(expertDiscount);
+        serviceRegistry.getExpertDiscountService().updateDiscount(expertDiscount);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.BranchService;
 import com.amin.ojrat.service.ExpertBranchRequestService;
 import com.amin.ojrat.service.ExpertDiscountService;
+import com.amin.ojrat.service.ServiceRegistry;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -26,22 +27,20 @@ import java.util.Optional;
 @Lazy
 public class ExpertBranchRequestServiceImpl implements ExpertBranchRequestService {
 
+    private final ServiceRegistry serviceRegistry;
     private final DaoRepositories daoRepositories;
     private final ExpertBranchMapper expertBranchMapper;
-    private final ExpertDiscountService expertDiscountService;
-    private final BranchService branchService;
+
 
 
     @Autowired
-    public ExpertBranchRequestServiceImpl(DaoRepositories daoRepositories,
-                                          ExpertBranchMapper expertBranchMapper,
-                                          ExpertDiscountService expertDiscountService,
-                                          @Lazy BranchService branchService) {
+    public ExpertBranchRequestServiceImpl(ServiceRegistry serviceRegistry,
+                                          DaoRepositories daoRepositories,
+                                          ExpertBranchMapper expertBranchMapper) {
+        this.serviceRegistry = serviceRegistry;
         this.daoRepositories = daoRepositories;
         this.expertBranchMapper = expertBranchMapper;
-        this.expertDiscountService = expertDiscountService;
 
-        this.branchService = branchService;
     }
 
 
@@ -137,7 +136,7 @@ public class ExpertBranchRequestServiceImpl implements ExpertBranchRequestServic
             if (!request.isApproved() && param.isStatus()) {
                 request.setApproved(param.isStatus());
                 setDiscount(request);
-                branchService.saveBranch(request.getBranch());
+                serviceRegistry.getBranchService().saveBranch(request.getBranch());
             }
             return expertBranchMapper.expertBranchToExpBrBasicResult(request);
         }
@@ -145,7 +144,9 @@ public class ExpertBranchRequestServiceImpl implements ExpertBranchRequestServic
     }
 
     private void setDiscount(ExpertBranchRequest request) {
-        boolean result = expertDiscountService.isExistsDiscountForThisExpertInBranch(
+        boolean result = serviceRegistry
+                .getExpertDiscountService()
+                .isExistsDiscountForThisExpertInBranch(
                 request.getBranch().getId()
                 , request.getExpert().getId());
         if (!result) {

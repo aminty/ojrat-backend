@@ -1,6 +1,7 @@
 package com.amin.ojrat.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,14 +22,21 @@ public class ServiceRegistry {
     private final ExpertDiscountService expertDiscountService;
 
     private  final TicketService ticketService;
+    private final SubjectService subjectService;
+
+
 
 
     @Autowired
+    @Lazy
     public ServiceRegistry(AdminService adminService,
                            ExpertService expertService,
                            CodeValidationService codeValidationService,
                            UserService userService,
-                           BranchService branchService, ExpertBranchRequestService expertBranchService, ExpertDiscountService expertDiscountService, TicketService ticketService) {
+                           BranchService branchService,
+                           ExpertBranchRequestService expertBranchService,
+                           ExpertDiscountService expertDiscountService,
+                           TicketService ticketService, SubjectService subjectService) {
         this.adminService = adminService;
         this.expertService = expertService;
         this.codeValidationService = codeValidationService;
@@ -37,6 +45,12 @@ public class ServiceRegistry {
         this.expertBranchService = expertBranchService;
         this.expertDiscountService = expertDiscountService;
         this.ticketService = ticketService;
+        this.subjectService = subjectService;
+    }
+
+
+    public SubjectService getSubjectService() {
+        return subjectService;
     }
 
     public AdminService getAdminService() {

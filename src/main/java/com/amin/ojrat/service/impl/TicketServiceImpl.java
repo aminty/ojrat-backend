@@ -8,10 +8,7 @@ import com.amin.ojrat.exception.CreationException;
 import com.amin.ojrat.exception.DeletionException;
 import com.amin.ojrat.exception.PermissionDeniedException;
 import com.amin.ojrat.repository.DaoRepositories;
-import com.amin.ojrat.service.BranchService;
-import com.amin.ojrat.service.ExpertService;
-import com.amin.ojrat.service.SubjectService;
-import com.amin.ojrat.service.TicketService;
+import com.amin.ojrat.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,28 +18,26 @@ import java.util.Objects;
 @Service
 public class TicketServiceImpl implements TicketService {
 
+    private ServiceRegistry serviceRegistry;
     private final DaoRepositories daoRepositories;
     private final TicketMapper ticketMapper;
-    private final SubjectService subjectService;
-    private final ExpertService expertService;
-    private final BranchService branchService;
+
+
 
     @Autowired
-    public TicketServiceImpl(TicketMapper ticketMapper,
-                             DaoRepositories daoRepositories,
-                             SubjectService subjectService, ExpertService expertService, BranchService branchService) {
+    public TicketServiceImpl(ServiceRegistry serviceRegistry, TicketMapper ticketMapper,
+                             DaoRepositories daoRepositories) {
+        this.serviceRegistry = serviceRegistry;
         this.ticketMapper = ticketMapper;
         this.daoRepositories = daoRepositories;
-        this.subjectService = subjectService;
-        this.expertService = expertService;
-        this.branchService = branchService;
+
     }
 
 
     @Override
     public void createTicket(TicketCreationDtoParam param) throws CreationException {
 
-        if (subjectService.isExistsById(param.getSubjectId())) {
+        if (serviceRegistry.getSubjectService().isExistsById(param.getSubjectId())) {
             Ticket ticket = ticketMapper.creationTicketDtoToTicket(param);
             isExpertExistsOrThrow(param.getExpertId());
             isBranchExistsOrThrow(param.getBranchId());
@@ -55,14 +50,14 @@ public class TicketServiceImpl implements TicketService {
     }
 
    private void isExpertExistsOrThrow(Long expertId){
-       boolean existsById = expertService.isExistsById(expertId);
+       boolean existsById = serviceRegistry.getExpertService().isExistsById(expertId);
        if (!existsById)
            throw new EntityNotFoundException("expert not found");
    }
 
 
    private void isBranchExistsOrThrow(Long branchId){
-       boolean existsById = branchService.isExistsById(branchId);
+       boolean existsById = serviceRegistry.getBranchService().isExistsById(branchId);
        if (!existsById)
            throw new EntityNotFoundException("branch not found");
    }

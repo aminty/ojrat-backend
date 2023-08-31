@@ -8,6 +8,7 @@ import com.amin.ojrat.entity.User;
 import com.amin.ojrat.exception.LoginAuthenticationException;
 import com.amin.ojrat.repository.DaoRepositories;
 import com.amin.ojrat.service.CodeValidationService;
+import com.amin.ojrat.service.ServiceRegistry;
 import com.amin.ojrat.service.UserService;
 import jakarta.persistence.*;
 
@@ -16,17 +17,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final ServiceRegistry serviceRegistry;
     private final DaoRepositories daoRepositories;
     private final UserMapper userMapper;
-    private final CodeValidationService codeValidationService;
 
     @Autowired
     public UserServiceImpl(DaoRepositories daoRepositories,
                            UserMapper userMapper,
-                           CodeValidationService codeValidationService) {
+                           ServiceRegistry serviceRegistry) {
         this.daoRepositories = daoRepositories;
         this.userMapper = userMapper;
-        this.codeValidationService = codeValidationService;
+        this.serviceRegistry = serviceRegistry;
     }
 
     @Override
@@ -45,7 +46,10 @@ public class UserServiceImpl implements UserService {
     public SendSmsResult getForgottenPassword(String phone) {
         User userByPhoneNumber = findUserByPhoneNumber(phone);
         String message = "کلمه عبور شما: " + userByPhoneNumber.getPassword();
-        SendSmsResult result = codeValidationService.sendPassword(userByPhoneNumber.getPhoneNumber(), message);
+        SendSmsResult result = serviceRegistry
+                .getCodeValidationService()
+                .sendPassword(userByPhoneNumber
+                        .getPhoneNumber(), message);
         result.setStatus("رمز عبور به این شماره ارسال شد. " + maskPhone(phone));
         return result;
     }

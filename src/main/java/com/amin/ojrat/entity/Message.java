@@ -20,7 +20,8 @@ public class Message extends BaseEntity<Long> {
     @Lob
     private String text;
 
-    private Long senderId;
+    @OneToOne
+    private User sender;
 
     private boolean isRead;
 
@@ -41,12 +42,12 @@ public class Message extends BaseEntity<Long> {
         this.text = message;
     }
 
-    public Long getSenderId() {
-        return senderId;
+    public User getSender() {
+        return sender;
     }
 
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 
     public boolean isRead() {
