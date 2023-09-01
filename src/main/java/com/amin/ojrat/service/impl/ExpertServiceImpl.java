@@ -44,12 +44,13 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     @Transactional
-    public void saveExpert(ExpertCreationDtoParam param) throws DuringSaveException {
+    public void saveExpert(ExpertCreationDtoParam param) throws UserExistsException {
         Expert expert = expertMapper.expertCreationDtoToExpert(param);
-        Expert saveExpert = daoRepositories.getExpertRepository().save(expert);
-        if (saveExpert.getId() == null) {
-            throw new DuringSaveException("new record doesn't save");
-        }
+        if (!isExistsExpertByValue(param))
+            daoRepositories.getExpertRepository().save(expert);
+        else
+            throw new UserExistsException("one or more of this params is taken by another user!");
+
     }
 
     @Override

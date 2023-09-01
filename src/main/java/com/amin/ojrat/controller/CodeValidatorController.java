@@ -6,6 +6,7 @@ import com.amin.ojrat.dto.payamak.status.GetSmsStatusResult;
 import com.amin.ojrat.dto.payamak.validation.ValidationParam;
 import com.amin.ojrat.exception.TtlExpirationException;
 import com.amin.ojrat.service.CodeValidationService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,18 +25,21 @@ public class CodeValidatorController {
         this.codeValidationService = codeValidationService;
     }
 
+    @Operation(summary = "generate code - send to phone - set it to cache")
     @GetMapping("/validatePhone/{phoneNumber}")
     public ResponseEntity<GetSmsStatusResult> validatePhone(@PathVariable String phoneNumber) throws TtlExpirationException {
         GetSmsStatusResult result = codeValidationService.sendCodeWithApi(phoneNumber);
         return ResponseEntity.ok(result);
     }
 
+    @Operation(summary = "get code from cache and validate it with entry code base on phone number")
     @PostMapping("/validateCode")
     public ResponseEntity<Boolean> validateCode(@RequestBody ValidationParam param) {
         boolean isValidCode = codeValidationService.isValidCode(param.getValue(), param.getPhoneNumber());
         return new ResponseEntity<>(isValidCode, HttpStatus.OK );
     }
 
+    @Operation(summary = "get all code in cache")
     @GetMapping("/getAllValue")
     public ResponseEntity<List<ValidationParam>> getAllCacheValue(){
 

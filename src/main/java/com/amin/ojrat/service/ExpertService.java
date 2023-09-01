@@ -6,10 +6,7 @@ import com.amin.ojrat.dto.entity.branch.response.BasicBranchDtoResult;
 import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDtoParam;
 import com.amin.ojrat.entity.Branch;
 import com.amin.ojrat.entity.Expert;
-import com.amin.ojrat.exception.DuringSaveException;
-import com.amin.ojrat.exception.LicenseStatusException;
-import com.amin.ojrat.exception.NotFullyRegisteredException;
-import com.amin.ojrat.exception.RequestLimitExceededException;
+import com.amin.ojrat.exception.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,7 +16,7 @@ import java.util.List;
 @Service
 public interface ExpertService {
 
-    void saveExpert(ExpertCreationDtoParam param) throws DuringSaveException;
+    void saveExpert(ExpertCreationDtoParam param) throws  UserExistsException;
 
     void updateExpert(Expert expert);
 

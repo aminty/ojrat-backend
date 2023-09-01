@@ -80,7 +80,7 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public void editProduct(ProductModificationDtoParam param) throws Exception {
-        Product existProduct = findProductByIdOrThrow(param.getId(), "Product not found.");
+        Product existProduct = findProductByIdOrThrow(param.getId());
         Product updatedProduct = productMapper.productDtoToProduct(param);
         applyNewChange(updatedProduct, existProduct);
         daoRepositories.getProductRepository().save(existProduct);
@@ -88,7 +88,7 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public void removeProduct(Long id) throws Exception {
-        findProductByIdOrThrow(id, "Product not found");
+        findProductByIdOrThrow(id);
         daoRepositories.getProductRepository().deleteById(id);
     }
 
@@ -177,9 +177,9 @@ public class BranchServiceImpl implements BranchService {
         }
     }
 
-    private Product findProductByIdOrThrow(Long id, String errorMessage) {
+    private Product findProductByIdOrThrow(Long id) {
         return daoRepositories.getProductRepository().findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(errorMessage));
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
     }
 
     @Override

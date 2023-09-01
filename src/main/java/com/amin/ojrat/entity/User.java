@@ -4,6 +4,7 @@ import com.amin.ojrat.base.BaseEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Where;
 
 import java.sql.Timestamp;
 import java.time.LocalTime;
@@ -11,6 +12,7 @@ import java.time.LocalTime;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "user_table")
+@Where(clause = "is_deleted = true")
 public class User extends BaseEntity<Long> {
 
      private String firstName;

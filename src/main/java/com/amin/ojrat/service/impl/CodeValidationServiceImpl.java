@@ -80,9 +80,10 @@ public class CodeValidationServiceImpl implements CodeValidationService {
     @Override
     public GetSmsStatusResult sendCodeWithApi(String phoneNumber) throws TtlExpirationException {
         String generatedCode = codeGenerator();
-        setCodeInCache(generatedCode, phoneNumber);
         SendSmsResult result = melliPayamakClient.sendSms(
-                new SendSmsParam(MELLI_PHONE, phoneNumber, "کد تایید شماره همراه : " + generatedCode));
+                new SendSmsParam(MELLI_PHONE, phoneNumber, "کد تایید شماره همراه شما : " + generatedCode));
+        if (result.getRecId()!=null)
+            setCodeInCache(generatedCode, phoneNumber);
         GetSmsStatusParam param=new GetSmsStatusParam();
         param.getRecIds().add(Long.valueOf(result.getRecId()));
          return getSmsResultByRecId(param);

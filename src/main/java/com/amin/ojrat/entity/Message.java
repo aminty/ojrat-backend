@@ -28,6 +28,7 @@ public class Message extends BaseEntity<Long> {
     @CreationTimestamp
     private Timestamp createdAt;
 
+
     @UpdateTimestamp
     private Timestamp updatedAt;
 
