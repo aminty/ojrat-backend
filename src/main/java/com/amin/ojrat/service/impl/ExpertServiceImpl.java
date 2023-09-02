@@ -137,6 +137,7 @@ public class ExpertServiceImpl implements ExpertService {
         return expBr;
     }
 
+
     private void validateExpertStatus(Expert expert) throws Exception {
         if (expert.isIsDeleted()) {
             throw new UserExistsException("It seems like the user was deleted.");

@@ -2,13 +2,13 @@ package com.amin.ojrat.dto.entity.base;
 
 public class Context {
 
-    private String message;
+    private String errorMessage;
 
-    public String getMessage() {
-        return message;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

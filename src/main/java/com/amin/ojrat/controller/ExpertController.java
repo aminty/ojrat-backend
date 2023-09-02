@@ -6,7 +6,10 @@ import com.amin.ojrat.dto.entity.branch.response.BasicBranchDtoResult;
 import com.amin.ojrat.dto.entity.expert.request.ExpertCreationDtoParam;
 import com.amin.ojrat.dto.entity.product.response.BasicProductDtoResult;
 import com.amin.ojrat.dto.entity.ticket.request.ChangeTicketStatusDtoParam;
+import com.amin.ojrat.dto.entity.ticket.request.SendNewMessageDtoParam;
 import com.amin.ojrat.dto.entity.ticket.request.TicketCreationDtoParam;
+import com.amin.ojrat.dto.entity.ticket.response.MessageDtoResult;
+import com.amin.ojrat.dto.entity.ticket.response.SimpleTicketDtoResult;
 import com.amin.ojrat.exception.CreationException;
 import com.amin.ojrat.exception.PermissionDeniedException;
 import com.amin.ojrat.service.ServiceRegistry;
@@ -103,10 +106,10 @@ public class ExpertController {
     }
     @Operation(summary = "create new ticket")
     @PostMapping("/ticket/create")
-    public ResponseEntity<String> createNewTicket(@Valid @RequestBody TicketCreationDtoParam param)
+    public ResponseEntity<SimpleTicketDtoResult> createNewTicket(@Valid @RequestBody TicketCreationDtoParam param)
             throws CreationException {
-        serviceRegistry.getTicketService().createTicket(param);
-        return new ResponseEntity<>("ticket created successfully", HttpStatus.OK);
+        SimpleTicketDtoResult ticket = serviceRegistry.getTicketService().createTicket(param);
+        return new ResponseEntity<>(ticket, HttpStatus.OK);
     }
 
     @Operation(summary = "close the ticket of expert by it self")
@@ -116,4 +119,34 @@ public class ExpertController {
         serviceRegistry.getTicketService().closeTicketByExpert(param.getTicketId(), param.getExpertId());
         return new ResponseEntity<>("ticket closed successfully", HttpStatus.OK);
     }
+
+     @Operation(summary = "send new message inside ticket")
+    @PostMapping("/ticket/new-message")
+    public ResponseEntity<String> sendNewTicket(@Valid @RequestBody SendNewMessageDtoParam param) {
+        serviceRegistry.getTicketService().sendMessageInsideTicket(param);
+        return new ResponseEntity<>("message send successfully", HttpStatus.OK);
+    }
+
+    @Operation(summary = "get message of ticket")
+    @GetMapping("/ticket/get-message/{ticketId}")
+    public ResponseEntity<List<MessageDtoResult>> getAllMessageOfTicket(@PathVariable Long ticketId) {
+        List<MessageDtoResult> allMessageOfTicket = serviceRegistry.getTicketService().getAllMessageOfTicket(ticketId);
+        return new ResponseEntity<List<MessageDtoResult>>(allMessageOfTicket, HttpStatus.OK);
+    }
+    @Operation(summary = "get related ticket")
+    @GetMapping("/ticket/get-related-ticket/{branchId}/{expertId}")
+    public ResponseEntity<List<SimpleTicketDtoResult>> getAllRelatedTicket(@PathVariable Long branchId,
+                                                                           @PathVariable Long expertId) {
+        List<SimpleTicketDtoResult> relatedTicket =
+                serviceRegistry.getTicketService().getRelatedTicket(branchId, expertId);
+        return new ResponseEntity<List<SimpleTicketDtoResult>>(relatedTicket, HttpStatus.OK);
+    }
+
+
+
+
+
+
+
+
 }

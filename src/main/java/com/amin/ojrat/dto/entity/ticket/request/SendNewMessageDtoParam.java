@@ -3,16 +3,18 @@ package com.amin.ojrat.dto.entity.ticket.request;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public class TicketMessageDtoParam {
+public class SendNewMessageDtoParam {
 
     @NotNull(message = "ticketId should not be null")
     private Long ticketId;
+
     @NotEmpty(message =     "message should not be empty")
     private String message;
+
     @NotNull(message = "senderId should not be null")
     private Long senderId;
 
-    public TicketMessageDtoParam() {
+    public SendNewMessageDtoParam() {
     }
 
     public Long getTicketId() {

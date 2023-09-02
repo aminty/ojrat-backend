@@ -23,10 +23,9 @@ public class Message extends BaseEntity<Long> {
     @OneToOne
     private User sender;
 
-    private boolean isRead;
 
     @CreationTimestamp
-    private Timestamp createdAt;
+    private Timestamp sentAt;
 
 
     @UpdateTimestamp
@@ -51,20 +50,12 @@ public class Message extends BaseEntity<Long> {
         this.sender = sender;
     }
 
-    public boolean isRead() {
-        return isRead;
+    public Timestamp getSentAt() {
+        return sentAt;
     }
 
-    public void setRead(boolean read) {
-        isRead = read;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
+    public void setSentAt(Timestamp sentAt) {
+        this.sentAt = sentAt;
     }
 
     public Timestamp getUpdatedAt() {

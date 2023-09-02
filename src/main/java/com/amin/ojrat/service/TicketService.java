@@ -1,28 +1,31 @@
 package com.amin.ojrat.service;
 
+import com.amin.ojrat.dto.entity.ticket.request.SendNewMessageDtoParam;
 import com.amin.ojrat.dto.entity.ticket.request.TicketCreationDtoParam;
+import com.amin.ojrat.dto.entity.ticket.response.MessageDtoResult;
+import com.amin.ojrat.dto.entity.ticket.response.SimpleTicketDtoResult;
 import com.amin.ojrat.entity.Ticket;
 import com.amin.ojrat.exception.CreationException;
 import com.amin.ojrat.exception.DeletionException;
 import com.amin.ojrat.exception.PermissionDeniedException;
 
+import java.util.List;
+
 public interface TicketService {
 
-    void createTicket(TicketCreationDtoParam param) throws CreationException;
+    SimpleTicketDtoResult createTicket(TicketCreationDtoParam param) throws CreationException;
 
-    void updateMessage(Long messageId,Long senderId,String msg);
+    void sendMessageInsideTicket(SendNewMessageDtoParam param);
 
-    void deleteMessageForSender(Long messageId) throws DeletionException;
+    List<MessageDtoResult> getAllMessageOfTicket(Long ticketId);
 
-    void deleteMessageForReceiver(Long messageId) throws DeletionException;
+    void saveOrUpdateTicket(Ticket ticket);
 
-    void deleteMessage(Long messageId, Long senderId, String msg);
-
-    void setReadMessage(Long messageId);
-
-    void setReadMessage(Long messageId, Long senderId, Long receiverId);
-
-     void closeTicketByExpert(Long ticketId,Long expertId) throws PermissionDeniedException;
+    void closeTicketByExpert(Long ticketId,Long expertId) throws PermissionDeniedException;
 
     Ticket findTicketById(Long ticketId);
+
+    List<SimpleTicketDtoResult> getRelatedTicket(Long branchId,Long ticketId);
+
+
 }

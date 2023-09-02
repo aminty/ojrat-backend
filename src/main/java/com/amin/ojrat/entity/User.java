@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "user_table")
-@Where(clause = "is_deleted = true")
+@Where(clause = "is_deleted = false")
 public class User extends BaseEntity<Long> {
 
      private String firstName;

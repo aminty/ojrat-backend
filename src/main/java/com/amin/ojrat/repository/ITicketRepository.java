@@ -15,5 +15,7 @@ public interface ITicketRepository extends JpaRepository<Ticket,Long> {
     boolean existsTicketByStatusAndBranch_IdAndExpert_IdAndSubject_Id
             (TicketStatus status,Long branchId,Long expertId,Long subjectId);
 
+    List<Ticket> findAllByBranch_IdAndExpert_Id(Long branchId,Long expertId);
+
 
 }

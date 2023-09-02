@@ -3,7 +3,6 @@ import com.amin.ojrat.base.BaseEntity;
 import com.amin.ojrat.enums.TicketStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,28 +31,29 @@ public class Ticket extends BaseEntity<Long> {
     @CreationTimestamp
     private Timestamp createdAt;
 
-    private Timestamp lastReadTimestampBranch;
+    private boolean existsNewMessageForExpert;
 
-    private Timestamp lastReadTimestampExpert;
+    private boolean  existsNewMessageForBranch;
 
 
     public Ticket() {
     }
 
-    public Timestamp getLastReadTimestampBranch() {
-        return lastReadTimestampBranch;
+
+    public boolean isExistsNewMessageForExpert() {
+        return existsNewMessageForExpert;
     }
 
-    public void setLastReadTimestampBranch(Timestamp lastReadTimestampBranch) {
-        this.lastReadTimestampBranch = lastReadTimestampBranch;
+    public void setExistsNewMessageForExpert(boolean existsNewMessageForExpert) {
+        this.existsNewMessageForExpert = existsNewMessageForExpert;
     }
 
-    public Timestamp getLastReadTimestampExpert() {
-        return lastReadTimestampExpert;
+    public boolean isExistsNewMessageForBranch() {
+        return existsNewMessageForBranch;
     }
 
-    public void setLastReadTimestampExpert(Timestamp lastReadTimestampExpert) {
-        this.lastReadTimestampExpert = lastReadTimestampExpert;
+    public void setExistsNewMessageForBranch(boolean existsNewMessageForBranch) {
+        this.existsNewMessageForBranch = existsNewMessageForBranch;
     }
 
     public Subject getSubject() {
